@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
+import localFont from 'next/font/local';
+import '@/styles/globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const consola = localFont({
+  src: '../styles/font/Satoshi-Variable.ttf',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={consola.className}>{children}</body>
     </html>
   );
 }
