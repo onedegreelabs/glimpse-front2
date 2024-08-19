@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { CheckSVG, LockSVG } from '@/icons/index';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { useEffect, useState } from 'react';
+import { login } from '@/lib/apis/authApi';
+import { FetchError } from '@/types/types';
 
 function ErrorMessage({
   message,
@@ -18,7 +20,7 @@ function ErrorMessage({
     }, 5000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [onClose]);
 
   return (
     <p className="absolute w-full -top-3 bg-[#E7001B] py-3 px-[10px] text-xs text-white rounded-md">
@@ -40,7 +42,23 @@ function EmailAccessForm() {
     watch,
     formState: { errors },
   } = useForm<EmailFormInputs>();
-  const onSubmit: SubmitHandler<EmailFormInputs> = (data) => console.log(data);
+
+  const onSubmit: SubmitHandler<EmailFormInputs> = async (data) => {
+    try {
+      await login(data.email);
+    } catch (error) {
+      const fetchError = error as FetchError;
+
+      if (fetchError && fetchError.errorCode === 'G01001') {
+        setErrorMessage(
+          'Wrong email address. Please enter the email address that you provided in the match application (Google form).',
+        );
+      } else {
+        setErrorMessage('An unknown error occurred. Please contact support.');
+      }
+    }
+  };
+
   const SubmitError: SubmitErrorHandler<EmailFormInputs> = () => {
     if (errors.email) {
       setErrorMessage(errors.email.message ?? '');
