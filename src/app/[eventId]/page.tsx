@@ -1,6 +1,6 @@
 // import { cookies } from 'next/headers';
 
-import EmailCheck from './components/EmailCheck';
+import EmailAccessForm from './components/EmailAccessForm';
 import EventDetails from './components/EventDetails';
 
 export default async function page({
@@ -13,7 +13,7 @@ export default async function page({
 
   return (
     <main className="relative size-full flex flex-col">
-      <EmailCheck />
+      <EmailAccessForm />
       <EventDetails />
       <p className="text-white">sdasdasdasd</p>
       <div className="w-full h-96" />
