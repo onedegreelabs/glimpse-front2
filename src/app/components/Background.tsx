@@ -12,7 +12,7 @@ function Background({
 
   return (
     <div
-      className="relative bg-background min-h-dvh overflow-x-hidden"
+      className="relative bg-background min-h-dvh overflow-x-hidden grid"
       ref={containerRef}
     >
       <Gradient containerRef={containerRef} />
