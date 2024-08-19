@@ -6,6 +6,7 @@ import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { login } from '@/lib/apis/authApi';
 import { FetchError } from '@/types/types';
+import { useRouter } from 'next/navigation';
 
 function ErrorMessage({
   message,
@@ -35,6 +36,7 @@ type EmailFormInputs = {
 };
 
 function EmailAccessForm() {
+  const router = useRouter();
   const [errorMessage, setErrorMessage] = useState('');
   const {
     register,
@@ -46,6 +48,7 @@ function EmailAccessForm() {
   const onSubmit: SubmitHandler<EmailFormInputs> = async (data) => {
     try {
       await login(data.email);
+      router.refresh();
     } catch (error) {
       const fetchError = error as FetchError;
 

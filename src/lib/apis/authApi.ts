@@ -1,7 +1,7 @@
 import { FetchError } from '@/types/types';
 
 export const login = async (email: string) => {
-  const response = await fetch(`/api/auth?email=${email}`, {
+  const response = await fetch(`/api/auth/login?email=${email}`, {
     method: 'POST',
     credentials: 'include',
     headers: {

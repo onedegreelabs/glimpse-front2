@@ -16,8 +16,9 @@
           "**/*.test.js",
           "**/*.test.jsx",
           "**/*.test.ts",
-          "**/*.test.tsx"
-        ], // 수정된 부분
+          "**/*.test.tsx",
+          "**/ReactQueryProviders.tsx"
+        ],
         "optionalDependencies": true,
         "peerDependencies": false
       }

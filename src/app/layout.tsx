@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import '@/styles/globals.css';
+import ReactQueryProviders from '@/lib/provider/ReactQueryProviders';
 import Background from './components/Background';
 
 const consola = localFont({
@@ -21,7 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${consola.className} mx-auto max-w-sm`}>
-        <Background>{children}</Background>
+        <ReactQueryProviders>
+          <Background>{children}</Background>
+        </ReactQueryProviders>
       </body>
     </html>
   );
