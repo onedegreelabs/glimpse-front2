@@ -15,18 +15,9 @@ function Gradient({
   const [numDivs, setNumDivs] = useState(0);
 
   useEffect(() => {
+    const currentRef = containerRef.current;
+
     const updateDivs = () => {
-      if (containerRef.current) {
-        const containerHeight = containerRef.current.clientHeight;
-        const newNumDivs = Math.floor(containerHeight / baseHeight);
-        setNumDivs(newNumDivs);
-      }
-    };
-
-    updateDivs();
-
-    const handleResize = () => {
-      const currentRef = containerRef.current;
       if (currentRef) {
         const containerHeight = currentRef.clientHeight;
         const newNumDivs = Math.floor(containerHeight / baseHeight);
@@ -34,10 +25,21 @@ function Gradient({
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    updateDivs();
+
+    const observer = new ResizeObserver(() => {
+      updateDivs();
+    });
+
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+      observer.disconnect();
     };
   }, [containerRef]);
 
