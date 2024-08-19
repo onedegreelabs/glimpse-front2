@@ -1,12 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { CheckSVG, LockSVG } from '@/icons/index';
+import { CheckSVG, LockSVG, Spinner1 } from '@/icons/index';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { login } from '@/lib/apis/authApi';
 import { FetchError } from '@/types/types';
 import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
 
 function ErrorMessage({
   message,
@@ -45,11 +46,12 @@ function EmailAccessForm() {
     formState: { errors },
   } = useForm<EmailFormInputs>();
 
-  const onSubmit: SubmitHandler<EmailFormInputs> = async (data) => {
-    try {
-      await login(data.email);
+  const { mutate: handleLogin, isPending } = useMutation({
+    mutationFn: (email: string) => login(email),
+    onSuccess: () => {
       router.refresh();
-    } catch (error) {
+    },
+    onError: (error) => {
       const fetchError = error as FetchError;
 
       if (fetchError && fetchError.errorCode === 'G01001') {
@@ -59,7 +61,11 @@ function EmailAccessForm() {
       } else {
         setErrorMessage('An unknown error occurred. Please contact support.');
       }
-    }
+    },
+  });
+
+  const onSubmit: SubmitHandler<EmailFormInputs> = async (data) => {
+    handleLogin(data.email);
   };
 
   const SubmitError: SubmitErrorHandler<EmailFormInputs> = () => {
@@ -138,12 +144,20 @@ function EmailAccessForm() {
           </div>
           <button
             type="submit"
-            disabled={!(watch('email') && watch('isAgreedToTerms'))}
+            disabled={
+              !(watch('email') && watch('isAgreedToTerms')) || isPending
+            }
             className="w-full disabled:bg-gray-B30 h-14 rounded-lg bg-yellow-primary group"
           >
-            <p className="text-gray-B60 group-enabled:font-bold group-enabled:text-blue-secondary">
-              Unlock
-            </p>
+            {isPending ? (
+              <div className="flex justify-center">
+                <Spinner1 className="animate-spin -ml-1 mr-3 size-6 text-white" />
+              </div>
+            ) : (
+              <p className="text-gray-B60 group-enabled:font-bold group-enabled:text-blue-secondary">
+                Unlock
+              </p>
+            )}
           </button>
         </div>
       </form>
