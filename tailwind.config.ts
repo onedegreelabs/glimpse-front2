@@ -24,6 +24,10 @@ const config: Config = {
           300: '#FFEA89',
           500: '#EEBA00',
         },
+        gray: {
+          B30: '#EFEFEF',
+          B60: '#ACACAC',
+        },
         background: '#091C53',
       },
     },

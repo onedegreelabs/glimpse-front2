@@ -18,6 +18,16 @@
       }
     ],
     "import/prefer-default-export": ["off", { "target": "single" }],
-    "operator-linebreak": [0]
+    "operator-linebreak": [0],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
   }
 }
