@@ -1,15 +1,17 @@
 import { ArrowSVG, DateSVG, LocationSVG } from '@/icons/index';
 import { getEventInfo } from '@/lib/apis/server/eventsApi';
 import Link from 'next/link';
+import ScrollHeader from './ScrollHeader';
 
 async function EventDetails({ eventId }: { eventId: string }) {
   const { title, startAt, externalLink, location, locationType } =
     await getEventInfo(eventId);
+  // error 처리 필요
 
   return (
-    <header className="z-20 flex w-full items-center justify-between bg-white px-4 py-5">
+    <ScrollHeader>
       <div className="flex w-4/5 flex-col gap-3">
-        <h1 className="line-clamp-2 text-sm font-medium text-blue-secondary">
+        <h1 className="truncate text-sm font-medium text-blue-secondary">
           {title}
         </h1>
         <div className="flex gap-4 text-xs">
@@ -30,7 +32,7 @@ async function EventDetails({ eventId }: { eventId: string }) {
         Details
         <ArrowSVG />
       </Link>
-    </header>
+    </ScrollHeader>
   );
 }
 
