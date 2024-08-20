@@ -37,6 +37,17 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // eslint-disable-next-line global-require
+    require('tailwindcss/plugin')(
+      ({
+        addVariant,
+      }: {
+        addVariant: (variant: string, styles: string) => void;
+      }) => {
+        addVariant('search-cancel', '&::-webkit-search-cancel-button');
+      },
+    ),
+  ],
 };
 export default config;

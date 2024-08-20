@@ -3,10 +3,10 @@ import { cookies } from 'next/headers';
 import { ParticipantsSearchParams } from '@/types/types';
 import Image from 'next/image';
 import Logo from '@/images/Logo.png';
-import { SearchSVG } from '@/icons/index';
 import EmailAccessForm from './components/EmailAccessForm';
 import EventDetails from './components/EventDetails';
 import ParticipantsNav from './components/ParticipantsNav';
+import SearchParticipants from './components/SearchParticipants';
 
 export default async function page({
   params: { eventId },
@@ -35,21 +35,10 @@ export default async function page({
           eventId={eventId}
           participantCount={null}
         />
-        <div className="relative mb-4 mt-5">
-          <input
-            id="searchParticipants"
-            type="text"
-            className="peer h-12 w-full rounded-2xl py-4 pl-[42px] pr-4 font-medium text-black outline-none placeholder:text-sm placeholder:text-gray-B70"
-            placeholder="Search in app"
-          />
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label
-            htmlFor="searchParticipants"
-            className="absolute left-4 top-4 fill-gray-B70 peer-focus:fill-black"
-          >
-            <SearchSVG />
-          </label>
-        </div>
+        <SearchParticipants
+          search={searchParams.search ?? ''}
+          eventId={eventId}
+        />
         <div className="h-96 w-full" />
         <div className="h-96 w-full" />
         <div className="h-96 w-full" />

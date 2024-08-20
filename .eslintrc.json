@@ -9,20 +9,7 @@
     "linebreak-style": 0,
     "react/jsx-one-expression-per-line": "off",
     "react/jsx-props-no-spreading": "off",
-    "import/no-extraneous-dependencies": [
-      "error",
-      {
-        "devDependencies": [
-          "**/*.test.js",
-          "**/*.test.jsx",
-          "**/*.test.ts",
-          "**/*.test.tsx",
-          "**/ReactQueryProviders.tsx"
-        ],
-        "optionalDependencies": true,
-        "peerDependencies": false
-      }
-    ],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "import/prefer-default-export": ["off", { "target": "single" }],
     "operator-linebreak": [0],
     "import/extensions": [
