@@ -27,7 +27,7 @@ function SearchParticipants({
   };
 
   return (
-    <div className="relative mb-4 mt-5">
+    <div className="relative mb-4 mt-2">
       <input
         id="searchParticipants"
         type="search"

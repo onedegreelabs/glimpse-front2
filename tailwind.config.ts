@@ -32,7 +32,7 @@ const config: Config = {
         background: '#091C53',
       },
       zIndex: {
-        blur: '10',
+        blur: '50',
         header: '20',
       },
     },
