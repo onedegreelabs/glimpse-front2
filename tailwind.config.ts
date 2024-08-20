@@ -27,8 +27,13 @@ const config: Config = {
         gray: {
           B30: '#EFEFEF',
           B60: '#ACACAC',
+          B70: '#95959D',
         },
         background: '#091C53',
+      },
+      zIndex: {
+        blur: '10',
+        header: '20',
       },
     },
   },

@@ -9,3 +9,5 @@ export { default as LocationSVG } from './location.svg';
 export { default as DateSVG } from './date.svg';
 
 export { default as ArrowSVG } from './arrow.svg';
+
+export { default as SearchSVG } from './search.svg';

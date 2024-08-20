@@ -13,3 +13,8 @@ export interface EventInfo {
   location: string;
   coverImageUrl: null | URL;
 }
+
+export interface ParticipantsSearchParams {
+  nav?: 'ALL' | 'FORYOU';
+  search?: string;
+}

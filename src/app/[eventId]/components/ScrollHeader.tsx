@@ -38,7 +38,7 @@ function ScrollHeader({
     <>
       <header
         ref={headerRef}
-        className={`z-20 flex w-full max-w-sm items-center justify-between bg-white px-4 py-5 transition-transform duration-300 ${
+        className={`z-header flex w-full max-w-sm items-center justify-between bg-white px-4 py-5 transition-transform duration-300 ${
           isVisible ? 'translate-y-0' : '-translate-y-full'
         } fixed`}
       >
