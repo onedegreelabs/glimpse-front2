@@ -10,17 +10,16 @@ export default async function page({
 }) {
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken');
-  console.log(eventId);
 
   return (
-    <main className="relative size-full flex flex-col">
+    <main className="relative flex size-full flex-col">
       {!accessToken && <EmailAccessForm />}
-      <EventDetails />
+      <EventDetails eventId={eventId} />
       <p className="text-white">sdasdasdasd</p>
-      <div className="w-full h-96" />
-      <div className="w-full h-96" />
-      <div className="w-full h-96" />
-      <div className="w-full h-96" />
+      <div className="h-96 w-full" />
+      <div className="h-96 w-full" />
+      <div className="h-96 w-full" />
+      <div className="h-96 w-full" />
     </main>
   );
 }

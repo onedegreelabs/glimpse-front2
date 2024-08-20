@@ -1,6 +1,36 @@
-function EventDetails() {
+import { ArrowSVG, DateSVG, LocationSVG } from '@/icons/index';
+import { getEventInfo } from '@/lib/apis/server/eventsApi';
+import Link from 'next/link';
+
+async function EventDetails({ eventId }: { eventId: string }) {
+  const { title, startAt, externalLink, location, locationType } =
+    await getEventInfo(eventId);
+
   return (
-    <header className="z-20 w-full bg-white py-5 px-4">Event Details</header>
+    <header className="z-20 flex w-full items-center justify-between bg-white px-4 py-5">
+      <div className="flex w-4/5 flex-col gap-3">
+        <h1 className="line-clamp-2 text-sm font-medium text-blue-secondary">
+          {title}
+        </h1>
+        <div className="flex gap-4 text-xs">
+          <div className="flex items-center gap-1">
+            <LocationSVG aria-label="Location" />{' '}
+            {locationType === 'OFFLINE' ? location : locationType}
+          </div>
+          <time className="flex items-center gap-1">
+            <DateSVG aria-label="Date" />
+            {startAt}
+          </time>
+        </div>
+      </div>
+      <Link
+        href={externalLink ?? '/'}
+        className="flex h-8 w-16 items-center justify-center rounded-lg bg-blue-secondary/20 text-xs font-semibold text-blue-secondary hover:font-bold"
+      >
+        Details
+        <ArrowSVG />
+      </Link>
+    </header>
   );
 }
 
