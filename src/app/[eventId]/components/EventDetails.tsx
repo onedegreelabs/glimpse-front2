@@ -6,7 +6,6 @@ import ScrollHeader from './ScrollHeader';
 async function EventDetails({ eventId }: { eventId: string }) {
   const { title, startAt, externalLink, location, locationType } =
     await getEventInfo(eventId);
-  // error 처리 필요
 
   return (
     <ScrollHeader>
