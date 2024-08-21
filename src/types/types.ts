@@ -23,7 +23,7 @@ export interface ParticipantsSearchParams {
 export interface GetParticipantsInfoParams {
   eventId: string;
   take: number;
-  lastItemId?: number;
+  lastItemId: number;
 }
 
 interface SocialMediaDto {

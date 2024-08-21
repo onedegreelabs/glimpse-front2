@@ -36,6 +36,7 @@ export default async function page({
     participantsInfo = await getParticipantsInfo({
       eventId,
       take: PARTICIPANTS_TAKE,
+      lastItemId: 0,
       accessToken,
     });
   }

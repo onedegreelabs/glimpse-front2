@@ -5,6 +5,7 @@ import { getParticipantsInfo } from '@/lib/apis/eventsApi';
 import { ParticipantsResponseDto } from '@/types/types';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import { InView } from 'react-intersection-observer';
 import ParticipantCard from './ParticipantCard';
 
 interface ParticipantsProps {
@@ -13,31 +14,34 @@ interface ParticipantsProps {
 }
 
 function Participants({ participantsInfo, eventId }: ParticipantsProps) {
-  const { data } = useInfiniteQuery({
-    queryKey: ['participants'],
-    queryFn: ({ pageParam }) =>
-      getParticipantsInfo({
-        eventId: pageParam.eventId,
-        take: pageParam.take,
-      }),
-    initialPageParam: { eventId, take: PARTICIPANTS_TAKE },
-    initialData: {
-      pages: [participantsInfo],
-      pageParams: [{ eventId, take: PARTICIPANTS_TAKE }],
-    },
-    getNextPageParam: (lastPage, allPages) => {
-      const hasMorePages =
-        allPages[0].totalItemCount > allPages.length * PARTICIPANTS_TAKE;
-      if (hasMorePages) {
-        return {
-          eventId,
-          take: PARTICIPANTS_TAKE,
-          lastItemId: lastPage.participants.at(-1)?.id,
-        };
-      }
-      return undefined;
-    },
-  });
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ['participants'],
+      queryFn: ({ pageParam }) =>
+        getParticipantsInfo({
+          eventId: pageParam.eventId,
+          take: pageParam.take,
+          lastItemId: pageParam.lastItemId,
+        }),
+      initialPageParam: { eventId, take: PARTICIPANTS_TAKE, lastItemId: 0 },
+      initialData: {
+        pages: [participantsInfo],
+        pageParams: [{ eventId, take: PARTICIPANTS_TAKE, lastItemId: 0 }],
+      },
+      getNextPageParam: (lastPage, allPages) => {
+        const hasMorePages =
+          allPages[0].totalItemCount > allPages.length * PARTICIPANTS_TAKE;
+
+        if (hasMorePages) {
+          return {
+            eventId,
+            take: PARTICIPANTS_TAKE,
+            lastItemId: lastPage.participants.at(-1)?.id ?? 0,
+          };
+        }
+        return undefined;
+      },
+    });
 
   const participants = useMemo(
     () => data?.pages.flatMap((page) => page.participants) ?? [],
@@ -49,6 +53,21 @@ function Participants({ participantsInfo, eventId }: ParticipantsProps) {
       {participants.map((info) => (
         <ParticipantCard key={info.id} {...info} participantRole={info.role} />
       ))}
+      {isFetchingNextPage ? (
+        <div>Loading...</div>
+      ) : (
+        <InView
+          as="div"
+          onChange={(inView) => {
+            if (inView && hasNextPage) {
+              fetchNextPage();
+            }
+          }}
+          threshold={0}
+          triggerOnce
+          className="h-[1px]"
+        />
+      )}
     </ul>
   );
 }

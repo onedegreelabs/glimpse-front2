@@ -20,7 +20,6 @@ export const getParticipantsInfo = async ({
     ) as FetchError;
     error.status = response.status;
     error.errorCode = errorData.errorCode || 'UNKNOWN_ERROR';
-    console.log(errorData);
     throw error;
   }
 
