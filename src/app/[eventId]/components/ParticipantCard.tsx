@@ -1,10 +1,18 @@
 import { DefaultProfileSVG, HeartSVG, LinkSVG } from '@/icons/index';
+import { EventParticipantProfileCardDto } from '@/types/types';
+import Image from 'next/image';
 
-interface ParticipantCardProps {
+type ParticipantCardProps = {
   participantRole: 'HOST' | 'GUEST';
-}
+} & Partial<EventParticipantProfileCardDto>;
 
-function ParticipantCard({ participantRole }: ParticipantCardProps) {
+function ParticipantCard({ participantRole, user }: ParticipantCardProps) {
+  const name = user?.name || 'Emma Stone';
+  const jobs = user?.jobs.name || 'Designer';
+  const intro =
+    user?.intro ||
+    'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...';
+
   return (
     <li
       className={`flex h-40 w-full flex-col justify-between rounded-3xl pb-6 pl-5 pr-4 pt-4 ${participantRole === 'HOST' ? 'bg-blue-B70' : 'border-[1.5px] border-solid border-white/20 bg-white/30'}`}
@@ -15,7 +23,18 @@ function ParticipantCard({ participantRole }: ParticipantCardProps) {
             <div
               className={`relative flex size-12 flex-shrink-0 items-center justify-center rounded-full ${participantRole === 'HOST' ? 'mb-3 border-[4px] border-solid border-yellow-primary bg-white fill-gray-B40' : 'bg-gray-B35/40 fill-white'}`}
             >
-              <DefaultProfileSVG />
+              {user?.profileImageUrl ? (
+                <div className="absolute left-0 top-0 size-full overflow-hidden rounded-full">
+                  <Image
+                    src={user.profileImageUrl}
+                    alt={`${name} profile`}
+                    fill
+                    sizes="48px"
+                  />
+                </div>
+              ) : (
+                <DefaultProfileSVG />
+              )}
               {participantRole === 'HOST' && (
                 <span className="absolute -bottom-4 rounded-full bg-yellow-primary px-2 py-1 text-[10px] font-black text-black">
                   HOST
@@ -23,8 +42,8 @@ function ParticipantCard({ participantRole }: ParticipantCardProps) {
               )}
             </div>
             <dl className="flex w-full min-w-0 flex-col justify-center">
-              <dt className="truncate text-lg font-bold">Emma Stone</dt>
-              <dd className="truncate text-xs text-white/60">Designer</dd>
+              <dt className="truncate text-lg font-bold">{name}</dt>
+              <dd className="truncate text-xs text-white/60">{jobs}</dd>
             </dl>
           </div>
           <div className="flex gap-[6px]">
@@ -45,10 +64,7 @@ function ParticipantCard({ participantRole }: ParticipantCardProps) {
           </div>
         </div>
       </header>
-      <p className="line-clamp-2 text-xs">
-        A kiddo who uses Bootstrap and Laravel in web development. Currently
-        playing around with design via Figma. Currently playing around ...
-      </p>
+      <p className="line-clamp-2 text-xs">{intro}</p>
     </li>
   );
 }

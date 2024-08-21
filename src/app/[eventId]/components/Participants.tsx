@@ -47,7 +47,7 @@ function Participants({ participantsInfo, eventId }: ParticipantsProps) {
   return (
     <ul className="flex flex-col gap-3">
       {participants.map((info) => (
-        <ParticipantCard key={info.id} participantRole={info.role} />
+        <ParticipantCard key={info.id} {...info} participantRole={info.role} />
       ))}
     </ul>
   );

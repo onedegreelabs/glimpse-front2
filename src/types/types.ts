@@ -48,7 +48,7 @@ interface JobDto {
 interface UserProfileDto {
   id: number;
   name: string;
-  headLine?: string;
+  intro?: string;
   profileImageUrl?: string;
   email: string;
   socialMedia: SocialMediaDto[];
