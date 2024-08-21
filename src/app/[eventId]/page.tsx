@@ -6,6 +6,7 @@ import EmailAccessForm from './components/EmailAccessForm';
 import EventDetails from './components/EventDetails';
 import ParticipantsNav from './components/ParticipantsNav';
 import SearchParticipants from './components/SearchParticipants';
+import ParticipantCard from './components/ParticipantCard';
 
 export default async function page({
   params: { eventId },
@@ -34,10 +35,12 @@ export default async function page({
             search={searchParams.search ?? ''}
             eventId={eventId}
           />
-          <div className="h-96 w-full" />
-          <div className="h-96 w-full" />
-          <div className="h-96 w-full" />
-          <div className="h-96 w-full" />
+
+          <ParticipantCard participantRole="HOST" />
+
+          <div className="h-5" />
+
+          <ParticipantCard participantRole="GUEST" />
         </div>
       </section>
     </main>

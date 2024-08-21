@@ -16,8 +16,9 @@ const config: Config = {
       colors: {
         blue: {
           secondary: '#002387',
-          300: '#2C5DEA',
-          500: '#00144B',
+          B30: '#2C5DEA',
+          B50: '#00144B',
+          B70: '#08112C',
         },
         yellow: {
           primary: '#FFEE1A',
@@ -25,7 +26,10 @@ const config: Config = {
           500: '#EEBA00',
         },
         gray: {
+          B25: '#F3F3F3',
           B30: '#EFEFEF',
+          B35: '#E4E4E4',
+          B40: '#DFDFDF',
           B60: '#ACACAC',
           B70: '#95959D',
         },
