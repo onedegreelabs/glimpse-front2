@@ -1,5 +1,3 @@
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
-
 /* eslint-disable @typescript-eslint/indent */
 export interface FetchError extends Error {
   status: number;
@@ -25,7 +23,6 @@ export interface ParticipantsSearchParams {
 export interface GetParticipantsInfoParams {
   eventId: string;
   take: number;
-  accessToken: RequestCookie;
   lastItemId?: number;
 }
 
@@ -58,7 +55,7 @@ interface UserProfileDto {
   jobs: JobDto;
 }
 
-interface EventParticipantProfileCardDto {
+export interface EventParticipantProfileCardDto {
   id: number;
   isWishlisted: boolean;
   role: 'HOST' | 'GUEST';

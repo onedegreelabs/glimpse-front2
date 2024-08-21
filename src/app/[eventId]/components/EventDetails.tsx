@@ -7,7 +7,7 @@ async function EventDetails({ eventId }: { eventId: string }) {
     await getEventInfo(eventId);
 
   return (
-    <header className="z-header flex w-full items-center justify-between bg-white px-4 py-5">
+    <header className="z-event flex w-full items-center justify-between bg-white px-4 py-5">
       <div className="flex w-4/5 flex-col gap-3">
         <h1 className="truncate text-sm font-medium text-blue-secondary">
           {title}
@@ -26,6 +26,7 @@ async function EventDetails({ eventId }: { eventId: string }) {
       <Link
         href={externalLink ?? '/'} // 추후 링크 수정
         className="flex h-8 w-16 items-center justify-center rounded-lg bg-blue-secondary/20 text-xs font-semibold text-blue-secondary hover:font-bold"
+        target="_blank"
       >
         Details
         <ArrowSVG />

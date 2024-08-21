@@ -21,6 +21,7 @@
         "ts": "never",
         "tsx": "never"
       }
-    ]
+    ],
+    "implicit-arrow-linebreak": "off"
   }
 }

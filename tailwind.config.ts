@@ -37,6 +37,7 @@ const config: Config = {
       },
       zIndex: {
         blur: '50',
+        event: '60',
         header: '20',
       },
     },

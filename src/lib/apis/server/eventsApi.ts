@@ -4,6 +4,7 @@ import {
   GetParticipantsInfoParams,
   ParticipantsResponseDto,
 } from '@/types/types';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { notFound } from 'next/navigation';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
@@ -36,14 +37,10 @@ export const getEventInfo = async (eventId: string): Promise<EventInfo> => {
       id: responseData.data.id,
       title: responseData.data.title,
       startAt: formattedDate,
-      externalLink: responseData.data.externalLink
-        ? new URL(responseData.data.externalLink)
-        : null,
+      externalLink: responseData.data.externalLink,
       locationType: responseData.data.locationType,
       location: responseData.data.location,
-      coverImageUrl: responseData.data.coverImageUrl
-        ? new URL(responseData.data.coverImageUrl)
-        : null,
+      coverImageUrl: responseData.data.coverImageUrl,
     };
   } catch (error) {
     const fetchError = error as FetchError;
@@ -59,8 +56,12 @@ export const getEventInfo = async (eventId: string): Promise<EventInfo> => {
   }
 };
 
+interface GetParticipantsInfo extends GetParticipantsInfoParams {
+  accessToken: RequestCookie;
+}
+
 export const getParticipantsInfo = async (
-  params: GetParticipantsInfoParams,
+  params: GetParticipantsInfo,
 ): Promise<ParticipantsResponseDto> => {
   const response = await fetch(
     `${END_POINT}/events/${params.eventId}/participants?take=${params.take}`,

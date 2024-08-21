@@ -5,11 +5,13 @@ import {
 } from '@/types/types';
 import { redirect } from 'next/navigation';
 import { getParticipantsInfo } from '@/lib/apis/server/eventsApi';
+import { PARTICIPANTS_TAKE } from '@/constant/constant';
 import EmailAccessForm from './components/EmailAccessForm';
 import EventDetails from './components/EventDetails';
 import ParticipantsNav from './components/ParticipantsNav';
 import SearchParticipants from './components/SearchParticipants';
 import ParticipantCard from './components/ParticipantCard';
+import Participants from './components/Participants';
 
 export default async function page({
   params: { eventId },
@@ -33,13 +35,13 @@ export default async function page({
   if (accessToken) {
     participantsInfo = await getParticipantsInfo({
       eventId,
-      take: 15,
+      take: PARTICIPANTS_TAKE,
       accessToken,
     });
   }
 
   return (
-    <main className="relative flex size-full flex-col">
+    <main className="relative flex size-full flex-col pb-4">
       {!accessToken && <EmailAccessForm />}
       <EventDetails eventId={eventId} />
       {/* 추후 suspensive 적용 */}
@@ -58,9 +60,18 @@ export default async function page({
             />
           )}
 
-          <ParticipantCard participantRole="HOST" />
-
-          <ParticipantCard participantRole="GUEST" />
+          {participantsInfo ? (
+            <Participants
+              participantsInfo={participantsInfo}
+              eventId={eventId}
+            />
+          ) : (
+            <ul className="flex flex-col gap-3">
+              <ParticipantCard participantRole="HOST" />
+              <ParticipantCard participantRole="GUEST" />
+              <ParticipantCard participantRole="GUEST" />
+            </ul>
+          )}
         </div>
       </section>
     </main>

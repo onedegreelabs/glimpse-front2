@@ -14,7 +14,6 @@ export const POST = async (request: NextRequest) => {
 
   const response = await fetch(`${END_POINT}/auth/token?p=email`, {
     method: 'POST',
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Basic ${btoa(`${email}: `)}`,
