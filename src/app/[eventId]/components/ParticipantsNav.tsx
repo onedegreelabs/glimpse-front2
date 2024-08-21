@@ -5,11 +5,11 @@ import Logo from '@/images/Logo.png';
 
 interface ParticipantsNavProps extends ParticipantsSearchParams {
   eventId: string;
-  participantCount: number | null;
+  participantCount: number | undefined;
 }
 
 function ParticipantsNav({
-  participantCount,
+  participantCount = 32,
   nav = 'ALL',
   search = '',
   eventId,
@@ -30,7 +30,7 @@ function ParticipantsNav({
             'after:absolute after:-right-3 after:top-1.5 after:size-2 after:rounded-full after:bg-yellow-primary after:content-[""]'
           }`}
         >
-          All({participantCount ?? 32})
+          All({participantCount})
         </Link>
         <Link
           href={`/${eventId}?nav=FORYOU&search=${search}`}

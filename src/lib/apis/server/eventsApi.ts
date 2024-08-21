@@ -1,17 +1,16 @@
-import { EventInfo, FetchError } from '@/types/types';
-import { notFound, redirect } from 'next/navigation';
+import {
+  EventInfo,
+  FetchError,
+  GetParticipantsInfoParams,
+  ParticipantsResponseDto,
+} from '@/types/types';
+import { notFound } from 'next/navigation';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
 
 export const getEventInfo = async (eventId: string): Promise<EventInfo> => {
   try {
-    const response = await fetch(`${END_POINT}/events/${eventId}`, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await fetch(`${END_POINT}/events/${eventId}`);
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -56,6 +55,35 @@ export const getEventInfo = async (eventId: string): Promise<EventInfo> => {
       notFound();
     }
 
-    return redirect('/error'); // 추후 에러 페이지 구현
+    throw error; // 추후 에러 페이지 구현
   }
+};
+
+export const getParticipantsInfo = async (
+  params: GetParticipantsInfoParams,
+): Promise<ParticipantsResponseDto> => {
+  const response = await fetch(
+    `${END_POINT}/events/${params.eventId}/participants?take=${params.take}`,
+    {
+      method: 'GET',
+      headers: {
+        Cookie: `accessToken=${params.accessToken.value}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    const error: FetchError = new Error(
+      errorData.message || '참가자 목록 조회 오류',
+    ) as FetchError;
+
+    error.status = response.status;
+    error.errorCode = errorData.errorCode || 'UNKNOWN_ERROR';
+    throw error;
+  }
+
+  const responseData = await response.json();
+
+  return responseData.data;
 };

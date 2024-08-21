@@ -1,7 +1,10 @@
 import { cookies } from 'next/headers';
-
-import { ParticipantsSearchParams } from '@/types/types';
-
+import {
+  ParticipantsResponseDto,
+  ParticipantsSearchParams,
+} from '@/types/types';
+import { redirect } from 'next/navigation';
+import { getParticipantsInfo } from '@/lib/apis/server/eventsApi';
 import EmailAccessForm from './components/EmailAccessForm';
 import EventDetails from './components/EventDetails';
 import ParticipantsNav from './components/ParticipantsNav';
@@ -17,6 +20,23 @@ export default async function page({
 }) {
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken');
+  let participantsInfo: ParticipantsResponseDto | null = null;
+
+  if (
+    searchParams.nav &&
+    searchParams.nav !== 'ALL' &&
+    searchParams.nav !== 'FORYOU'
+  ) {
+    redirect(`/${eventId}?nav=ALL`);
+  }
+
+  if (accessToken) {
+    participantsInfo = await getParticipantsInfo({
+      eventId,
+      take: 15,
+      accessToken,
+    });
+  }
 
   return (
     <main className="relative flex size-full flex-col">
@@ -27,18 +47,18 @@ export default async function page({
         <ParticipantsNav
           {...searchParams}
           eventId={eventId}
-          participantCount={null}
+          participantCount={participantsInfo?.totalItemCount}
         />
 
         <div className="px-6">
-          <SearchParticipants
-            search={searchParams.search ?? ''}
-            eventId={eventId}
-          />
+          {searchParams.nav === 'ALL' && (
+            <SearchParticipants
+              search={searchParams.search ?? ''}
+              eventId={eventId}
+            />
+          )}
 
           <ParticipantCard participantRole="HOST" />
-
-          <div className="h-5" />
 
           <ParticipantCard participantRole="GUEST" />
         </div>

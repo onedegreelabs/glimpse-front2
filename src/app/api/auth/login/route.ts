@@ -47,9 +47,7 @@ export const POST = async (request: NextRequest) => {
     JSON.stringify({ status: statusCode, data }),
     {
       status: statusCode,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: response.headers,
     },
   );
 
