@@ -7,12 +7,12 @@ import { redirect } from 'next/navigation';
 import { getParticipantsInfo } from '@/lib/apis/server/eventsApi';
 import { PARTICIPANTS_TAKE } from '@/constant/constant';
 import { SadFaceSVG } from '@/icons/index';
-import EmailAccessForm from './components/EmailAccessForm';
-import EventDetails from './components/EventDetails';
-import ParticipantsNav from './components/ParticipantsNav';
-import SearchParticipants from './components/SearchParticipants';
-import ParticipantCard from './components/participants/ParticipantCard';
-import Participants from './components/participants/Participants';
+import EmailAccessForm from './_components/EmailAccessForm';
+import EventDetails from './_components/EventDetails';
+import ParticipantsNav from './_components/ParticipantsNav';
+import SearchParticipants from './_components/SearchParticipants';
+import ParticipantCard from './_components/participants/ParticipantCard';
+import Participants from './_components/participants/Participants';
 
 export default async function page({
   params: { eventId },
