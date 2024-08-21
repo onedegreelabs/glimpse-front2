@@ -6,7 +6,9 @@ import { ParticipantsResponseDto } from '@/types/types';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { InView } from 'react-intersection-observer';
+import { v4 as uuidv4 } from 'uuid';
 import ParticipantCard from './ParticipantCard';
+import Loading from './Loading';
 
 interface ParticipantsProps {
   eventId: string;
@@ -54,7 +56,9 @@ function Participants({ participantsInfo, eventId }: ParticipantsProps) {
         <ParticipantCard key={info.id} {...info} participantRole={info.role} />
       ))}
       {isFetchingNextPage ? (
-        <div>Loading...</div>
+        Array.from({ length: PARTICIPANTS_TAKE }, () => (
+          <Loading key={uuidv4()} />
+        ))
       ) : (
         <InView
           as="div"

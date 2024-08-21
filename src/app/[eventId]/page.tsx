@@ -10,8 +10,8 @@ import EmailAccessForm from './components/EmailAccessForm';
 import EventDetails from './components/EventDetails';
 import ParticipantsNav from './components/ParticipantsNav';
 import SearchParticipants from './components/SearchParticipants';
-import ParticipantCard from './components/ParticipantCard';
-import Participants from './components/Participants';
+import ParticipantCard from './components/participants/ParticipantCard';
+import Participants from './components/participants/Participants';
 
 export default async function page({
   params: { eventId },
