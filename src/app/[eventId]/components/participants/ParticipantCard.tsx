@@ -15,7 +15,7 @@ function ParticipantCard({ participantRole, user }: ParticipantCardProps) {
 
   return (
     <li
-      className={`flex h-40 w-full flex-col justify-between rounded-3xl pb-6 pl-5 pr-4 pt-4 ${participantRole === 'HOST' ? 'bg-blue-B70' : 'border-[1.5px] border-solid border-white/20 bg-white/30'}`}
+      className={`flex h-40 w-full animate-fadeInUp flex-col justify-between rounded-3xl pb-6 pl-5 pr-4 pt-4 ${participantRole === 'HOST' ? 'bg-blue-B70' : 'border-[1.5px] border-solid border-white/20 bg-white/30'}`}
     >
       <header className="flex w-full">
         <div className="grid w-full grid-cols-[1fr_auto]">
