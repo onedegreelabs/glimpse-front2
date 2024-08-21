@@ -17,3 +17,5 @@ export { default as DefaultProfileSVG } from './defaultProfile.svg';
 export { default as HeartSVG } from './heart.svg';
 
 export { default as LinkSVG } from './link.svg';
+
+export { default as SadFaceSVG } from './sadFace.svg';

@@ -6,6 +6,7 @@ import {
 import { redirect } from 'next/navigation';
 import { getParticipantsInfo } from '@/lib/apis/server/eventsApi';
 import { PARTICIPANTS_TAKE } from '@/constant/constant';
+import { SadFaceSVG } from '@/icons/index';
 import EmailAccessForm from './components/EmailAccessForm';
 import EventDetails from './components/EventDetails';
 import ParticipantsNav from './components/ParticipantsNav';
@@ -74,6 +75,13 @@ export default async function page({
             </ul>
           )}
         </div>
+
+        {participantsInfo && participantsInfo.totalItemCount === 0 && (
+          <div className="absolute left-1/2 top-1/2 my-auto flex -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center gap-[18px]">
+            <SadFaceSVG />
+            <p className="text-white/60">No matching results.</p>
+          </div>
+        )}
       </section>
     </main>
   );
