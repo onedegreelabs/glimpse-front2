@@ -52,7 +52,7 @@ export const getEventInfo = async (eventId: string): Promise<EventInfo> => {
       notFound();
     }
 
-    throw error; // 추후 에러 페이지 구현
+    throw error;
   }
 };
 
@@ -63,28 +63,38 @@ interface GetParticipantsInfo extends GetParticipantsInfoParams {
 export const getParticipantsInfo = async (
   params: GetParticipantsInfo,
 ): Promise<ParticipantsResponseDto> => {
-  const response = await fetch(
-    `${END_POINT}/events/${params.eventId}/participants?take=${params.take}`,
-    {
-      method: 'GET',
-      headers: {
-        Cookie: `accessToken=${params.accessToken.value}`,
+  try {
+    const response = await fetch(
+      `${END_POINT}/events/${params.eventId}/participants?take=${params.take}`,
+      {
+        method: 'GET',
+        headers: {
+          Cookie: `accessToken=${params.accessToken.value}`,
+        },
       },
-    },
-  );
+    );
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    const error: FetchError = new Error(
-      errorData.message || '참가자 목록 조회 오류',
-    ) as FetchError;
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(
+        errorData.message || '참가자 목록 조회 오류',
+      ) as FetchError;
 
-    error.status = response.status;
-    error.errorCode = errorData.errorCode || 'UNKNOWN_ERROR';
+      error.status = response.status;
+      error.errorCode = errorData.errorCode || 'UNKNOWN_ERROR';
+      throw error;
+    }
+
+    const responseData = await response.json();
+
+    return responseData.data;
+  } catch (error) {
+    const fetchError = error as FetchError;
+
+    if (fetchError && fetchError.status === 400) {
+      notFound();
+    }
+
     throw error;
   }
-
-  const responseData = await response.json();
-
-  return responseData.data;
 };
