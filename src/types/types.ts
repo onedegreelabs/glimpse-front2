@@ -26,7 +26,7 @@ export interface GetParticipantsInfoParams {
   lastItemId: number;
 }
 
-interface SocialMediaDto {
+export interface SocialMediaDto {
   id: number;
   type:
     | 'GITHUB'

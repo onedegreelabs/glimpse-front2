@@ -57,7 +57,11 @@ function ParticipantCard({ participantRole, user }: ParticipantCardProps) {
             >
               <HeartSVG />
             </button>
-            <SocialContainer participantRole={participantRole} />
+            <SocialContainer
+              participantRole={participantRole}
+              email={user?.email}
+              socialList={user?.socialMedia ?? []}
+            />
           </div>
         </div>
       </header>

@@ -39,3 +39,5 @@ export { default as SNSSVG } from './link/SNS.svg';
 export { default as TwitterSVG } from './link/twitter.svg';
 
 export { default as YoutubeSVG } from './link/youtube.svg';
+
+export { default as GithubSVG } from './link/github.svg';
