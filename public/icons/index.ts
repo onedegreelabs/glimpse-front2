@@ -10,6 +10,8 @@ export { default as DateSVG } from './date.svg';
 
 export { default as ArrowSVG } from './arrow.svg';
 
+export { default as ArrowSVG2 } from './arrow2.svg';
+
 export { default as SearchSVG } from './search.svg';
 
 export { default as DefaultProfileSVG } from './defaultProfile.svg';

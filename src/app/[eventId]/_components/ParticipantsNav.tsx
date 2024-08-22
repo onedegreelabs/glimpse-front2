@@ -35,7 +35,7 @@ function ParticipantsNav({
         </Link>
         <Link
           href={`/${eventId}/match`}
-          className={`relative text-2xl font-black ${pathname === 'foryou' ? 'text-white' : 'text-white/30 hover:text-white/60'} ${
+          className={`relative text-2xl font-black ${pathname === 'match' ? 'text-white' : 'text-white/30 hover:text-white/60'} ${
             pathname === 'match' &&
             'after:absolute after:-right-3 after:top-1.5 after:size-2 after:rounded-full after:bg-yellow-primary after:content-[""]'
           }`}

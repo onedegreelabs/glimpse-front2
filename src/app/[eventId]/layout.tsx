@@ -5,6 +5,7 @@ import { PARTICIPANTS_TAKE } from '@/constant/constant';
 import EmailAccessForm from './_components/EmailAccessForm';
 import EventDetails from './_components/EventDetails';
 import ParticipantsNav from './_components/ParticipantsNav';
+import MatchSlide from './_components/MatchSlide';
 
 export default async function layout({
   params: { eventId },
@@ -38,6 +39,7 @@ export default async function layout({
         />
         {children}
       </section>
+      <MatchSlide />
     </main>
   );
 }
