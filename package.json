@@ -13,10 +13,13 @@
   "dependencies": {
     "@tanstack/react-query": "^5.51.24",
     "@tanstack/react-query-devtools": "^5.51.24",
+    "@uidotdev/usehooks": "^2.4.1",
+    "framer-motion": "^11.3.29",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.52.2",
+    "react-intersection-observer": "^9.13.0",
     "uuid": "^10.0.0"
   },
   "devDependencies": {

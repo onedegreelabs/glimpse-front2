@@ -14,7 +14,6 @@ export const POST = async (request: NextRequest) => {
 
   const response = await fetch(`${END_POINT}/auth/token?p=email`, {
     method: 'POST',
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Basic ${btoa(`${email}: `)}`,
@@ -47,9 +46,7 @@ export const POST = async (request: NextRequest) => {
     JSON.stringify({ status: statusCode, data }),
     {
       status: statusCode,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: response.headers,
     },
   );
 

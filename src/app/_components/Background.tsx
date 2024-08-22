@@ -12,7 +12,7 @@ function Background({
 
   return (
     <div
-      className="relative bg-background min-h-dvh overflow-x-hidden grid"
+      className="background-mask relative grid min-h-dvh overflow-x-clip bg-background"
       ref={containerRef}
     >
       <Gradient containerRef={containerRef} />
