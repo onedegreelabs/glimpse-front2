@@ -52,7 +52,7 @@ interface UserProfileDto {
   profileImageUrl?: string;
   email: string;
   socialMedia: SocialMediaDto[];
-  jobs: JobDto;
+  jobs: JobDto[];
 }
 
 export interface EventParticipantProfileCardDto {

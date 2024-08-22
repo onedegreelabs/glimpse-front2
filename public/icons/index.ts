@@ -19,3 +19,23 @@ export { default as HeartSVG } from './heart.svg';
 export { default as LinkSVG } from './link.svg';
 
 export { default as SadFaceSVG } from './sadFace.svg';
+
+export { default as FacebookSVG } from './link/facebook.svg';
+
+export { default as GoogleSVG } from './link/google.svg';
+
+export { default as InstagramSVG } from './link/instagram.svg';
+
+export { default as LineSVG } from './link/line.svg';
+
+export { default as LinkedinSVG } from './link/linkedin.svg';
+
+export { default as PinterestSVG } from './link/pinterest.svg';
+
+export { default as SkypeSVG } from './link/skype.svg';
+
+export { default as SNSSVG } from './link/SNS.svg';
+
+export { default as TwitterSVG } from './link/twitter.svg';
+
+export { default as YoutubeSVG } from './link/youtube.svg';

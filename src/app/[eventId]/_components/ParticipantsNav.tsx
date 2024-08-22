@@ -15,7 +15,7 @@ function ParticipantsNav({
   eventId,
 }: ParticipantsNavProps) {
   return (
-    <nav className="sticky top-0 z-header bg-background px-6 py-3">
+    <nav className="sticky top-0 z-20 bg-background px-6 py-3">
       <div className="mx-auto mb-6 h-1 w-[46px] rounded-md bg-white/50" />
       <Image
         src={Logo}

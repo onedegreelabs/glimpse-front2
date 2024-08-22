@@ -1,6 +1,7 @@
-import { DefaultProfileSVG, HeartSVG, LinkSVG } from '@/icons/index';
+import { DefaultProfileSVG, HeartSVG } from '@/icons/index';
 import { EventParticipantProfileCardDto } from '@/types/types';
 import Image from 'next/image';
+import SocialContainer from './SocialContainer';
 
 type ParticipantCardProps = {
   participantRole: 'HOST' | 'GUEST';
@@ -8,7 +9,7 @@ type ParticipantCardProps = {
 
 function ParticipantCard({ participantRole, user }: ParticipantCardProps) {
   const name = user?.name || 'Emma Stone';
-  const jobs = user?.jobs.name || 'Designer';
+  const jobs = user?.jobs || [{ name: 'Designer' }];
   const intro =
     user?.intro ||
     'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...';
@@ -43,7 +44,9 @@ function ParticipantCard({ participantRole, user }: ParticipantCardProps) {
             </div>
             <dl className="flex w-full min-w-0 flex-col justify-center">
               <dt className="truncate text-lg font-bold">{name}</dt>
-              <dd className="truncate text-xs text-white/60">{jobs}</dd>
+              <dd className="truncate text-xs text-white/60">
+                {jobs.map((job) => job.name).join(', ')}
+              </dd>
             </dl>
           </div>
           <div className="flex gap-[6px]">
@@ -54,13 +57,7 @@ function ParticipantCard({ participantRole, user }: ParticipantCardProps) {
             >
               <HeartSVG />
             </button>
-            <button
-              type="button"
-              aria-label="Share participant link"
-              className={`flex size-8 items-center justify-center rounded-full fill-white hover:fill-yellow-primary ${participantRole === 'HOST' ? 'bg-white/15' : 'bg-gray-B25/30'}`}
-            >
-              <LinkSVG />
-            </button>
+            <SocialContainer participantRole={participantRole} />
           </div>
         </div>
       </header>
