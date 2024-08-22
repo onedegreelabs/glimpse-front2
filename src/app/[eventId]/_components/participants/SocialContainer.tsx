@@ -18,10 +18,10 @@ import { useClickAway } from '@uidotdev/usehooks';
 import { useState } from 'react';
 
 import Link from 'next/link';
-import { SocialMediaDto } from '@/types/types';
+import { EventParticipantProfileCardDto, SocialMediaDto } from '@/types/types';
 
 interface SocialContainerProps {
-  participantRole: 'HOST' | 'GUEST';
+  participantRole: EventParticipantProfileCardDto['role'];
   email: string | undefined;
   socialList: SocialMediaDto[];
 }
@@ -59,7 +59,7 @@ function SocialContainer({
         type="button"
         onClick={handleOpenModal}
         aria-label="Share participant link"
-        className={`flex size-8 items-center justify-center rounded-full fill-white hover:fill-yellow-primary ${participantRole === 'HOST' ? 'bg-white/15' : 'bg-gray-B25/30'}`}
+        className={`flex size-8 items-center justify-center rounded-full hover:fill-yellow-primary ${isOpen ? 'fill-yellow-primary' : 'fill-white'} ${participantRole === 'HOST' ? 'bg-white/15' : 'bg-gray-B25/30'}`}
       >
         <LinkSVG />
       </button>

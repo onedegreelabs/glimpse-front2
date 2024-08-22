@@ -1,13 +1,18 @@
-import { DefaultProfileSVG, HeartSVG } from '@/icons/index';
+import { DefaultProfileSVG } from '@/icons/index';
 import { EventParticipantProfileCardDto } from '@/types/types';
 import Image from 'next/image';
 import SocialContainer from './SocialContainer';
+import WishlistButton from './WishlistButton';
 
 type ParticipantCardProps = {
   participantRole: 'HOST' | 'GUEST';
 } & Partial<EventParticipantProfileCardDto>;
 
-function ParticipantCard({ participantRole, user }: ParticipantCardProps) {
+function ParticipantCard({
+  participantRole,
+  user,
+  isWishlisted,
+}: ParticipantCardProps) {
   const name = user?.name || 'Emma Stone';
   const jobs = user?.jobs || [{ name: 'Designer' }];
   const intro =
@@ -50,13 +55,10 @@ function ParticipantCard({ participantRole, user }: ParticipantCardProps) {
             </dl>
           </div>
           <div className="flex gap-[6px]">
-            <button
-              type="submit"
-              aria-label="Add to wishlist"
-              className={`flex size-8 items-center justify-center rounded-full fill-white hover:fill-yellow-primary ${participantRole === 'HOST' ? 'bg-white/15' : 'bg-gray-B25/30'}`}
-            >
-              <HeartSVG />
-            </button>
+            <WishlistButton
+              participantRole={participantRole}
+              isWishlisted={isWishlisted}
+            />
             <SocialContainer
               participantRole={participantRole}
               email={user?.email}
