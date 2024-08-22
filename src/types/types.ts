@@ -42,19 +42,19 @@ interface JobDto {
 
 interface UserProfileDto {
   id: number;
-  name: string;
-  intro?: string;
   profileImageUrl?: string;
-  email: string;
-  socialMedia: SocialMediaDto[];
-  jobs: JobDto[];
 }
 
 export interface EventParticipantProfileCardDto {
   id: number;
   isWishlisted: boolean;
   role: 'HOST' | 'GUEST';
+  email: string;
+  name: string;
+  intro?: string;
+  jobs: JobDto[];
   user: UserProfileDto;
+  // socialMedia: SocialMediaDto[];
 }
 
 export interface ParticipantsResponseDto {

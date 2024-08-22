@@ -12,16 +12,14 @@ function ParticipantCard({
   participantRole,
   user,
   isWishlisted,
+  email,
+  name = 'Emma Stone',
+  jobs = [{ id: 1, name: 'Designer' }],
+  intro = 'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...',
 }: ParticipantCardProps) {
-  const name = user?.name || 'Emma Stone';
-  const jobs = user?.jobs || [{ name: 'Designer' }];
-  const intro =
-    user?.intro ||
-    'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...';
-
   return (
     <li
-      className={`flex h-40 w-full animate-fadeInUp flex-col justify-between rounded-3xl pb-6 pl-5 pr-4 pt-4 ${participantRole === 'HOST' ? 'bg-blue-B70' : 'border-[1.5px] border-solid border-white/20 bg-white/30'}`}
+      className={`flex h-40 w-full animate-fadeInUp flex-col rounded-3xl pb-6 pl-5 pr-4 pt-4 ${participantRole === 'HOST' ? 'bg-blue-B70' : 'border-[1.5px] border-solid border-white/20 bg-white/30'}`}
     >
       <header className="flex w-full">
         <div className="grid w-full grid-cols-[1fr_auto]">
@@ -62,13 +60,14 @@ function ParticipantCard({
             />
             <SocialContainer
               participantRole={participantRole}
-              email={user?.email}
-              socialList={user?.socialMedia ?? []}
+              email={email}
+              socialList={[]}
             />
+            {/* socialMedia ??  추후 확인 */}
           </div>
         </div>
       </header>
-      <p className="line-clamp-2 text-xs">{intro}</p>
+      <p className="mt-4 line-clamp-2 text-xs">{intro}</p>
     </li>
   );
 }
