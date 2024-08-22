@@ -1,7 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import Logo from '@/images/Logo.png';
-import { headers } from 'next/headers';
+import { usePathname } from 'next/navigation';
 
 interface ParticipantsNavProps {
   eventId: string;
@@ -12,8 +14,8 @@ function ParticipantsNav({
   participantCount = 32,
   eventId,
 }: ParticipantsNavProps) {
-  const headersPathname = headers().get('x-next-pathname') as string;
-  const pathname = headersPathname.split('/').at(-1);
+  const pathname = usePathname();
+  const currentPathname = pathname.split('/').at(-1);
 
   return (
     <nav className="sticky top-0 z-20 bg-background px-6 py-3">
@@ -26,8 +28,8 @@ function ParticipantsNav({
       <div className="flex w-full gap-[30px]">
         <Link
           href={`/${eventId}/all`}
-          className={`relative text-2xl font-black ${pathname === 'all' ? 'text-white' : 'text-white/30 hover:text-white/60'} ${
-            pathname === 'all' &&
+          className={`relative text-2xl font-black ${currentPathname === 'all' ? 'text-white' : 'text-white/30 hover:text-white/60'} ${
+            currentPathname === 'all' &&
             'after:absolute after:-right-3 after:top-1.5 after:size-2 after:rounded-full after:bg-yellow-primary after:content-[""]'
           }`}
         >
@@ -35,8 +37,8 @@ function ParticipantsNav({
         </Link>
         <Link
           href={`/${eventId}/match`}
-          className={`relative text-2xl font-black ${pathname === 'match' ? 'text-white' : 'text-white/30 hover:text-white/60'} ${
-            pathname === 'match' &&
+          className={`relative text-2xl font-black ${currentPathname === 'match' ? 'text-white' : 'text-white/30 hover:text-white/60'} ${
+            currentPathname === 'match' &&
             'after:absolute after:-right-3 after:top-1.5 after:size-2 after:rounded-full after:bg-yellow-primary after:content-[""]'
           }`}
         >
