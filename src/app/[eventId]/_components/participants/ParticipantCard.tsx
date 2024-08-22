@@ -56,6 +56,7 @@ function ParticipantCard({
           </div>
           <div className="flex gap-[6px]">
             <WishlistButton
+              id={user?.id}
               participantRole={participantRole}
               isWishlisted={isWishlisted}
             />
