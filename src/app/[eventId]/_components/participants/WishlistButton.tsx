@@ -35,6 +35,8 @@ function WishlistButton({
     },
   });
 
+  // 추후 참가자 목록 싱크 해결 로직 작성
+
   return (
     <button
       type="submit"

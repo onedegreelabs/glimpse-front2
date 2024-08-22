@@ -15,11 +15,6 @@ export interface EventInfo {
   coverImageUrl: null | URL;
 }
 
-export interface ParticipantsSearchParams {
-  nav?: 'ALL' | 'FORYOU';
-  search?: string;
-}
-
 export interface GetParticipantsInfoParams {
   eventId: string;
   take: number;

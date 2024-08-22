@@ -6,6 +6,7 @@ import {
 } from '@/types/types';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { notFound } from 'next/navigation';
+import { cache } from 'react';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
 
@@ -60,41 +61,41 @@ interface GetParticipantsInfo extends GetParticipantsInfoParams {
   accessToken: RequestCookie;
 }
 
-export const getParticipantsInfo = async (
-  params: GetParticipantsInfo,
-): Promise<ParticipantsResponseDto> => {
-  try {
-    const response = await fetch(
-      `${END_POINT}/events/${params.eventId}/participants?take=${params.take}`,
-      {
-        method: 'GET',
-        headers: {
-          Cookie: `accessToken=${params.accessToken.value}`,
+export const getParticipantsInfo = cache(
+  async (params: GetParticipantsInfo): Promise<ParticipantsResponseDto> => {
+    try {
+      const response = await fetch(
+        `${END_POINT}/events/${params.eventId}/participants?take=${params.take}`,
+        {
+          method: 'GET',
+          headers: {
+            Cookie: `accessToken=${params.accessToken.value}`,
+          },
         },
-      },
-    );
+      );
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      const error: FetchError = new Error(
-        errorData.message || '참가자 목록 조회 오류',
-      ) as FetchError;
+      if (!response.ok) {
+        const errorData = await response.json();
+        const error: FetchError = new Error(
+          errorData.message || '참가자 목록 조회 오류',
+        ) as FetchError;
 
-      error.status = response.status;
-      error.errorCode = errorData.errorCode || 'UNKNOWN_ERROR';
+        error.status = response.status;
+        error.errorCode = errorData.errorCode || 'UNKNOWN_ERROR';
+        throw error;
+      }
+
+      const responseData = await response.json();
+
+      return responseData.data;
+    } catch (error) {
+      const fetchError = error as FetchError;
+
+      if (fetchError && fetchError.status === 400) {
+        notFound();
+      }
+
       throw error;
     }
-
-    const responseData = await response.json();
-
-    return responseData.data;
-  } catch (error) {
-    const fetchError = error as FetchError;
-
-    if (fetchError && fetchError.status === 400) {
-      notFound();
-    }
-
-    throw error;
-  }
-};
+  },
+);
