@@ -5,6 +5,9 @@ import { deleteWishlist, postWishlist } from '@/lib/apis/wishlist';
 import { EventParticipantProfileCardDto } from '@/types/types';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
+
+const HeartLoading = dynamic(() => import('@/components/HeartLoading'));
 
 function WishlistButton({
   id,
@@ -25,7 +28,7 @@ function WishlistButton({
     }
   };
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (targetUserId: number) => toggleWishlist(targetUserId),
     onSuccess: () => {
       setIsWishlisted((prev) => !prev);
@@ -40,7 +43,7 @@ function WishlistButton({
       aria-label="Add to wishlist"
       className={`flex size-8 items-center justify-center rounded-full ${isWishlisted ? 'fill-yellow-primary stroke-none hover:fill-none hover:stroke-white' : 'fill-none stroke-white hover:stroke-yellow-primary'} ${participantRole === 'HOST' ? 'bg-white/15' : 'bg-gray-B25/30'}`}
     >
-      <HeartSVG />
+      {isPending ? <HeartLoading initialState={isWishlisted} /> : <HeartSVG />}
     </button>
   );
 }
