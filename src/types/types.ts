@@ -62,7 +62,7 @@ export interface ParticipantsResponseDto {
   participants: EventParticipantProfileCardDto[];
 }
 
-interface Curations extends EventParticipantProfileCardDto {
+export interface CuratedParticipantDto extends EventParticipantProfileCardDto {
   score: number;
   enComment: string;
   krComment: string;
@@ -72,5 +72,5 @@ export interface CurationsResponseDto {
   totalAttempts: number;
   todayAttempts: number;
   latestCuratedAt: number;
-  participants: Curations[];
+  participants: CuratedParticipantDto[];
 }

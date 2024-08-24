@@ -4,7 +4,6 @@ import { cookies } from 'next/headers';
 import React from 'react';
 import ParticipantCard from '@/components/ParticipantCard';
 import MatchingBlur from './_components/MatchingBlur';
-import Curations from './_components/Curations';
 
 const page = async ({
   params: { eventId },
@@ -19,22 +18,26 @@ const page = async ({
     curationsInfo = await getCurationsInfo({ eventId, accessToken });
   }
 
+  const isCurated = curationsInfo && curationsInfo.totalAttempts !== 0;
+
   return (
     <div className="px-6 pt-1">
-      {curationsInfo?.totalAttempts === 0 ? (
-        <MatchingBlur eventId={eventId} />
-      ) : (
-        <Curations />
-      )}
+      {!isCurated && <MatchingBlur eventId={eventId} />}
 
-      {!accessToken || curationsInfo?.totalAttempts === 0 ? (
+      {isCurated ? (
         <ul className="flex flex-col gap-3">
-          <ParticipantCard participantRole="GUEST" />
-          <ParticipantCard participantRole="GUEST" />
-          <ParticipantCard participantRole="GUEST" />
+          {curationsInfo!.participants.map((info) => (
+            <ParticipantCard
+              key={info.id}
+              participantRole={info.role}
+              {...info}
+              isCuration
+            />
+          ))}
         </ul>
       ) : (
         <ul className="flex flex-col gap-3">
+          <ParticipantCard participantRole="GUEST" isCuration />
           <ParticipantCard participantRole="GUEST" isCuration />
           <ParticipantCard participantRole="GUEST" isCuration />
         </ul>

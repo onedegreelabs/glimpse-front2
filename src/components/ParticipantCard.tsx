@@ -1,5 +1,5 @@
 import { CommentSVG, DefaultProfileSVG } from '@/icons/index';
-import { EventParticipantProfileCardDto } from '@/types/types';
+import { CuratedParticipantDto } from '@/types/types';
 import Image from 'next/image';
 import SocialContainer from '../app/[eventId]/_components/participants/SocialContainer';
 import WishlistButton from '../app/[eventId]/_components/participants/WishlistButton';
@@ -7,7 +7,7 @@ import WishlistButton from '../app/[eventId]/_components/participants/WishlistBu
 type ParticipantCardProps = {
   participantRole: 'HOST' | 'GUEST';
   isCuration?: boolean;
-} & Partial<EventParticipantProfileCardDto>;
+} & Partial<CuratedParticipantDto>;
 
 function ParticipantCard({
   participantRole,
@@ -15,6 +15,7 @@ function ParticipantCard({
   isWishlisted,
   email,
   socialMedia,
+  krComment = 'Park I-cheol is an entrepreneur in the AI.',
   isCuration = false,
   name = 'Emma Stone',
   jobs = [{ id: 1, name: 'Designer' }],
@@ -77,8 +78,7 @@ function ParticipantCard({
           <div className="absolute right-0 top-[142px] h-[18px] w-[86.7%] rounded-tl-md bg-yellow-primary" />
           <div className="ml-auto grid w-[86.7%] grid-cols-[auto_1fr] items-center gap-[6px] rounded-bl-lg rounded-br-3xl bg-yellow-primary pb-[12px] pl-[14px] pr-[11px] text-xs font-medium text-blue-B50">
             <CommentSVG className="self-start" />
-            Park I-cheol is an entrepreneur in the AI. Park I-cheol is an
-            entrepreneur in the AI.
+            {krComment}
           </div>
         </>
       )}
