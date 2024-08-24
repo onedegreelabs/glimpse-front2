@@ -1,19 +1,22 @@
-import { ParticipantsSearchParams } from '@/types/types';
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import Logo from '@/images/Logo.png';
+import { usePathname } from 'next/navigation';
 
-interface ParticipantsNavProps extends ParticipantsSearchParams {
+interface ParticipantsNavProps {
   eventId: string;
   participantCount: number | undefined;
 }
 
 function ParticipantsNav({
   participantCount = 32,
-  nav = 'ALL',
-  search = '',
   eventId,
 }: ParticipantsNavProps) {
+  const pathname = usePathname();
+  const currentPathname = pathname.split('/').at(-1);
+
   return (
     <nav className="sticky top-0 z-20 bg-background px-6 py-3">
       <div className="mx-auto mb-6 h-1 w-[46px] rounded-md bg-white/50" />
@@ -24,18 +27,18 @@ function ParticipantsNav({
       />
       <div className="flex w-full gap-[30px]">
         <Link
-          href={`/${eventId}?nav=ALL&search=${search}`}
-          className={`relative text-2xl font-black ${nav === 'ALL' ? 'text-white' : 'text-white/30 hover:text-white/60'} ${
-            nav === 'ALL' &&
+          href={`/${eventId}/all`}
+          className={`relative text-2xl font-black ${currentPathname === 'all' ? 'text-white' : 'text-white/30 hover:text-white/60'} ${
+            currentPathname === 'all' &&
             'after:absolute after:-right-3 after:top-1.5 after:size-2 after:rounded-full after:bg-yellow-primary after:content-[""]'
           }`}
         >
           All({participantCount})
         </Link>
         <Link
-          href={`/${eventId}?nav=FORYOU&search=${search}`}
-          className={`relative text-2xl font-black ${nav === 'FORYOU' ? 'text-white' : 'text-white/30 hover:text-white/60'} ${
-            nav === 'FORYOU' &&
+          href={`/${eventId}/match`}
+          className={`relative text-2xl font-black ${currentPathname === 'match' ? 'text-white' : 'text-white/30 hover:text-white/60'} ${
+            currentPathname === 'match' &&
             'after:absolute after:-right-3 after:top-1.5 after:size-2 after:rounded-full after:bg-yellow-primary after:content-[""]'
           }`}
         >

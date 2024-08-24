@@ -15,11 +15,6 @@ export interface EventInfo {
   coverImageUrl: null | URL;
 }
 
-export interface ParticipantsSearchParams {
-  nav?: 'ALL' | 'FORYOU';
-  search?: string;
-}
-
 export interface GetParticipantsInfoParams {
   eventId: string;
   take: number;
@@ -47,22 +42,35 @@ interface JobDto {
 
 interface UserProfileDto {
   id: number;
-  name: string;
-  intro?: string;
   profileImageUrl?: string;
-  email: string;
-  socialMedia: SocialMediaDto[];
-  jobs: JobDto[];
 }
 
 export interface EventParticipantProfileCardDto {
   id: number;
   isWishlisted: boolean;
   role: 'HOST' | 'GUEST';
+  email: string;
+  name: string;
+  intro?: string;
+  jobs: JobDto[];
   user: UserProfileDto;
+  socialMedia: SocialMediaDto[];
 }
 
 export interface ParticipantsResponseDto {
   totalItemCount: number;
   participants: EventParticipantProfileCardDto[];
+}
+
+export interface CuratedParticipantDto extends EventParticipantProfileCardDto {
+  score: number;
+  enComment: string;
+  krComment: string;
+}
+
+export interface CurationsResponseDto {
+  totalAttempts: number;
+  todayAttempts: number;
+  latestCuratedAt: number;
+  participants: CuratedParticipantDto[];
 }

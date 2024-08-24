@@ -25,11 +25,11 @@ async function EventDetails({ eventId }: { eventId: string }) {
       </div>
       <Link
         href={externalLink ?? '/'} // 추후 링크 수정
-        className="flex h-8 w-16 items-center justify-center rounded-lg bg-blue-secondary/20 text-xs font-semibold text-blue-secondary hover:font-bold"
+        className="flex h-8 w-16 items-center justify-center gap-1 rounded-lg bg-blue-secondary/20 text-xs font-semibold text-blue-secondary hover:font-bold"
         target="_blank"
       >
         Details
-        <ArrowSVG />
+        <ArrowSVG className="size-2 -rotate-45" />
       </Link>
     </header>
   );

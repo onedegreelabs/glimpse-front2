@@ -6,6 +6,7 @@ function HeartLoading({ initialState }: { initialState: boolean }) {
   const icon = {
     hidden: {
       pathLength: 0,
+      opacity: 0,
     },
     visible: {
       pathLength: 1,
@@ -35,7 +36,7 @@ function HeartLoading({ initialState }: { initialState: boolean }) {
           },
         }}
         fill="none"
-        stroke-width="2"
+        strokeWidth="2"
         transform="translate(1,0)"
       />
     </motion.svg>

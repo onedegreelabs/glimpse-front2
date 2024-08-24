@@ -1,1 +1,1 @@
-export const PARTICIPANTS_TAKE = 5;
+export const PARTICIPANTS_TAKE = 10;
