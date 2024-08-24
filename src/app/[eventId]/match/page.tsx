@@ -2,6 +2,7 @@ import { getCurationsInfo } from '@/lib/apis/server/eventsApi';
 import { CurationsResponseDto } from '@/types/types';
 import { cookies } from 'next/headers';
 import React from 'react';
+import ParticipantCard from '@/components/ParticipantCard';
 import MatchingBlur from './_components/MatchingBlur';
 import Curations from './_components/Curations';
 
@@ -24,6 +25,16 @@ const page = async ({
         <MatchingBlur eventId={eventId} />
       ) : (
         <Curations />
+      )}
+
+      {!accessToken || curationsInfo?.totalAttempts === 0 ? (
+        <ul className="flex flex-col gap-3">
+          <ParticipantCard participantRole="GUEST" />
+          <ParticipantCard participantRole="GUEST" />
+          <ParticipantCard participantRole="GUEST" />
+        </ul>
+      ) : (
+        <div />
       )}
     </div>
   );

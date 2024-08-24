@@ -13,9 +13,6 @@ export const POST = async (request: NextRequest) => {
   const eventId = request.nextUrl.searchParams.get('eventId');
   const accessToken = request.cookies.get('accessToken')?.value;
 
-  console.log(eventId);
-  console.log(accessToken);
-
   const response = await fetch(`${END_POINT}/events/${eventId}/curations`, {
     method: 'POST',
     headers: {
