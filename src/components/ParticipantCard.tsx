@@ -1,8 +1,8 @@
 import { DefaultProfileSVG } from '@/icons/index';
 import { EventParticipantProfileCardDto } from '@/types/types';
 import Image from 'next/image';
-import SocialContainer from './SocialContainer';
-import WishlistButton from './WishlistButton';
+import SocialContainer from '../app/[eventId]/_components/participants/SocialContainer';
+import WishlistButton from '../app/[eventId]/_components/participants/WishlistButton';
 
 type ParticipantCardProps = {
   participantRole: 'HOST' | 'GUEST';

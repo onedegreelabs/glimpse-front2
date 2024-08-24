@@ -10,6 +10,7 @@ function MatchSlide() {
   const router = useRouter();
   const pathname = usePathname();
   const eventId = pathname.split('/')[1];
+  const currenPathname = pathname.split('/').at(-1);
   const constraintsRef = useRef(null);
 
   const [currentX, setCurrentX] = useState(0);
@@ -63,6 +64,11 @@ function MatchSlide() {
             <ArrowSVG2 />
           </div>
         </motion.div>
+        {currenPathname === 'match' && (
+          <p className="absolute -top-20 w-[239px] text-center text-xl font-bold text-yellow-600">
+            Curious about the perfect match for you?
+          </p>
+        )}
       </article>
     )
   );

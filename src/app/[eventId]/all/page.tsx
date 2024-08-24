@@ -3,9 +3,9 @@ import { ParticipantsResponseDto } from '@/types/types';
 import { getParticipantsInfo } from '@/lib/apis/server/eventsApi';
 import { PARTICIPANTS_TAKE } from '@/constant/constant';
 import { SadFaceSVG } from '@/icons/index';
-import SearchParticipants from '../_components/SearchParticipants';
+import ParticipantCard from '@/components/ParticipantCard';
+import SearchParticipants from './_components/SearchParticipants';
 import Participants from '../_components/participants/Participants';
-import ParticipantCard from '../_components/participants/ParticipantCard';
 
 export default async function page({
   params: { eventId },

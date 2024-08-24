@@ -26,6 +26,7 @@ const config: Config = {
           primary: '#FFEE1A',
           300: '#FFEA89',
           500: '#EEBA00',
+          600: '#FFD300',
         },
         gray: {
           B25: '#F3F3F3',

@@ -1,4 +1,5 @@
 import {
+  CurationsResponseDto,
   EventInfo,
   FetchError,
   GetParticipantsInfoParams,
@@ -78,6 +79,48 @@ export const getParticipantsInfo = cache(
         const errorData = await response.json();
         const error: FetchError = new Error(
           errorData.message || '참가자 목록 조회 오류',
+        ) as FetchError;
+
+        error.status = response.status;
+        error.errorCode = errorData.errorCode || 'UNKNOWN_ERROR';
+        throw error;
+      }
+
+      const responseData = await response.json();
+
+      return responseData.data;
+    } catch (error) {
+      const fetchError = error as FetchError;
+
+      if (fetchError && fetchError.status === 400) {
+        notFound();
+      }
+
+      throw error;
+    }
+  },
+);
+
+export const getCurationsInfo = cache(
+  async (params: {
+    eventId: string;
+    accessToken: RequestCookie;
+  }): Promise<CurationsResponseDto> => {
+    try {
+      const response = await fetch(
+        `${END_POINT}/events/${params.eventId}/curations`,
+        {
+          method: 'GET',
+          headers: {
+            Cookie: `accessToken=${params.accessToken.value}`,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        const error: FetchError = new Error(
+          errorData.message || '큐레이팅 결과 조회 오류',
         ) as FetchError;
 
         error.status = response.status;

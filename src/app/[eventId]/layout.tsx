@@ -1,6 +1,9 @@
 import { cookies } from 'next/headers';
-import { ParticipantsResponseDto } from '@/types/types';
-import { getParticipantsInfo } from '@/lib/apis/server/eventsApi';
+import { CurationsResponseDto, ParticipantsResponseDto } from '@/types/types';
+import {
+  getCurationsInfo,
+  getParticipantsInfo,
+} from '@/lib/apis/server/eventsApi';
 import { PARTICIPANTS_TAKE } from '@/constant/constant';
 import EmailAccessForm from './_components/EmailAccessForm';
 import EventDetails from './_components/EventDetails';
@@ -17,6 +20,7 @@ export default async function layout({
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken');
   let participantsInfo: ParticipantsResponseDto | null = null;
+  let curationsInfo: CurationsResponseDto | null = null;
 
   if (accessToken) {
     participantsInfo = await getParticipantsInfo({
@@ -25,6 +29,8 @@ export default async function layout({
       lastItemId: 0,
       accessToken,
     });
+
+    curationsInfo = await getCurationsInfo({ eventId, accessToken });
   }
 
   return (
@@ -39,7 +45,7 @@ export default async function layout({
         />
         {children}
       </section>
-      {accessToken && <MatchSlide />}
+      {accessToken && curationsInfo?.totalAttempts === 0 && <MatchSlide />}
     </main>
   );
 }
