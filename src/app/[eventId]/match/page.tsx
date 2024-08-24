@@ -34,7 +34,10 @@ const page = async ({
           <ParticipantCard participantRole="GUEST" />
         </ul>
       ) : (
-        <div />
+        <ul className="flex flex-col gap-3">
+          <ParticipantCard participantRole="GUEST" isCuration />
+          <ParticipantCard participantRole="GUEST" isCuration />
+        </ul>
       )}
     </div>
   );
