@@ -1,37 +1,19 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useMatchStore } from '@/store/matchStore';
-import { postCurations } from '@/lib/apis/eventsApi';
-import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import { Spinner2 } from '@/icons/index';
 
-function MatchingBlur({ eventId }: { eventId: string }) {
-  const router = useRouter();
-  const { isComplete } = useMatchStore((state) => ({
-    isComplete: state.isComplete,
-  }));
+interface BlurProps {
+  isPending: boolean;
+}
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (id: string) => postCurations({ eventId: id }),
-    onSuccess: () => {
-      router.refresh();
-    },
-  });
-
+function Blur({ isPending }: BlurProps) {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = 'auto';
     };
   }, []);
-
-  useEffect(() => {
-    if (isComplete) {
-      mutate(eventId);
-    }
-  }, [eventId, isComplete, mutate]);
 
   return (
     <div className="fixed inset-0 z-10 mx-auto max-w-sm bg-gradient-to-b from-transparent from-0% to-blue-secondary to-[88%] backdrop-blur-[2px]">
@@ -45,4 +27,4 @@ function MatchingBlur({ eventId }: { eventId: string }) {
   );
 }
 
-export default MatchingBlur;
+export default Blur;

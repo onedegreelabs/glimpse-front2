@@ -3,7 +3,7 @@ import { CurationsResponseDto } from '@/types/types';
 import { cookies } from 'next/headers';
 import React from 'react';
 import ParticipantCard from '@/components/ParticipantCard';
-import MatchingBlur from './_components/MatchingBlur';
+import MatchingComponent from './_components/MatchingComponent';
 
 const page = async ({
   params: { eventId },
@@ -21,8 +21,8 @@ const page = async ({
   const isCurated = curationsInfo && curationsInfo.totalAttempts !== 0;
 
   return (
-    <div className="px-6 pt-1">
-      {!isCurated && <MatchingBlur eventId={eventId} />}
+    <div className="px-6 pb-20 pt-1">
+      <MatchingComponent eventId={eventId} isCurated={!!isCurated} />
 
       {isCurated ? (
         <ul className="flex flex-col gap-3">

@@ -8,7 +8,7 @@ function Gradient({
 }: {
   containerRef: RefObject<HTMLDivElement>;
 }) {
-  const baseHeight = 600;
+  const baseHeight = 550;
   const baseTranslateY = 200;
   const gap = 900;
 

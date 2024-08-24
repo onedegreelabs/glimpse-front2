@@ -26,6 +26,8 @@ export { default as SadFaceSVG } from './sadFace.svg';
 
 export { default as CommentSVG } from './comment.svg';
 
+export { default as RefreshSVG } from './refresh.svg';
+
 export { default as FacebookSVG } from './link/facebook.svg';
 
 export { default as GoogleSVG } from './link/google.svg';
