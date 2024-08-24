@@ -31,24 +31,23 @@ function MatchingComponent({ eventId }: { eventId: string }) {
     mutate(eventId);
   };
 
-  return (
-    <>
-      {isPending && <Blur isPending={isPending} />}
-      <div className="relative ml-auto mr-14 size-[1px]">
-        <button
-          type="submit"
-          className="fixed bottom-0 z-10 mb-4 mr-4 flex size-[66px] items-center justify-center rounded-full bg-gradient-to-bl from-yellow-primary to-blue-B30"
-          aria-label="re-matching"
-          onClick={reMachingHandler}
-        >
-          <div className="flex size-[62px] items-center justify-center rounded-full bg-blue-secondary">
-            <div className="flex size-14 items-center justify-center rounded-full bg-yellow-primary">
-              <RefreshSVG />
-            </div>
+  return isPending ? (
+    <Blur isPending />
+  ) : (
+    <div className="relative ml-auto mr-14 size-[1px]">
+      <button
+        type="submit"
+        className="fixed bottom-0 z-10 mb-4 mr-4 flex size-[66px] items-center justify-center rounded-full bg-gradient-to-bl from-yellow-primary to-blue-B30"
+        aria-label="re-matching"
+        onClick={reMachingHandler}
+      >
+        <div className="flex size-[62px] items-center justify-center rounded-full bg-blue-secondary">
+          <div className="flex size-14 items-center justify-center rounded-full bg-yellow-primary">
+            <RefreshSVG />
           </div>
-        </button>
-      </div>
-    </>
+        </div>
+      </button>
+    </div>
   );
 }
 
