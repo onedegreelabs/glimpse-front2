@@ -54,7 +54,7 @@ export interface EventParticipantProfileCardDto {
   intro?: string;
   jobs: JobDto[];
   user: UserProfileDto;
-  // socialMedia: SocialMediaDto[];
+  socialMedia: SocialMediaDto[];
 }
 
 export interface ParticipantsResponseDto {

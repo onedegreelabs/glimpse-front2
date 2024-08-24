@@ -13,13 +13,14 @@ function ParticipantCard({
   user,
   isWishlisted,
   email,
+  socialMedia,
   name = 'Emma Stone',
   jobs = [{ id: 1, name: 'Designer' }],
   intro = 'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...',
 }: ParticipantCardProps) {
   return (
     <li
-      className={`flex h-40 w-full animate-fadeInUp flex-col rounded-3xl pb-6 pl-5 pr-4 pt-4 ${participantRole === 'HOST' ? 'bg-blue-B70' : 'border-[1.5px] border-solid border-white/20 bg-white/30'}`}
+      className={`flex h-40 w-full flex-col rounded-3xl pb-6 pl-5 pr-4 pt-4 ${participantRole === 'HOST' ? 'bg-blue-B70' : 'border-[1.5px] border-solid border-white/20 bg-white/30'}`}
     >
       <header className="flex w-full">
         <div className="grid w-full grid-cols-[1fr_auto]">
@@ -61,9 +62,8 @@ function ParticipantCard({
             <SocialContainer
               participantRole={participantRole}
               email={email}
-              socialList={[]}
+              socialList={socialMedia ?? []}
             />
-            {/* socialMedia ??  추후 확인 */}
           </div>
         </div>
       </header>

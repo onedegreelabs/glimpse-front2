@@ -39,7 +39,7 @@ export default async function layout({
         />
         {children}
       </section>
-      <MatchSlide />
+      {accessToken && <MatchSlide />}
     </main>
   );
 }
