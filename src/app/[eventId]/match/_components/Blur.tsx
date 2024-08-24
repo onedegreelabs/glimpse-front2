@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { Spinner2 } from '@/icons/index';
 
 interface BlurProps {
-  isPending: boolean;
+  isPending?: boolean;
 }
 
 function Blur({ isPending }: BlurProps) {

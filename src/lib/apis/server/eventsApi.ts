@@ -110,6 +110,7 @@ export const getCurationsInfo = cache(
       const response = await fetch(
         `${END_POINT}/events/${params.eventId}/curations`,
         {
+          // cache: 'no-store',
           method: 'GET',
           headers: {
             Cookie: `accessToken=${params.accessToken.value}`,

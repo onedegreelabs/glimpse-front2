@@ -4,6 +4,8 @@ import { cookies } from 'next/headers';
 import React from 'react';
 import ParticipantCard from '@/components/ParticipantCard';
 import MatchingComponent from './_components/MatchingComponent';
+import Curations from './_components/Curations';
+import Blur from './_components/Blur';
 
 const page = async ({
   params: { eventId },
@@ -18,29 +20,24 @@ const page = async ({
     curationsInfo = await getCurationsInfo({ eventId, accessToken });
   }
 
-  const isCurated = curationsInfo && curationsInfo.totalAttempts !== 0;
+  const isCurated = !!curationsInfo && curationsInfo.totalAttempts !== 0;
 
   return (
     <div className="px-6 pb-20 pt-1">
-      <MatchingComponent eventId={eventId} isCurated={!!isCurated} />
-
       {isCurated ? (
-        <ul className="flex flex-col gap-3">
-          {curationsInfo!.participants.map((info) => (
-            <ParticipantCard
-              key={info.id}
-              participantRole={info.role}
-              {...info}
-              isCuration
-            />
-          ))}
-        </ul>
+        <>
+          <MatchingComponent eventId={eventId} />
+          <Curations curationsInfo={curationsInfo!} />
+        </>
       ) : (
-        <ul className="flex flex-col gap-3">
-          <ParticipantCard participantRole="GUEST" isCuration />
-          <ParticipantCard participantRole="GUEST" isCuration />
-          <ParticipantCard participantRole="GUEST" isCuration />
-        </ul>
+        <>
+          <Blur />
+          <ul className="flex flex-col gap-3">
+            <ParticipantCard participantRole="GUEST" isCuration />
+            <ParticipantCard participantRole="GUEST" isCuration />
+            <ParticipantCard participantRole="GUEST" isCuration />
+          </ul>
+        </>
       )}
     </div>
   );
