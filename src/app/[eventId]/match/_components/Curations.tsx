@@ -10,7 +10,7 @@ interface CurationsProps {
 
 function Curations({ curationsInfo }: CurationsProps) {
   const { data: curationsList } = useQuery({
-    queryKey: ['curations', curationsInfo.latestCuratedAt],
+    queryKey: ['curations'],
     initialData: curationsInfo.participants,
     staleTime: Infinity,
     refetchOnWindowFocus: false,

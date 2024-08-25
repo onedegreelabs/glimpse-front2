@@ -2,22 +2,33 @@
 
 import { HeartSVG } from '@/icons/index';
 import { deleteWishlist, postWishlist } from '@/lib/apis/wishlist';
-import { EventParticipantProfileCardDto } from '@/types/types';
-import { useMutation } from '@tanstack/react-query';
+import {
+  CuratedParticipantDto,
+  EventParticipantProfileCardDto,
+  ParticipantsResponseDto,
+} from '@/types/types';
+import {
+  InfiniteData,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 
 const HeartLoading = dynamic(() => import('@/components/HeartLoading'));
 
+interface WishlistButtonProps {
+  id?: number;
+  isWishlisted?: boolean;
+  participantRole: EventParticipantProfileCardDto['role'];
+}
+
 function WishlistButton({
   id,
   participantRole,
   isWishlisted: initialWishlisted,
-}: {
-  id: number | undefined;
-  participantRole: EventParticipantProfileCardDto['role'];
-  isWishlisted: boolean | undefined;
-}) {
+}: WishlistButtonProps) {
+  const queryClient = useQueryClient();
   const [isWishlisted, setIsWishlisted] = useState(!!initialWishlisted);
 
   const toggleWishlist = async (targetUserId: number) => {
@@ -28,14 +39,61 @@ function WishlistButton({
     }
   };
 
+  const syncWishlist = <T extends EventParticipantProfileCardDto>(
+    queryKey: ['participants'] | ['curations'],
+  ) => {
+    const data = queryClient.getQueryData<
+      T[] | InfiniteData<{ participants: T[] }>
+    >(queryKey);
+
+    if (!data) return;
+
+    let isUpdated = false;
+
+    const updateParticipant = (participant: T): T => {
+      if (participant.user.id === id) {
+        isUpdated = true;
+        return { ...participant, isWishlisted: !isWishlisted };
+      }
+      return participant;
+    };
+
+    if (Array.isArray(data)) {
+      const updatedParticipants = data.map(updateParticipant);
+      if (isUpdated) {
+        queryClient.setQueryData<T[]>(queryKey, updatedParticipants);
+      }
+    } else {
+      const updatedPages = data.pages.map((page) => ({
+        ...page,
+        participants: page.participants.map(updateParticipant),
+      }));
+      if (isUpdated) {
+        queryClient.setQueryData<InfiniteData<{ participants: T[] }>>(
+          queryKey,
+          {
+            ...data,
+            pages: updatedPages,
+          },
+        );
+      }
+    }
+  };
+
+  const syncWishlistParticipants = () =>
+    syncWishlist<ParticipantsResponseDto['participants'][0]>(['participants']);
+
+  const syncWishlistCurations = () =>
+    syncWishlist<CuratedParticipantDto>(['curations']);
+
   const { mutate, isPending } = useMutation({
     mutationFn: (targetUserId: number) => toggleWishlist(targetUserId),
     onSuccess: () => {
+      syncWishlistParticipants();
+      syncWishlistCurations();
       setIsWishlisted((prev) => !prev);
     },
   });
-
-  // 추후 참가자 목록 싱크 해결 로직 작성
 
   return (
     <button

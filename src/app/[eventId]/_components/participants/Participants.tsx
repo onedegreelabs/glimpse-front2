@@ -43,6 +43,8 @@ function Participants({ participantsInfo, eventId }: ParticipantsProps) {
         }
         return undefined;
       },
+      staleTime: Infinity,
+      refetchOnWindowFocus: false,
     });
 
   const participants = useMemo(

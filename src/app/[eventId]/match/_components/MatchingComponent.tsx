@@ -3,13 +3,14 @@
 import { useEffect } from 'react';
 import { useMatchStore } from '@/store/matchStore';
 import { postCurations } from '@/lib/apis/eventsApi';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { RefreshSVG } from '@/icons/index';
 import Blur from './Blur';
 
 function MatchingComponent({ eventId }: { eventId: string }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { isComplete } = useMatchStore((state) => ({
     isComplete: state.isComplete,
   }));
@@ -17,6 +18,7 @@ function MatchingComponent({ eventId }: { eventId: string }) {
   const { mutate, isPending } = useMutation({
     mutationFn: (id: string) => postCurations({ eventId: id }),
     onSuccess: () => {
+      queryClient.removeQueries({ queryKey: ['curations'] });
       router.refresh();
     },
   });
