@@ -24,7 +24,7 @@ async function EventDetails({ eventId }: { eventId: string }) {
         </div>
       </div>
       <Link
-        href={externalLink ?? '/'} // 추후 링크 수정
+        href={externalLink ?? '/'}
         className="flex h-8 w-16 items-center justify-center gap-1 rounded-lg bg-blue-secondary/20 text-xs font-semibold text-blue-secondary hover:font-bold"
         target="_blank"
       >

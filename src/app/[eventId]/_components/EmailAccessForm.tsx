@@ -157,8 +157,8 @@ function EmailAccessForm() {
             className="group h-14 w-full rounded-lg bg-yellow-primary disabled:bg-gray-B30"
           >
             {isPending ? (
-              <div className="flex justify-center">
-                <Spinner1 className="-ml-1 mr-3 size-6 animate-spin text-white" />
+              <div className="flex items-center justify-center">
+                <Spinner1 className="size-6 animate-spin text-white" />
               </div>
             ) : (
               <p className="text-gray-B60 group-enabled:font-bold group-enabled:text-blue-secondary">
