@@ -23,7 +23,7 @@ const page = async ({
   const isCurated = !!curationsInfo && curationsInfo.totalAttempts !== 0;
 
   return (
-    <div className="px-6 pb-20 pt-1">
+    <div className="px-6 pb-28 pt-1">
       {isCurated ? (
         <>
           <MatchingComponent eventId={eventId} />
