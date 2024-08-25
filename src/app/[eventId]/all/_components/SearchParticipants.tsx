@@ -22,7 +22,7 @@ function SearchParticipants({
 
   const searchHandler = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      router.replace(`/${eventId}?search=${searchValue}`);
+      router.replace(`/${eventId}/all?search=${searchValue}`);
     }
   };
 

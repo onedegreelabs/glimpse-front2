@@ -8,9 +8,10 @@ export const getParticipantsInfo = async ({
   eventId,
   take,
   lastItemId,
+  search,
 }: GetParticipantsInfoParams): Promise<ParticipantsResponseDto> => {
   const response = await fetch(
-    `/api/events/participants?eventId=${eventId}&take=${take}&lastItemId=${lastItemId}`,
+    `/api/events/participants?eventId=${eventId}&take=${take}&lastItemId=${lastItemId}&search=${search}`,
   );
 
   if (!response.ok) {

@@ -2,7 +2,7 @@
 
 import { PARTICIPANTS_TAKE } from '@/constant/constant';
 import { getParticipantsInfo } from '@/lib/apis/eventsApi';
-import { ParticipantsResponseDto } from '@/types/types';
+import { EventParticipantProfileCardDto } from '@/types/types';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { InView } from 'react-intersection-observer';
@@ -12,33 +12,49 @@ import Loading from './Loading';
 
 interface ParticipantsProps {
   eventId: string;
-  participantsInfo: ParticipantsResponseDto;
+  initialParticipants: EventParticipantProfileCardDto[];
+  totalItemCount: number;
+  search?: string;
 }
 
-function Participants({ participantsInfo, eventId }: ParticipantsProps) {
+function Participants({
+  initialParticipants,
+  totalItemCount,
+  eventId,
+  search,
+}: ParticipantsProps) {
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ['participants'],
+      queryKey: ['participants', search],
       queryFn: ({ pageParam }) =>
         getParticipantsInfo({
           eventId: pageParam.eventId,
           take: pageParam.take,
           lastItemId: pageParam.lastItemId,
+          search,
         }),
-      initialPageParam: { eventId, take: PARTICIPANTS_TAKE, lastItemId: 0 },
+      initialPageParam: {
+        eventId,
+        take: PARTICIPANTS_TAKE,
+        lastItemId: 0,
+        search,
+      },
       initialData: {
-        pages: [participantsInfo],
-        pageParams: [{ eventId, take: PARTICIPANTS_TAKE, lastItemId: 0 }],
+        pages: [{ participants: initialParticipants, totalItemCount }],
+        pageParams: [
+          { eventId, take: PARTICIPANTS_TAKE, lastItemId: 0, search },
+        ],
       },
       getNextPageParam: (lastPage, allPages) => {
         const hasMorePages =
-          allPages[0].totalItemCount > allPages.length * PARTICIPANTS_TAKE;
+          totalItemCount > allPages.length * PARTICIPANTS_TAKE;
 
         if (hasMorePages) {
           return {
             eventId,
             take: PARTICIPANTS_TAKE,
             lastItemId: lastPage.participants.at(-1)?.id ?? 0,
+            search,
           };
         }
         return undefined;
