@@ -9,7 +9,7 @@ import Participants from '../_components/participants/Participants';
 
 export default async function page({
   params: { eventId },
-  searchParams,
+  searchParams = { search: '' },
 }: {
   params: { eventId: string };
   searchParams: { search?: string };
@@ -24,6 +24,7 @@ export default async function page({
       take: PARTICIPANTS_TAKE,
       lastItemId: 0,
       accessToken,
+      search: searchParams.search ?? '',
     });
   }
 
@@ -36,7 +37,12 @@ export default async function page({
         />
 
         {participantsInfo ? (
-          <Participants participantsInfo={participantsInfo} eventId={eventId} />
+          <Participants
+            initialParticipants={participantsInfo.participants}
+            totalItemCount={participantsInfo.totalItemCount}
+            eventId={eventId}
+            search={searchParams.search ?? ''}
+          />
         ) : (
           <ul className="flex flex-col gap-3">
             <ParticipantCard participantRole="HOST" />

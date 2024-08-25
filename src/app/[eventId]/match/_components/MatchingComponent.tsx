@@ -3,13 +3,14 @@
 import { useEffect } from 'react';
 import { useMatchStore } from '@/store/matchStore';
 import { postCurations } from '@/lib/apis/eventsApi';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { RefreshSVG } from '@/icons/index';
 import Blur from './Blur';
 
 function MatchingComponent({ eventId }: { eventId: string }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { isComplete } = useMatchStore((state) => ({
     isComplete: state.isComplete,
   }));
@@ -17,6 +18,7 @@ function MatchingComponent({ eventId }: { eventId: string }) {
   const { mutate, isPending } = useMutation({
     mutationFn: (id: string) => postCurations({ eventId: id }),
     onSuccess: () => {
+      queryClient.removeQueries({ queryKey: ['curations'] });
       router.refresh();
     },
   });
@@ -34,7 +36,7 @@ function MatchingComponent({ eventId }: { eventId: string }) {
   return isPending ? (
     <Blur isPending />
   ) : (
-    <div className="relative ml-auto mr-14 size-[1px]">
+    <div className="relative ml-auto mr-[50px] size-[1px]">
       <button
         type="submit"
         className="fixed bottom-0 z-10 mb-4 mr-4 flex size-[66px] items-center justify-center rounded-full bg-gradient-to-bl from-yellow-primary to-blue-B30"

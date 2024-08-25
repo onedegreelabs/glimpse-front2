@@ -19,8 +19,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // 추후 lang en으로 변경
   return (
-    <html lang="en">
+    <html lang="ko">
       <body className={`${consola.className} mx-auto max-w-sm`}>
         <ReactQueryProviders>
           <Background>{children}</Background>

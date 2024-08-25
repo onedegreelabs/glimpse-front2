@@ -66,7 +66,7 @@ export const getParticipantsInfo = cache(
   async (params: GetParticipantsInfo): Promise<ParticipantsResponseDto> => {
     try {
       const response = await fetch(
-        `${END_POINT}/events/${params.eventId}/participants?take=${params.take}`,
+        `${END_POINT}/events/${params.eventId}/participants?take=${params.take}&search=${params.search ?? ''}`,
         {
           method: 'GET',
           headers: {

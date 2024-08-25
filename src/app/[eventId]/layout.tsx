@@ -5,6 +5,7 @@ import {
   getParticipantsInfo,
 } from '@/lib/apis/server/eventsApi';
 import { PARTICIPANTS_TAKE } from '@/constant/constant';
+import ScrollUpBtn from '@/components/ScrollUpBtn';
 import EmailAccessForm from './_components/EmailAccessForm';
 import EventDetails from './_components/EventDetails';
 import ParticipantsNav from './_components/ParticipantsNav';
@@ -43,6 +44,7 @@ export default async function layout({
           eventId={eventId}
           participantCount={participantsInfo?.totalItemCount}
         />
+        <ScrollUpBtn />
         {children}
       </section>
       {accessToken && curationsInfo?.totalAttempts === 0 && <MatchSlide />}
