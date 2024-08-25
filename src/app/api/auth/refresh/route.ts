@@ -21,6 +21,7 @@ export const PUT = async (request: NextRequest) => {
 
   if (!response.ok) {
     const { message, errorCode } = await response.json();
+
     return NextResponse.json(
       {
         status: response.status,
@@ -37,7 +38,7 @@ export const PUT = async (request: NextRequest) => {
     JSON.stringify({ status: statusCode, data }),
     {
       status: statusCode,
-      headers: response.headers,
+      headers: { ...response.headers, 'Content-Type': 'application/json' },
     },
   );
 

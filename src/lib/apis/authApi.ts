@@ -4,9 +4,6 @@ export const login = async (email: string) => {
   const response = await fetch(`/api/auth/login?email=${email}`, {
     method: 'POST',
     credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
   });
 
   if (!response.ok) {
