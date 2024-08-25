@@ -39,14 +39,10 @@ function WishlistButton({
     }
   };
 
-  const syncWishlist = <T extends EventParticipantProfileCardDto>(
-    queryKey: ['participants'] | ['curations'],
-  ) => {
-    const data = queryClient.getQueryData<
-      T[] | InfiniteData<{ participants: T[] }>
-    >(queryKey);
-
-    if (!data) return;
+  const updateParticipantsData = <T extends EventParticipantProfileCardDto>(
+    data: T[] | InfiniteData<{ participants: T[] }>,
+  ): T[] | InfiniteData<{ participants: T[] }> | null => {
+    if (!data) return null;
 
     let isUpdated = false;
 
@@ -60,31 +56,44 @@ function WishlistButton({
 
     if (Array.isArray(data)) {
       const updatedParticipants = data.map(updateParticipant);
-      if (isUpdated) {
-        queryClient.setQueryData<T[]>(queryKey, updatedParticipants);
-      }
-    } else {
-      const updatedPages = data.pages.map((page) => ({
-        ...page,
-        participants: page.participants.map(updateParticipant),
-      }));
-      if (isUpdated) {
-        queryClient.setQueryData<InfiniteData<{ participants: T[] }>>(
-          queryKey,
-          {
-            ...data,
-            pages: updatedPages,
-          },
-        );
-      }
+      return isUpdated ? updatedParticipants : null;
     }
+    const updatedPages = data.pages.map((page) => ({
+      ...page,
+      participants: page.participants.map(updateParticipant),
+    }));
+    return isUpdated ? { ...data, pages: updatedPages } : null;
   };
 
-  const syncWishlistParticipants = () =>
-    syncWishlist<ParticipantsResponseDto['participants'][0]>(['participants']);
+  const syncWishlistParticipants = () => {
+    const participantsQueries = queryClient.getQueriesData<
+      InfiniteData<ParticipantsResponseDto>
+    >({
+      queryKey: ['participants'],
+    });
 
-  const syncWishlistCurations = () =>
-    syncWishlist<CuratedParticipantDto>(['curations']);
+    participantsQueries.forEach(([queryKey, value]) => {
+      if (value) {
+        const updatedData = updateParticipantsData(value);
+        if (updatedData) {
+          queryClient.setQueryData(queryKey, updatedData);
+        }
+      }
+    });
+  };
+
+  const syncWishlistCurations = () => {
+    const data = queryClient.getQueryData<CuratedParticipantDto[]>([
+      'curations',
+    ]);
+
+    if (!data) return;
+
+    const updatedData = updateParticipantsData(data);
+    if (updatedData) {
+      queryClient.setQueryData(['curations'], updatedData);
+    }
+  };
 
   const { mutate, isPending } = useMutation({
     mutationFn: (targetUserId: number) => toggleWishlist(targetUserId),
