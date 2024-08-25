@@ -133,14 +133,14 @@ function EmailAccessForm() {
             <div className="text-xs">
               <div>
                 <Link
-                  href="/"
+                  href="/terms"
                   className="text-blue-secondary underline underline-offset-1"
                 >
                   개인정보수집
                 </Link>{' '}
                 및{' '}
                 <Link
-                  href="/"
+                  href="/terms"
                   className="text-blue-secondary underline underline-offset-1"
                 >
                   이용동의
