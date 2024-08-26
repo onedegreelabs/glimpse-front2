@@ -30,7 +30,7 @@ function ParticipantCard({
           <div className="grid w-full grid-cols-[1fr_auto]">
             <div className="mt-3 grid grid-cols-[auto_1fr] gap-[10px]">
               <div
-                className={`relative flex size-12 flex-shrink-0 items-center justify-center rounded-full ${participantRole === 'HOST' ? 'mb-3 border-[4px] border-solid border-yellow-primary bg-white fill-gray-B40' : 'bg-gray-B35/40 fill-white'}`}
+                className={`relative flex size-12 flex-shrink-0 items-center justify-center rounded-full ${participantRole === 'HOST' ? 'mb-3 border-[4px] border-solid border-yellow-primary bg-white fill-gray-B40' : 'mb-3 bg-gray-B35/40 fill-white'}`}
               >
                 {user?.profileImageUrl ? (
                   <div className="absolute left-0 top-0 size-full overflow-hidden rounded-full">

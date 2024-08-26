@@ -1,53 +1,15 @@
-'use client';
-
-import { Fragment, useEffect, useState, RefObject } from 'react';
+import { Fragment } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-function Gradient({
-  containerRef,
-}: {
-  containerRef: RefObject<HTMLDivElement>;
-}) {
-  const baseHeight = 550;
-  const baseTranslateY = 200;
-  const gap = 900;
-
-  const [numDivs, setNumDivs] = useState(0);
-
-  useEffect(() => {
-    const currentRef = containerRef.current;
-
-    const updateDivs = () => {
-      if (currentRef) {
-        const containerHeight = currentRef.clientHeight;
-        const newNumDivs = Math.floor(containerHeight / baseHeight);
-        setNumDivs(newNumDivs);
-      }
-    };
-
-    updateDivs();
-
-    const observer = new ResizeObserver(() => {
-      updateDivs();
-    });
-
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-      observer.disconnect();
-    };
-  }, [containerRef]);
+function Gradient() {
+  const numDivs = 4;
+  const baseHeight = 320;
+  const gap = 100;
 
   return (
-    <>
+    <div className="fixed mx-auto size-full max-w-sm overflow-clip">
       {Array.from({ length: numDivs }).map((_, index) => {
-        const translateY =
-          baseTranslateY * (index + 1) + gap * Math.floor(index / 2);
+        const translateY = baseHeight * (index + 1) + gap * index;
 
         return (
           <Fragment key={uuidv4()}>
@@ -73,19 +35,19 @@ function Gradient({
                 <div
                   className="absolute h-[315px] w-[303px] bg-gradient-radial from-[#756FD5] blur-xl"
                   style={{
-                    transform: `translate(-32px, ${translateY + 500}px)`,
+                    transform: `translate(-32px, ${translateY + 100}px)`,
                   }}
                 />
                 <div
                   className="absolute h-[288px] w-[288px] bg-gradient-radial from-[#002387] blur-2xl"
                   style={{
-                    transform: `translate(100px, ${translateY + 400}px)`,
+                    transform: `translate(100px, ${translateY}px)`,
                   }}
                 />
                 <div
                   className="absolute h-[225px] w-[225px] bg-gradient-radial from-[#2C5EEB] blur-2xl"
                   style={{
-                    transform: `translate(120px, ${translateY + 700}px)`,
+                    transform: `translate(120px, ${translateY + 300}px)`,
                   }}
                 />
               </>
@@ -93,8 +55,39 @@ function Gradient({
           </Fragment>
         );
       })}
-    </>
+    </div>
   );
 }
 
 export default Gradient;
+
+// const [numDivs, setNumDivs] = useState(0);
+
+// useEffect(() => {
+//   const currentRef = containerRef.current;
+
+//   const updateDivs = () => {
+//     if (currentRef) {
+//       const containerHeight = currentRef.clientHeight;
+//       const newNumDivs = Math.floor(containerHeight / baseHeight);
+//       setNumDivs(newNumDivs);
+//     }
+//   };
+
+//   updateDivs();
+
+//   const observer = new ResizeObserver(() => {
+//     updateDivs();
+//   });
+
+//   if (currentRef) {
+//     observer.observe(currentRef);
+//   }
+
+//   return () => {
+//     if (currentRef) {
+//       observer.unobserve(currentRef);
+//     }
+//     observer.disconnect();
+//   };
+// }, [containerRef]);

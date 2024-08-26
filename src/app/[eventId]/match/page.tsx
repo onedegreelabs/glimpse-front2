@@ -23,17 +23,15 @@ const page = async ({
 
   return (
     <div className="px-6 pb-28 pt-1">
+      <MatchingComponent eventId={eventId} isCurated={isCurated} />
       {isCurated ? (
         <Curations curationsInfo={curationsInfo!} />
       ) : (
-        <>
-          <MatchingComponent eventId={eventId} isCurated={isCurated} />
-          <ul className="flex flex-col gap-3">
-            <ParticipantCard participantRole="GUEST" isCuration />
-            <ParticipantCard participantRole="GUEST" isCuration />
-            <ParticipantCard participantRole="GUEST" isCuration />
-          </ul>
-        </>
+        <ul className="flex flex-col gap-3">
+          <ParticipantCard participantRole="GUEST" isCuration />
+          <ParticipantCard participantRole="GUEST" isCuration />
+          <ParticipantCard participantRole="GUEST" isCuration />
+        </ul>
       )}
     </div>
   );
