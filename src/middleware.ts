@@ -12,8 +12,10 @@ const isTokenExpired = (token: string) => {
   }
 };
 
-const handleTokenReissuance = async (request: NextRequest) => {
-  const refreshToken = request.cookies.get('refreshToken')?.value;
+const handleTokenReissuance = async (
+  request: NextRequest,
+  refreshToken?: string,
+) => {
   const response = NextResponse.redirect(request.url);
 
   if (refreshToken) {
@@ -33,14 +35,19 @@ const handleTokenReissuance = async (request: NextRequest) => {
 
 export default async function middleware(request: NextRequest) {
   const accessToken = request.cookies.get('accessToken')?.value;
+  const refreshToken = request.cookies.get('refreshToken')?.value;
 
   if (accessToken) {
     try {
       isTokenExpired(accessToken);
       return NextResponse.next();
     } catch (error) {
-      return handleTokenReissuance(request);
+      return handleTokenReissuance(request, refreshToken);
     }
+  }
+
+  if (refreshToken) {
+    return handleTokenReissuance(request, refreshToken);
   }
 
   return NextResponse.next();
