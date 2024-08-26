@@ -28,16 +28,18 @@ function ParticipantsNav({
       <div className="flex w-full gap-[30px]">
         <Link
           href={`/${eventId}/all`}
-          className={`relative text-2xl font-black ${currentPathname === 'all' ? 'text-white' : 'text-white/30 hover:text-white/60'} ${
+          className={`relative flex items-center text-[32px] font-black ${currentPathname === 'all' ? 'text-white' : 'text-white/30 hover:text-white/60'} ${
             currentPathname === 'all' &&
             'after:absolute after:-right-3 after:top-1.5 after:size-2 after:rounded-full after:bg-yellow-primary after:content-[""]'
           }`}
         >
-          All({participantCount})
+          All<p className="mb-1 text-[26px]">(</p>
+          <p className="text-[24px]">{participantCount}</p>
+          <p className="mb-1 text-[26px]">)</p>
         </Link>
         <Link
           href={`/${eventId}/match`}
-          className={`relative text-2xl font-black ${currentPathname === 'match' ? 'text-white' : 'text-white/30 hover:text-white/60'} ${
+          className={`relative text-[32px] font-black ${currentPathname === 'match' ? 'text-white' : 'text-white/30 hover:text-white/60'} ${
             currentPathname === 'match' &&
             'after:absolute after:-right-3 after:top-1.5 after:size-2 after:rounded-full after:bg-yellow-primary after:content-[""]'
           }`}
