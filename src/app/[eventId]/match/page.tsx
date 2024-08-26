@@ -5,7 +5,6 @@ import React from 'react';
 import ParticipantCard from '@/components/ParticipantCard';
 import MatchingComponent from './_components/MatchingComponent';
 import Curations from './_components/Curations';
-import Blur from './_components/Blur';
 
 const page = async ({
   params: { eventId },
@@ -25,13 +24,10 @@ const page = async ({
   return (
     <div className="px-6 pb-28 pt-1">
       {isCurated ? (
-        <>
-          <MatchingComponent eventId={eventId} />
-          <Curations curationsInfo={curationsInfo!} />
-        </>
+        <Curations curationsInfo={curationsInfo!} />
       ) : (
         <>
-          <Blur />
+          <MatchingComponent eventId={eventId} isCurated={isCurated} />
           <ul className="flex flex-col gap-3">
             <ParticipantCard participantRole="GUEST" isCuration />
             <ParticipantCard participantRole="GUEST" isCuration />
