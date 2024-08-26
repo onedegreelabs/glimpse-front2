@@ -78,7 +78,7 @@ function ParticipantCard({
             </div>
           </div>
         </header>
-        <IntroText intro={intro} />
+        <IntroText intro={intro} id={user?.id} isCuration={isCuration} />
         {isCuration && (
           <div className="absolute -bottom-0.5 left-1/2 h-[11px] w-[86.7%] -translate-x-1/2 transform rounded-t-full bg-yellow-primary" />
         )}

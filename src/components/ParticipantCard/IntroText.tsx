@@ -1,5 +1,6 @@
 'use client';
 
+import { useReadMoreStore } from '@/store/readMoreStore';
 import { useRef, useState } from 'react';
 
 interface ExpandableTextProps {
@@ -36,14 +37,30 @@ function ExpandableText({ intro, isExpanded, showMore }: ExpandableTextProps) {
 
 interface IntroTextProps {
   intro: string;
+  isCuration: boolean;
+  id?: number;
 }
 
-export default function IntroText({ intro }: IntroTextProps) {
+export default function IntroText({ intro, id, isCuration }: IntroTextProps) {
+  const { expandedItems, setExpandedItems } = useReadMoreStore((state) => ({
+    expandedItems: state.expandedItems,
+    setExpandedItems: state.setExpandedItems,
+  }));
+
+  const expandedItemList = isCuration
+    ? expandedItems.curations
+    : expandedItems.participants;
+
   const contentRef = useRef<HTMLDivElement>(null);
-  const [isExpanded, setExpanded] = useState(false);
+  const [isExpanded, setExpanded] = useState(
+    !!(id && expandedItemList.includes(id)),
+  );
 
   const showMore = () => {
     setExpanded(true);
+    if (id) {
+      setExpandedItems(id, isCuration);
+    }
   };
 
   return (
