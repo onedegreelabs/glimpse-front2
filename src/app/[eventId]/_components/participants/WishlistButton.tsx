@@ -30,9 +30,11 @@ function WishlistButton({
   const queryClient = useQueryClient();
   const [isWishlisted, setIsWishlisted] = useState(!!initialWishlisted);
 
-  const toggleWishlist = async (targetUserId: number) => {
-    setIsWishlisted((prev) => !prev);
-    if (isWishlisted) {
+  const toggleWishlist = async (
+    targetUserId: number,
+    isInWishlist: boolean,
+  ) => {
+    if (isInWishlist) {
       await deleteWishlist(targetUserId);
     } else {
       await postWishlist(targetUserId);
@@ -95,8 +97,14 @@ function WishlistButton({
     }
   };
 
-  const { mutate } = useMutation({
-    mutationFn: (targetUserId: number) => toggleWishlist(targetUserId),
+  const { mutate, isPending } = useMutation({
+    mutationFn: ({
+      targetUserId,
+      isInWishlist,
+    }: {
+      targetUserId: number;
+      isInWishlist: boolean;
+    }) => toggleWishlist(targetUserId, isInWishlist),
     onSuccess: () => {
       syncWishlistParticipants();
       syncWishlistCurations();
@@ -106,8 +114,11 @@ function WishlistButton({
   return (
     <button
       type="submit"
-      disabled={!id}
-      onClick={() => mutate(id!)}
+      disabled={!id || isPending}
+      onClick={() => {
+        mutate({ targetUserId: id!, isInWishlist: isWishlisted });
+        setIsWishlisted((prev) => !prev);
+      }}
       aria-label="Add to wishlist"
       className={`flex size-8 items-center justify-center rounded-full ${isWishlisted ? 'fill-yellow-primary stroke-none hover:fill-none hover:stroke-white' : 'fill-none stroke-white hover:stroke-yellow-primary'} ${participantRole === 'HOST' ? 'bg-white/15' : 'bg-gray-B25/30'}`}
     >

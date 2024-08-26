@@ -46,7 +46,7 @@ export default async function middleware(request: NextRequest) {
     }
   }
 
-  if (refreshToken) {
+  if (!accessToken && refreshToken) {
     return handleTokenReissuance(request, refreshToken);
   }
 
