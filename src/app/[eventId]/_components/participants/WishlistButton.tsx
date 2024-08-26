@@ -13,9 +13,8 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { useState } from 'react';
-import dynamic from 'next/dynamic';
 
-const HeartLoading = dynamic(() => import('@/components/HeartLoading'));
+// const HeartLoading = dynamic(() => import('@/components/HeartLoading'));
 
 interface WishlistButtonProps {
   id?: number;
@@ -32,6 +31,7 @@ function WishlistButton({
   const [isWishlisted, setIsWishlisted] = useState(!!initialWishlisted);
 
   const toggleWishlist = async (targetUserId: number) => {
+    setIsWishlisted((prev) => !prev);
     if (isWishlisted) {
       await deleteWishlist(targetUserId);
     } else {
@@ -95,12 +95,11 @@ function WishlistButton({
     }
   };
 
-  const { mutate, isPending } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: (targetUserId: number) => toggleWishlist(targetUserId),
     onSuccess: () => {
       syncWishlistParticipants();
       syncWishlistCurations();
-      setIsWishlisted((prev) => !prev);
     },
   });
 
@@ -112,7 +111,8 @@ function WishlistButton({
       aria-label="Add to wishlist"
       className={`flex size-8 items-center justify-center rounded-full ${isWishlisted ? 'fill-yellow-primary stroke-none hover:fill-none hover:stroke-white' : 'fill-none stroke-white hover:stroke-yellow-primary'} ${participantRole === 'HOST' ? 'bg-white/15' : 'bg-gray-B25/30'}`}
     >
-      {isPending ? <HeartLoading initialState={isWishlisted} /> : <HeartSVG />}
+      <HeartSVG />
+      {/* {isPending ? <HeartLoading initialState={isWishlisted} /> : } */}
     </button>
   );
 }
