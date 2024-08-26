@@ -1,14 +1,14 @@
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
+// import localFont from 'next/font/local';
 import '@/styles/globals.css';
 import ReactQueryProviders from '@/lib/provider/ReactQueryProviders';
 import Background from './_components/Background';
 
-const consola = localFont({
-  src: '../styles/font/Satoshi-Variable.ttf',
-  display: 'swap',
-});
+// const consola = localFont({
+//   src: '../styles/font/Satoshi-Variable.ttf',
+//   display: 'swap',
+// });  ${consola.className}
 
 export const metadata: Metadata = {
   title: 'Glimpse',
@@ -23,7 +23,7 @@ export default function RootLayout({
   // 추후 lang en으로 변경
   return (
     <html lang="ko">
-      <body className={`${consola.className} mx-auto max-w-sm`}>
+      <body className="mx-auto max-w-sm font-[CustomFont]">
         <ReactQueryProviders>
           <Background>{children}</Background>
         </ReactQueryProviders>
