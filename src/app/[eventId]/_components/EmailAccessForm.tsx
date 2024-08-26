@@ -104,7 +104,7 @@ function EmailAccessForm() {
             })}
             type="email"
             placeholder="Enter your registration email"
-            className="w-[246px] rounded-md bg-white p-2 outline outline-1 outline-blue-secondary focus:outline-2"
+            className="w-[246px] rounded-md bg-white px-4 py-[14px] text-sm outline outline-1 outline-blue-secondary focus:outline-2"
           />
         </div>
         <div className="mb-14 flex w-full flex-col gap-4 px-7">

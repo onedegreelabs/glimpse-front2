@@ -5,3 +5,16 @@
 .background-mask {
   mask-image: linear-gradient(to right, black 0%, black 100%);
 }
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('./fonts/Pretendard-Variable.ttf') format('truetype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('./fonts/Satoshi-Variable.ttf') format('truetype');
+  font-style: normal;
+  unicode-range: U+0041-005A, U+0061-007A;
+}

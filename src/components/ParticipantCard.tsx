@@ -24,7 +24,7 @@ function ParticipantCard({
   return (
     <li className="relative">
       <div
-        className={`flex h-40 w-full flex-col rounded-3xl pb-6 pl-5 pr-4 pt-4 ${participantRole === 'HOST' ? 'bg-blue-B70' : 'border-[1.5px] border-solid border-white/20 bg-white/30'}`}
+        className={`flex h-40 w-full flex-col rounded-3xl border-[1px] border-solid pb-6 pl-5 pr-4 pt-4 ${participantRole === 'HOST' ? 'border-white/30 bg-blue-B70/50' : 'border-white/30 bg-white/20'}`}
       >
         <header className="flex w-full">
           <div className="grid w-full grid-cols-[1fr_auto]">

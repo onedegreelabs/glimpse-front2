@@ -8,7 +8,13 @@ import { useRouter } from 'next/navigation';
 import { RefreshSVG } from '@/icons/index';
 import Blur from './Blur';
 
-function MatchingComponent({ eventId }: { eventId: string }) {
+function MatchingComponent({
+  eventId,
+  isCurated,
+}: {
+  eventId: string;
+  isCurated: boolean;
+}) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { isComplete } = useMatchStore((state) => ({
@@ -33,8 +39,8 @@ function MatchingComponent({ eventId }: { eventId: string }) {
     mutate(eventId);
   };
 
-  return isPending ? (
-    <Blur isPending />
+  return isPending || !isCurated ? (
+    <Blur isPending={isPending} />
   ) : (
     <div className="relative ml-auto mr-[50px] size-[1px]">
       <button
