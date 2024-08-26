@@ -7,7 +7,7 @@ async function EventDetails({ eventId }: { eventId: string }) {
     await getEventInfo(eventId);
 
   return (
-    <header className="z-event flex w-full items-center justify-between bg-white px-4 py-5">
+    <header className="z-event flex w-full max-w-sm items-center justify-between bg-white px-4 py-5">
       <div className="flex w-4/5 flex-col gap-3">
         <h1 className="truncate text-sm font-medium text-blue-secondary">
           {title}

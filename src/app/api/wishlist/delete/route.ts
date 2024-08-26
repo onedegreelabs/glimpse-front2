@@ -25,7 +25,6 @@ export const DELETE = async (request: NextRequest) => {
 
   if (!response.ok) {
     const { message, errorCode } = await response.json();
-    console.log(errorCode);
     return NextResponse.json(
       {
         status: response.status,
