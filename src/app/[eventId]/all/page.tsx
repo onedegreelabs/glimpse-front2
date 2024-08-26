@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { ParticipantsResponseDto } from '@/types/types';
 import { getParticipantsInfo } from '@/lib/apis/server/eventsApi';
 import { PARTICIPANTS_TAKE } from '@/constant/constant';
@@ -14,6 +14,7 @@ export default async function page({
   params: { eventId: string };
   searchParams: { search?: string };
 }) {
+  const userId = headers().get('X-User-Id') as string;
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken');
   let participantsInfo: ParticipantsResponseDto | null = null;
@@ -38,6 +39,7 @@ export default async function page({
 
         {participantsInfo ? (
           <Participants
+            userId={Number(userId)}
             initialParticipants={participantsInfo.participants}
             totalItemCount={participantsInfo.totalItemCount}
             eventId={eventId}

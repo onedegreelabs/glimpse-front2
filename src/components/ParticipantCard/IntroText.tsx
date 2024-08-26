@@ -24,7 +24,7 @@ function ExpandableText({ intro, isExpanded, showMore }: ExpandableTextProps) {
             type="button"
             className="text-yellow-primary"
           >
-            more...
+            More...
           </button>
         )}
       </>

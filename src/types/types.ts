@@ -75,3 +75,13 @@ export interface CurationsResponseDto {
   latestCuratedAt: number;
   participants: CuratedParticipantDto[];
 }
+
+export interface TokenInfo {
+  userId: number;
+  name: string;
+  email: string;
+  method: string;
+  role: string;
+  iat: number;
+  exp: number;
+}

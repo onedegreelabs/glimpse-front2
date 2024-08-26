@@ -8,11 +8,13 @@ import IntroText from './IntroText';
 type ParticipantCardProps = {
   participantRole: 'HOST' | 'GUEST';
   isCuration?: boolean;
+  userId?: number;
 } & Partial<CuratedParticipantDto>;
 
 function ParticipantCard({
   participantRole,
   user,
+  userId,
   isWishlisted,
   email,
   socialMedia,
@@ -61,11 +63,13 @@ function ParticipantCard({
               </dl>
             </div>
             <div className="flex gap-[6px]">
-              <WishlistButton
-                id={user?.id}
-                participantRole={participantRole}
-                isWishlisted={isWishlisted}
-              />
+              {userId !== user?.id && (
+                <WishlistButton
+                  id={user?.id}
+                  participantRole={participantRole}
+                  isWishlisted={isWishlisted}
+                />
+              )}
               <SocialContainer
                 participantRole={participantRole}
                 email={email}
