@@ -3,7 +3,7 @@ import { ParticipantsResponseDto } from '@/types/types';
 import { getParticipantsInfo } from '@/lib/apis/server/eventsApi';
 import { PARTICIPANTS_TAKE } from '@/constant/constant';
 import { SadFaceSVG } from '@/icons/index';
-import ParticipantCard from '@/components/ParticipantCard';
+import ParticipantCard from '@/components/ParticipantCard/ParticipantCard';
 import SearchParticipants from './_components/SearchParticipants';
 import Participants from '../_components/participants/Participants';
 

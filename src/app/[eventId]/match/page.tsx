@@ -2,7 +2,7 @@ import { getCurationsInfo } from '@/lib/apis/server/eventsApi';
 import { CurationsResponseDto } from '@/types/types';
 import { cookies } from 'next/headers';
 import React from 'react';
-import ParticipantCard from '@/components/ParticipantCard';
+import ParticipantCard from '@/components/ParticipantCard/ParticipantCard';
 import MatchingComponent from './_components/MatchingComponent';
 import Curations from './_components/Curations';
 

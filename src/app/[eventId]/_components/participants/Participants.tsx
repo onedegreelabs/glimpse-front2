@@ -7,7 +7,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { InView } from 'react-intersection-observer';
 import { v4 as uuidv4 } from 'uuid';
-import ParticipantCard from '@/components/ParticipantCard';
+import ParticipantCard from '@/components/ParticipantCard/ParticipantCard';
 import Loading from './Loading';
 
 interface ParticipantsProps {
