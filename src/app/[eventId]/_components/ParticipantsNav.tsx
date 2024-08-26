@@ -24,6 +24,7 @@ function ParticipantsNav({
         src={Logo}
         alt="Glimpse Logo"
         className="absolute right-[14px] top-[14px]"
+        priority
       />
       <div className="flex w-full gap-[30px]">
         <Link

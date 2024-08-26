@@ -28,17 +28,17 @@ export default function Error({
         <button
           type="button"
           onClick={() => router.back()}
-          className="border-main-color w-56 rounded-[3rem] border border-solid py-3 text-center"
+          className="w-56 rounded-[10px] bg-yellow-primary py-[22px] text-center text-blue-secondary"
         >
-          이전 페이지로 이동
+          Go Back
         </button>
 
         <button
           type="button"
           onClick={() => reset()}
-          className="border-main-color w-56 rounded-[3rem] border border-solid py-3"
+          className="w-56 rounded-[10px] bg-gray-B30/20 py-[22px] text-center text-white/40"
         >
-          재시도
+          Retry
         </button>
       </div>
     </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import ParticipantCard from '@/components/ParticipantCard';
+import ParticipantCard from '@/components/ParticipantCard/ParticipantCard';
 import { CurationsResponseDto } from '@/types/types';
 import { useQuery } from '@tanstack/react-query';
 

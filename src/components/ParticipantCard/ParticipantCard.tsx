@@ -1,17 +1,20 @@
 import { CommentSVG, DefaultProfileSVG } from '@/icons/index';
 import { CuratedParticipantDto } from '@/types/types';
 import Image from 'next/image';
-import SocialContainer from '../app/[eventId]/_components/participants/SocialContainer';
-import WishlistButton from '../app/[eventId]/_components/participants/WishlistButton';
+import SocialContainer from '../../app/[eventId]/_components/participants/SocialContainer';
+import WishlistButton from '../../app/[eventId]/_components/participants/WishlistButton';
+import IntroText from './IntroText';
 
 type ParticipantCardProps = {
   participantRole: 'HOST' | 'GUEST';
   isCuration?: boolean;
+  userId?: number;
 } & Partial<CuratedParticipantDto>;
 
 function ParticipantCard({
   participantRole,
   user,
+  userId,
   isWishlisted,
   email,
   socialMedia,
@@ -50,7 +53,9 @@ function ParticipantCard({
                   </span>
                 )}
               </div>
-              <dl className="flex w-full min-w-0 flex-col justify-center">
+              <dl
+                className={`flex w-full min-w-0 flex-col ${participantRole === 'HOST' ? 'justify-center' : ''}`}
+              >
                 <dt className="truncate text-lg font-bold">{name}</dt>
                 <dd className="truncate text-xs text-white/60">
                   {jobs.map((job) => job.name).join(', ')}
@@ -58,11 +63,13 @@ function ParticipantCard({
               </dl>
             </div>
             <div className="flex gap-[6px]">
-              <WishlistButton
-                id={user?.id}
-                participantRole={participantRole}
-                isWishlisted={isWishlisted}
-              />
+              {userId !== user?.id && (
+                <WishlistButton
+                  id={user?.id}
+                  participantRole={participantRole}
+                  isWishlisted={isWishlisted}
+                />
+              )}
               <SocialContainer
                 participantRole={participantRole}
                 email={email}
@@ -71,7 +78,7 @@ function ParticipantCard({
             </div>
           </div>
         </header>
-        <p className="mt-4 line-clamp-2 text-sm">{intro}</p>
+        <IntroText intro={intro} id={user?.id} isCuration={isCuration} />
         {isCuration && (
           <div className="absolute -bottom-0.5 left-1/2 h-[11px] w-[86.7%] -translate-x-1/2 transform rounded-t-full bg-yellow-primary" />
         )}

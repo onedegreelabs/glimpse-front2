@@ -33,7 +33,7 @@ function SearchParticipants({
         type="search"
         value={searchValue}
         className="peer h-12 w-full rounded-2xl py-4 pl-[42px] pr-4 font-medium text-black outline-none placeholder:text-sm placeholder:text-gray-B70 search-cancel:hidden"
-        placeholder="Search in app"
+        placeholder="Search anything in profile"
         onChange={changeHandler}
         aria-label="Search participants"
         onKeyDown={searchHandler}

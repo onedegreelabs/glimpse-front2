@@ -7,7 +7,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { InView } from 'react-intersection-observer';
 import { v4 as uuidv4 } from 'uuid';
-import ParticipantCard from '@/components/ParticipantCard';
+import ParticipantCard from '@/components/ParticipantCard/ParticipantCard';
 import Loading from './Loading';
 
 interface ParticipantsProps {
@@ -15,6 +15,7 @@ interface ParticipantsProps {
   initialParticipants: EventParticipantProfileCardDto[];
   totalItemCount: number;
   search?: string;
+  userId: number;
 }
 
 function Participants({
@@ -22,6 +23,7 @@ function Participants({
   totalItemCount,
   eventId,
   search,
+  userId,
 }: ParticipantsProps) {
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery({
@@ -71,7 +73,12 @@ function Participants({
   return (
     <ul className="flex flex-col gap-3">
       {participants.map((info) => (
-        <ParticipantCard key={info.id} {...info} participantRole={info.role} />
+        <ParticipantCard
+          key={info.id}
+          {...info}
+          participantRole={info.role}
+          userId={userId}
+        />
       ))}
       {isFetchingNextPage ? (
         Array.from({ length: PARTICIPANTS_TAKE }, () => (

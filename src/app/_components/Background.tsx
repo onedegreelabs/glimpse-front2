@@ -6,7 +6,7 @@ function Background({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="relative min-h-dvh bg-background">
+    <div className="relative grid min-h-dvh bg-background">
       <Gradient />
       {children}
     </div>
