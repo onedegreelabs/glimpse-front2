@@ -22,9 +22,9 @@ function ParticipantCard({
   intro = 'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...',
 }: ParticipantCardProps) {
   return (
-    <li className="relative">
+    <li className="relative flex flex-col items-center">
       <div
-        className={`flex h-40 w-full flex-col rounded-3xl border-[1px] border-solid pb-6 pl-5 pr-4 pt-4 ${participantRole === 'HOST' ? 'border-white/30 bg-blue-B70/50' : 'border-white/30 bg-white/20'}`}
+        className={`relative flex min-h-40 w-full flex-col rounded-3xl border border-solid pb-6 pl-5 pr-4 pt-4 ${participantRole === 'HOST' ? 'border-white/30 bg-blue-B70/50' : 'border-white/30 bg-white/20'}`}
       >
         <header className="flex w-full">
           <div className="grid w-full grid-cols-[1fr_auto]">
@@ -71,16 +71,16 @@ function ParticipantCard({
             </div>
           </div>
         </header>
-        <p className="mt-4 line-clamp-2 text-xs">{intro}</p>
+        <p className="mt-4 line-clamp-2 text-sm">{intro}</p>
+        {isCuration && (
+          <div className="absolute -bottom-0.5 left-1/2 h-[11px] w-[86.7%] -translate-x-1/2 transform rounded-t-full bg-yellow-primary" />
+        )}
       </div>
       {isCuration && (
-        <>
-          <div className="absolute right-0 top-[142px] h-[18px] w-[86.7%] rounded-tl-md bg-yellow-primary" />
-          <div className="ml-auto grid w-[86.7%] grid-cols-[auto_1fr] items-center gap-[6px] rounded-bl-lg rounded-br-3xl bg-yellow-primary pb-[12px] pl-[14px] pr-[11px] text-xs font-medium text-blue-B50">
-            <CommentSVG className="self-start" />
-            {krComment}
-          </div>
-        </>
+        <div className="mr-[0.1px] grid w-[86.31%] grid-cols-[auto_1fr] items-center gap-[6px] rounded-b-xl bg-yellow-primary pb-[11px] pl-[14px] pr-[11px] pt-[1px] text-xs font-medium text-blue-B50">
+          <CommentSVG className="self-start" />
+          {krComment}
+        </div>
       )}
     </li>
   );
