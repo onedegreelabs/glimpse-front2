@@ -84,7 +84,7 @@ function EmailAccessForm() {
   };
 
   return (
-    <section className="fixed inset-0 z-blur mx-auto max-w-sm bg-gradient-to-b from-transparent from-15% via-white via-60% to-white backdrop-blur-[2px]">
+    <section className="fixed inset-0 z-blur mx-auto max-w-[386px] bg-gradient-to-b from-transparent from-15% via-white via-60% to-white backdrop-blur-[2px]">
       <form
         className="flex size-full flex-col items-center"
         onSubmit={handleSubmit(onSubmit, SubmitError)}
