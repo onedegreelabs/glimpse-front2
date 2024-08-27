@@ -15,6 +15,20 @@ const isTokenExpired = (token: string) => {
   return decoded.userId;
 };
 
+const setCookie = (response: NextResponse, name: string, value: string) => {
+  response.cookies.set(name, value, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV !== 'development',
+    sameSite: 'strict',
+    path: '/',
+  });
+};
+
+const extractUserIdFromToken = (token: string) => {
+  const decoded = jwtDecode<{ sub?: string }>(token) as TokenInfo;
+  return decoded.userId;
+};
+
 const handleTokenReissuance = async (
   request: NextRequest,
   refreshToken?: string,
@@ -23,7 +37,17 @@ const handleTokenReissuance = async (
 
   if (refreshToken) {
     try {
-      return await accessTokenReissuance(refreshToken, response);
+      const { accessToken, refreshToken: newRefreshToken } = await (
+        await accessTokenReissuance(refreshToken)
+      ).json();
+
+      const userId = extractUserIdFromToken(accessToken);
+      response.headers.set('X-User-Id', `${userId}` || '');
+
+      setCookie(response, 'accessToken', accessToken);
+      setCookie(response, 'refreshToken', newRefreshToken);
+
+      return response;
     } catch (error) {
       response.cookies.delete('accessToken');
       response.cookies.delete('refreshToken');
@@ -53,7 +77,9 @@ export default async function middleware(request: NextRequest) {
     } catch (error) {
       return handleTokenReissuance(request, refreshToken);
     }
-  } else if (refreshToken) {
+  }
+
+  if (refreshToken) {
     return handleTokenReissuance(request, refreshToken);
   }
 
