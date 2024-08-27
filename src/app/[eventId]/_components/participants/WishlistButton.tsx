@@ -115,12 +115,12 @@ function WishlistButton({
     <button
       type="submit"
       disabled={!id || isPending}
-      onClick={() => {
-        mutate({ targetUserId: id!, isInWishlist: isWishlisted });
-        setIsWishlisted((prev) => !prev);
+      onClick={async () => {
+        await mutate({ targetUserId: id!, isInWishlist: isWishlisted });
+        setIsWishlisted(!isWishlisted);
       }}
       aria-label="Add to wishlist"
-      className={`flex size-8 items-center justify-center rounded-full ${isWishlisted ? 'fill-yellow-primary stroke-none hover:fill-none hover:stroke-white' : 'fill-none stroke-white hover:stroke-yellow-primary'} ${participantRole === 'HOST' ? 'bg-white/15' : 'bg-gray-B25/30'}`}
+      className={`flex size-8 items-center justify-center rounded-full ${isWishlisted ? 'fill-yellow-primary stroke-none' : 'fill-none stroke-white'} ${participantRole === 'HOST' ? 'bg-white/15' : 'bg-gray-B25/30'}`}
     >
       <HeartSVG />
       {/* {isPending ? <HeartLoading initialState={isWishlisted} /> : } */}

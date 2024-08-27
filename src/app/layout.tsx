@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 // import localFont from 'next/font/local';
 import '@/styles/globals.css';
 import ReactQueryProviders from '@/lib/provider/ReactQueryProviders';
-import Background from './_components/Background';
+import Gradient from './_components/Gradient';
 
 // const consola = localFont({
 //   src: '../styles/font/Satoshi-Variable.ttf',
@@ -23,9 +23,10 @@ export default function RootLayout({
   // 추후 lang en으로 변경
   return (
     <html lang="ko">
-      <body className="mx-auto max-w-sm font-[CustomFont]">
+      <body className="relative mx-auto max-w-sm font-[CustomFont]">
+        <Gradient />
         <ReactQueryProviders>
-          <Background>{children}</Background>
+          <div className="min-h-screen bg-background">{children}</div>
         </ReactQueryProviders>
       </body>
       {process.env.NEXT_PUBLIC_GTM_ID && (

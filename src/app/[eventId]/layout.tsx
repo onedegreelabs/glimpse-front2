@@ -35,11 +35,11 @@ export default async function layout({
   }
 
   return (
-    <main className="relative flex size-full flex-col pb-4">
+    <main className="relative flex min-h-screen w-full flex-col pb-4">
       {!accessToken && <EmailAccessForm />}
       <EventDetails eventId={eventId} />
       {/* 추후 suspensive 적용 */}
-      <section className="relative size-full text-white">
+      <section className="relative size-full flex-grow text-white">
         <ParticipantsNav
           eventId={eventId}
           participantCount={participantsInfo?.totalItemCount}

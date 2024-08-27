@@ -7,7 +7,7 @@ function Gradient() {
   const gap = 100;
 
   return (
-    <div className="fixed mx-auto size-full max-w-sm overflow-clip">
+    <div className="fixed top-0 mx-auto h-dvh w-full max-w-sm overflow-hidden">
       {Array.from({ length: numDivs }).map((_, index) => {
         const translateY = baseHeight * (index + 1) + gap * index;
 
