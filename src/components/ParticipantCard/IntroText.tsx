@@ -94,6 +94,7 @@ export default function IntroText({ intro, id, isCuration }: IntroTextProps) {
             ))
           : intro}
       </div>
+      {!contentRef.current && !isClamped && <div className="h-8" />}
       {isClamped && (
         <button
           type="button"
