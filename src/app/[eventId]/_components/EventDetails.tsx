@@ -1,13 +1,14 @@
 import { ArrowSVG, DateSVG, LocationSVG } from '@/icons/index';
 import { getEventInfo } from '@/lib/apis/server/eventsApi';
 import Link from 'next/link';
+import EventDetailsContainer from './EventDetailsContainer';
 
 async function EventDetails({ eventId }: { eventId: string }) {
   const { title, startAt, externalLink, location, locationType } =
     await getEventInfo(eventId);
 
   return (
-    <header className="z-event flex w-full max-w-sm items-center justify-between bg-white px-4 py-5">
+    <EventDetailsContainer>
       <div className="flex w-4/5 flex-col gap-3">
         <h1 className="truncate text-sm font-medium text-blue-secondary">
           {title}
@@ -31,7 +32,7 @@ async function EventDetails({ eventId }: { eventId: string }) {
         Details
         <ArrowSVG className="size-2 -rotate-45" />
       </Link>
-    </header>
+    </EventDetailsContainer>
   );
 }
 

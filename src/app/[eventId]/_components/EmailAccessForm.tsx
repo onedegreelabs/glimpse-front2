@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { CheckSVG, LockSVG, Spinner1 } from '@/icons/index';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { useEffect, useState } from 'react';
@@ -8,6 +7,8 @@ import { login } from '@/lib/apis/authApi';
 import { FetchError } from '@/types/types';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
+import { useTermsModalStore } from '@/store/termsModalStore';
+import TermsModal from './TermsModal';
 
 function ErrorMessage({
   message,
@@ -46,6 +47,11 @@ function EmailAccessForm() {
     formState: { errors },
   } = useForm<EmailFormInputs>();
 
+  const { isOpen, setIsOpen } = useTermsModalStore((state) => ({
+    isOpen: state.isOpen,
+    setIsOpen: state.setIsOpen,
+  }));
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -81,6 +87,10 @@ function EmailAccessForm() {
     } else if (errors.isAgreedToTerms) {
       setErrorMessage(errors.isAgreedToTerms.message ?? '');
     }
+  };
+
+  const closeTermsModal = () => {
+    setIsOpen(false);
   };
 
   return (
@@ -132,19 +142,21 @@ function EmailAccessForm() {
             </label>
             <div className="text-xs">
               <div>
-                <Link
-                  href="/terms"
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(true)}
                   className="text-blue-secondary underline underline-offset-1"
                 >
                   개인정보수집
-                </Link>{' '}
+                </button>{' '}
                 및{' '}
-                <Link
-                  href="/terms"
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(true)}
                   className="text-blue-secondary underline underline-offset-1"
                 >
                   이용동의
-                </Link>
+                </button>
               </div>
               Consent to Collect and Use Personal Information
             </div>
@@ -168,6 +180,7 @@ function EmailAccessForm() {
           </button>
         </div>
       </form>
+      {isOpen && <TermsModal closeHandler={closeTermsModal} />}
     </section>
   );
 }
