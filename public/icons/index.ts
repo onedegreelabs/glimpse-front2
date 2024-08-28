@@ -49,3 +49,5 @@ export { default as TwitterSVG } from './link/twitter.svg';
 export { default as YoutubeSVG } from './link/youtube.svg';
 
 export { default as GithubSVG } from './link/github.svg';
+
+export { default as ArrowSVG3 } from './arrow3.svg';

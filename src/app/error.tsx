@@ -19,7 +19,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="z-20 my-auto flex flex-col items-center justify-center gap-[18px] text-white/60">
+    <div className="absolute left-1/2 top-1/2 z-20 flex w-full -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center gap-[18px] text-white/60">
       <SadFaceSVG />
       <p className="text-base font-bold">
         An error occurred while loading the page.

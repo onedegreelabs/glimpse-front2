@@ -36,6 +36,16 @@ export default async function page({
           search={searchParams.search ?? ''}
           eventId={eventId}
         />
+        {searchParams.search &&
+          participantsInfo &&
+          participantsInfo.totalItemCount !== 0 && (
+            <div className="my-[18px] flex gap-1 text-base font-medium">
+              <p className="text-yellow-primary">
+                {participantsInfo.totalItemCount}
+              </p>
+              results
+            </div>
+          )}
 
         {participantsInfo ? (
           <Participants

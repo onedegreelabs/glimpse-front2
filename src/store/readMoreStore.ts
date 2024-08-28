@@ -1,35 +1,24 @@
-import { create } from 'zustand';
+import create from 'zustand';
 
 interface ReadMoreStore {
   expandedItems: {
     curations: number[];
     participants: number[];
   };
-  setExpandedItems: (id: number, isCuration: boolean) => void;
+  setExpandedItems: (items: {
+    curations: number[];
+    participants: number[];
+  }) => void;
 }
 
-export const useReadMoreStore = create<ReadMoreStore>((set, get) => ({
+export const useReadMoreStore = create<ReadMoreStore>((set) => ({
   expandedItems: {
     curations: [],
     participants: [],
   },
-  setExpandedItems: (id, isCuration) => {
-    const currentExpandedItems = get().expandedItems;
-
-    if (isCuration) {
-      set({
-        expandedItems: {
-          ...currentExpandedItems,
-          curations: [...currentExpandedItems.curations, id],
-        },
-      });
-    } else {
-      set({
-        expandedItems: {
-          ...currentExpandedItems,
-          participants: [...currentExpandedItems.participants, id],
-        },
-      });
-    }
-  },
+  setExpandedItems: (items) =>
+    set((state) => ({
+      ...state,
+      expandedItems: items,
+    })),
 }));

@@ -30,10 +30,10 @@ function MatchingComponent({
   });
 
   useEffect(() => {
-    if (isComplete) {
+    if (isComplete && !isCurated) {
       mutate(eventId);
     }
-  }, [eventId, isComplete, mutate]);
+  }, [eventId, isComplete, isCurated, mutate]);
 
   const reMachingHandler = () => {
     mutate(eventId);

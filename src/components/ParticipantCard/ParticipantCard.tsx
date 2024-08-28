@@ -27,7 +27,7 @@ function ParticipantCard({
   return (
     <li className="relative flex flex-col items-center">
       <div
-        className={`relative flex min-h-40 w-full flex-col rounded-3xl border border-solid pb-6 pl-5 pr-4 pt-4 ${participantRole === 'HOST' ? 'border-white/30 bg-blue-B70/50' : 'border-white/30 bg-white/20'}`}
+        className={`relative flex min-h-40 w-full flex-col rounded-3xl border border-solid pb-[20px] pl-5 pr-4 pt-4 ${participantRole === 'HOST' ? 'border-white/30 bg-blue-B70/50' : 'border-white/30 bg-white/20'}`}
       >
         <header className="flex w-full">
           <div className="grid w-full grid-cols-[1fr_auto]">
