@@ -4,15 +4,6 @@ import { NextResponse } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
 
-const setCookie = (response: NextResponse, name: string, value: string) => {
-  response.cookies.set(name, value, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV !== 'development',
-    sameSite: 'strict',
-    path: '/',
-  });
-};
-
 const extractUserIdFromToken = (token: string) => {
   const decoded = jwtDecode<{ sub?: string }>(token) as TokenInfo;
   return decoded.userId;
@@ -52,6 +43,10 @@ export const accessTokenReissuance = async (
     throw error;
   }
 
+  response.headers.forEach((value, key) => {
+    nextResponse.headers.set(key, value);
+  });
+
   const { accessToken, refreshToken: newRefreshToken } =
     extractTokensFromHeaders(response.headers);
 
@@ -61,9 +56,7 @@ export const accessTokenReissuance = async (
 
   const userId = extractUserIdFromToken(accessToken);
 
-  response.headers.set('X-User-Id', `${userId}` || '');
-  setCookie(nextResponse, 'accessToken', accessToken);
-  setCookie(nextResponse, 'refreshToken', newRefreshToken);
+  nextResponse.headers.set('X-User-Id', `${userId}` || '');
 
   return nextResponse;
 };

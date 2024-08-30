@@ -25,7 +25,6 @@ export default async function page({
       eventId,
       take: PARTICIPANTS_TAKE,
       lastItemId: 0,
-      accessToken,
       search: searchParams.search ?? '',
     });
   }

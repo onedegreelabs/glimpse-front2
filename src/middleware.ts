@@ -19,14 +19,12 @@ const handleTokenReissuance = async (
   request: NextRequest,
   refreshToken?: string,
 ) => {
-  const response = NextResponse.redirect(request.url);
+  const response = NextResponse.redirect(new URL(request.url));
 
   if (refreshToken) {
     try {
       return await accessTokenReissuance(refreshToken, response);
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('refreshToken:::', error);
       response.cookies.delete('accessToken');
       response.cookies.delete('refreshToken');
       return response;

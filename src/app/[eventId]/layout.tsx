@@ -27,7 +27,6 @@ export default async function layout({
       eventId,
       take: PARTICIPANTS_TAKE,
       lastItemId: 0,
-      accessToken,
     });
 
     curationsInfo = await getCurationsInfo({ eventId, accessToken });

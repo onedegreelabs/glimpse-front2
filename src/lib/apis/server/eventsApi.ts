@@ -6,6 +6,7 @@ import {
   ParticipantsResponseDto,
 } from '@/types/types';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
 
@@ -62,19 +63,20 @@ export const getEventInfo = async (eventId: string): Promise<EventInfo> => {
   }
 };
 
-interface GetParticipantsInfo extends GetParticipantsInfoParams {
-  accessToken: RequestCookie;
-}
-
 export const getParticipantsInfo = cache(
-  async (params: GetParticipantsInfo): Promise<ParticipantsResponseDto> => {
+  async (
+    params: GetParticipantsInfoParams,
+  ): Promise<ParticipantsResponseDto> => {
+    const cookieStore = cookies();
+    const accessToken = cookieStore.get('accessToken');
+
     try {
       const response = await fetch(
         `${END_POINT}/events/${params.eventId}/participants?take=${params.take}&search=${params.search ?? ''}`,
         {
           method: 'GET',
           headers: {
-            Cookie: `accessToken=${params.accessToken.value}`,
+            Cookie: `accessToken=${accessToken?.value}`,
           },
         },
       );
