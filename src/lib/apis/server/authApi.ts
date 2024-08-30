@@ -1,6 +1,22 @@
-import { FetchError } from '@/types/types';
+import { FetchError, TokenInfo } from '@/types/types';
+import { jwtDecode } from 'jwt-decode';
+import { NextResponse } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
+
+const setCookie = (response: NextResponse, name: string, value: string) => {
+  response.cookies.set(name, value, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV !== 'development',
+    sameSite: 'strict',
+    path: '/',
+  });
+};
+
+const extractUserIdFromToken = (token: string) => {
+  const decoded = jwtDecode<{ sub?: string }>(token) as TokenInfo;
+  return decoded.userId;
+};
 
 const extractTokensFromHeaders = (headers: Headers) => {
   const accessToken = headers
@@ -16,7 +32,8 @@ const extractTokensFromHeaders = (headers: Headers) => {
 
 export const accessTokenReissuance = async (
   refreshToken: string,
-): Promise<Response> => {
+  nextResponse: NextResponse<unknown>,
+): Promise<NextResponse> => {
   const response = await fetch(`${END_POINT}/auth/token`, {
     method: 'PUT',
     credentials: 'include',
@@ -35,11 +52,18 @@ export const accessTokenReissuance = async (
     throw error;
   }
 
-  const token = extractTokensFromHeaders(response.headers);
+  const { accessToken, refreshToken: newRefreshToken } =
+    extractTokensFromHeaders(response.headers);
 
-  if (!token.accessToken || !token.refreshToken) {
+  if (!accessToken || !newRefreshToken) {
     throw new Error('토큰 재발급 후 토큰 값 없음');
   }
 
-  return new Response(JSON.stringify(token));
+  const userId = extractUserIdFromToken(accessToken);
+
+  response.headers.set('X-User-Id', `${userId}` || '');
+  setCookie(nextResponse, 'accessToken', accessToken);
+  setCookie(nextResponse, 'refreshToken', newRefreshToken);
+
+  return nextResponse;
 };
