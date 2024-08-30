@@ -108,6 +108,7 @@ function WishlistButton({
     onSuccess: () => {
       syncWishlistParticipants();
       syncWishlistCurations();
+      setIsWishlisted(!isWishlisted);
     },
   });
 
@@ -115,9 +116,8 @@ function WishlistButton({
     <button
       type="submit"
       disabled={!id || isPending}
-      onClick={async () => {
-        await mutate({ targetUserId: id!, isInWishlist: isWishlisted });
-        setIsWishlisted(!isWishlisted);
+      onClick={() => {
+        mutate({ targetUserId: id!, isInWishlist: isWishlisted });
       }}
       aria-label="Add to wishlist"
       className={`flex size-8 items-center justify-center rounded-full ${isWishlisted ? 'fill-yellow-primary stroke-none' : 'fill-none stroke-white'} ${participantRole === 'HOST' ? 'bg-white/15' : 'bg-gray-B25/30'}`}
