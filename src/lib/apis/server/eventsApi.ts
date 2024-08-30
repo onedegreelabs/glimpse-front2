@@ -27,13 +27,17 @@ export const getEventInfo = async (eventId: string): Promise<EventInfo> => {
 
     const responseData = await response.json();
 
+    const startAtUTC = new Date(responseData.data.startAt);
+
+    const startAtKST = new Date(startAtUTC.getTime() + 9 * 60 * 60 * 1000);
+
     const formattedDate = new Intl.DateTimeFormat('en-US', {
       hour: 'numeric',
       minute: 'numeric',
       hour12: true,
       month: 'short',
       day: '2-digit',
-    }).format(new Date(responseData.data.startAt));
+    }).format(startAtKST);
 
     return {
       id: responseData.data.id,
