@@ -22,7 +22,7 @@ export const PUT = async (request: NextRequest) => {
   if (!response.ok) {
     const { message, errorCode } = await response.json();
 
-    return NextResponse.json(
+    const nextResponse = NextResponse.json(
       {
         status: response.status,
         message,
@@ -30,6 +30,17 @@ export const PUT = async (request: NextRequest) => {
       },
       { status: response.status },
     );
+
+    nextResponse.headers.append(
+      'Set-Cookie',
+      'accessToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict',
+    );
+    nextResponse.headers.append(
+      'Set-Cookie',
+      'refreshToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict',
+    );
+
+    return nextResponse;
   }
 
   const { statusCode, data } = await response.json();
