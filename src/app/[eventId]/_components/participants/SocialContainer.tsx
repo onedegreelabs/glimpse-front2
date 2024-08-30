@@ -74,7 +74,9 @@ function SocialContainer({
           </li>
           {socialList.map(({ id, type, url }) => (
             <li key={id}>
-              <Link href={url}>{SOCIAL_SVG[type]}</Link>
+              <Link href={url} target="_blank">
+                {SOCIAL_SVG[type]}
+              </Link>
             </li>
           ))}
         </ul>
