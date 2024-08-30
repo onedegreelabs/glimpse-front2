@@ -2,7 +2,7 @@
 
 import { ArrowSVG3 } from '@/icons/index';
 import { useReadMoreStore } from '@/store/readMoreStore';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 interface IntroTextProps {
@@ -25,22 +25,9 @@ export default function IntroText({ intro, id, isCuration }: IntroTextProps) {
   const [isExpanded, setExpanded] = useState(
     !!(id && expandedItemList.includes(id)),
   );
-  // const [isClamped, setClamped] = useState(false);
+  const isClamped = useMemo(() => intro.length > 60, [intro.length]);
 
   const paragraphs = intro.split('\n');
-
-  // useEffect(() => {
-  //   function handleResize() {
-  //     if (contentRef.current) {
-  //       setClamped(
-  //         contentRef.current.scrollHeight > contentRef.current.clientHeight ||
-  //           contentRef.current.clientHeight > 190,
-  //       );
-  //     }
-  //   }
-
-  //   handleResize();
-  // }, []);
 
   const toggleHandler = () => {
     if (!id) return;
@@ -91,15 +78,18 @@ export default function IntroText({ intro, id, isCuration }: IntroTextProps) {
             ))
           : intro}
       </div>
-      {!contentRef.current && <div className="h-8" />}
-      <button
-        type="button"
-        className="text-title flex items-center gap-1 self-end rounded-full bg-white/20 py-2 pl-[10px] pr-2 text-xs font-bold"
-        onClick={toggleHandler}
-      >
-        {isExpanded ? 'see less' : 'see more'}
-        <ArrowSVG3 className={`${isExpanded ? 'rotate-180' : ''} transform`} />
-      </button>
+      {isClamped && (
+        <button
+          type="button"
+          className="text-title flex items-center gap-1 self-end rounded-full bg-white/20 py-2 pl-[10px] pr-2 text-xs font-bold"
+          onClick={toggleHandler}
+        >
+          {isExpanded ? 'see less' : 'see more'}
+          <ArrowSVG3
+            className={`${isExpanded ? 'rotate-180' : ''} transform`}
+          />
+        </button>
+      )}
     </div>
   );
 }
