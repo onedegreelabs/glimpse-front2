@@ -105,11 +105,6 @@ function WishlistButton({
       targetUserId: number;
       isInWishlist: boolean;
     }) => toggleWishlist(targetUserId, isInWishlist),
-    onSuccess: () => {
-      syncWishlistParticipants();
-      syncWishlistCurations();
-      setIsWishlisted(!isWishlisted);
-    },
   });
 
   return (
@@ -118,6 +113,9 @@ function WishlistButton({
       disabled={!id || isPending}
       onClick={() => {
         mutate({ targetUserId: id!, isInWishlist: isWishlisted });
+        syncWishlistParticipants();
+        syncWishlistCurations();
+        setIsWishlisted(!isWishlisted);
       }}
       aria-label="Add to wishlist"
       className={`flex size-8 items-center justify-center rounded-full ${isWishlisted ? 'fill-yellow-primary stroke-none' : 'fill-none stroke-white'} ${participantRole === 'HOST' ? 'bg-white/15' : 'bg-gray-B25/30'}`}
