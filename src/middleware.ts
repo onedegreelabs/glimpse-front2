@@ -19,23 +19,25 @@ const handleTokenReissuance = async (
   request: NextRequest,
   refreshToken?: string,
 ) => {
-  const loginUrl = new URL('/refresh', request.url);
-  loginUrl.searchParams.set('from', request.nextUrl.pathname);
-  const response = NextResponse.redirect(loginUrl);
+  const nextResponse = NextResponse.next();
 
   if (refreshToken) {
     try {
+      const loginUrl = new URL('/refresh', request.url);
+      loginUrl.searchParams.set('from', request.nextUrl.pathname);
+      const response = NextResponse.redirect(loginUrl);
+
       return await accessTokenReissuance(refreshToken, response);
     } catch (error) {
-      response.cookies.delete('accessToken');
-      response.cookies.delete('refreshToken');
-      return response;
+      nextResponse.cookies.delete('accessToken');
+      nextResponse.cookies.delete('refreshToken');
+      return nextResponse;
     }
   }
 
-  response.cookies.delete('accessToken');
-  response.cookies.delete('refreshToken');
-  return response;
+  nextResponse.cookies.delete('accessToken');
+  nextResponse.cookies.delete('refreshToken');
+  return nextResponse;
 };
 
 export default async function middleware(request: NextRequest) {

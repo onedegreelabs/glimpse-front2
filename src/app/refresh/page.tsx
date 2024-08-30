@@ -9,7 +9,7 @@ function Page({ searchParams }: { searchParams: { from?: string } }) {
 
   useEffect(() => {
     router.push(searchParams.from ?? '/404');
-  }, [router, searchParams.from]);
+  }, []);
 
   return (
     <main className="relative h-screen w-full">
