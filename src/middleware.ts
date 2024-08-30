@@ -25,7 +25,7 @@ const handleTokenReissuance = async (
   const nextResponse = NextResponse.redirect(request.url);
 
   if (refreshToken) {
-    const loginUrl = new URL('/refresh', request.url);
+    const loginUrl = new URL('/refresh', request.nextUrl);
     loginUrl.searchParams.set('from', request.nextUrl.pathname);
     return NextResponse.redirect(loginUrl);
   }
