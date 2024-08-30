@@ -36,5 +36,5 @@ export const reissue = async () => {
     throw error;
   }
 
-  return '';
+  return '200';
 };
