@@ -40,9 +40,6 @@ export default function IntroText({ intro, id, isCuration }: IntroTextProps) {
     }
 
     handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const toggleHandler = () => {
