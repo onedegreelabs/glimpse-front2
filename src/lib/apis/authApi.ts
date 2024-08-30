@@ -35,4 +35,6 @@ export const reissue = async () => {
     error.errorCode = errorData.errorCode || 'UNKNOWN_ERROR';
     throw error;
   }
+
+  return '';
 };

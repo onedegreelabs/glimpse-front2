@@ -1,10 +1,13 @@
 import { jwtDecode } from 'jwt-decode';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { accessTokenReissuance } from './lib/apis/server/authApi';
 import { TokenInfo } from './types/types';
 
 const isTokenExpired = (token: string) => {
+  if (!token || token.split('.').length !== 3) {
+    throw new Error('Invalid token format');
+  }
+
   const decoded = jwtDecode<{ exp?: number }>(token) as TokenInfo;
   const currentTime = Date.now() / 1000;
 
@@ -12,27 +15,19 @@ const isTokenExpired = (token: string) => {
     throw new Error('accessToken expired');
   }
 
-  return decoded.userId;
+  return decoded?.userId;
 };
 
 const handleTokenReissuance = async (
   request: NextRequest,
   refreshToken?: string,
 ) => {
-  const nextResponse = NextResponse.next();
+  const nextResponse = NextResponse.redirect(request.url);
 
   if (refreshToken) {
-    try {
-      const loginUrl = new URL('/refresh', request.url);
-      loginUrl.searchParams.set('from', request.nextUrl.pathname);
-      const response = NextResponse.redirect(loginUrl);
-
-      return await accessTokenReissuance(refreshToken, response);
-    } catch (error) {
-      nextResponse.cookies.delete('accessToken');
-      nextResponse.cookies.delete('refreshToken');
-      return nextResponse;
-    }
+    const loginUrl = new URL('/refresh', request.url);
+    loginUrl.searchParams.set('from', request.nextUrl.pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
   nextResponse.cookies.delete('accessToken');
