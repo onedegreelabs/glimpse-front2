@@ -6,6 +6,7 @@ import { SadFaceSVG } from '@/icons/index';
 import ParticipantCard from '@/components/ParticipantCard/ParticipantCard';
 import SearchParticipants from './_components/SearchParticipants';
 import Participants from '../_components/participants/Participants';
+import EmailAccessForm from '../_components/EmailAccessForm';
 
 export default async function page({
   params: { eventId },
@@ -31,6 +32,7 @@ export default async function page({
 
   return (
     <>
+      {!accessToken && <EmailAccessForm />}
       <div className="px-6">
         <SearchParticipants
           search={searchParams.search ?? ''}

@@ -140,7 +140,7 @@ function EmailAccessForm() {
             >
               <CheckSVG className="size-4" />
             </label>
-            <div className="text-xs">
+            <div className="text-xs text-gray-B80">
               <div>
                 <button
                   type="button"

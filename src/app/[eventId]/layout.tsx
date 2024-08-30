@@ -6,7 +6,6 @@ import {
 } from '@/lib/apis/server/eventsApi';
 import { PARTICIPANTS_TAKE } from '@/constant/constant';
 import ScrollUpBtn from '@/components/ScrollUpBtn';
-import EmailAccessForm from './_components/EmailAccessForm';
 import EventDetails from './_components/EventDetails';
 import ParticipantsNav from './_components/ParticipantsNav';
 import MatchSlide from './_components/MatchSlide';
@@ -36,7 +35,6 @@ export default async function layout({
 
   return (
     <main className="relative flex min-h-screen w-full flex-col pb-4">
-      {!accessToken && <EmailAccessForm />}
       <EventDetails eventId={eventId} />
       {/* 추후 suspensive 적용 */}
       <section className="relative size-full flex-grow text-white">

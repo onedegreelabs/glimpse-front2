@@ -35,6 +35,7 @@ const config: Config = {
           B40: '#DFDFDF',
           B60: '#ACACAC',
           B70: '#95959D',
+          B80: '#555555',
         },
         background: '#091C53',
       },
