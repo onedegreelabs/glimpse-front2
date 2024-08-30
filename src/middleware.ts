@@ -19,7 +19,7 @@ const handleTokenReissuance = async (
   request: NextRequest,
   refreshToken?: string,
 ) => {
-  const response = NextResponse.redirect(request.url);
+  const response = NextResponse.redirect(new URL(request.url));
 
   if (refreshToken) {
     try {
