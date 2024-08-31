@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-function Notification() {
+function Notification({ accessToken }: { accessToken?: string }) {
   useEffect(() => {
     const isChecked = localStorage.getItem('isChecked');
     const now = new Date();
@@ -10,7 +10,7 @@ function Notification() {
     const fivePM = new Date();
     fivePM.setHours(17, 0, 0, 0);
 
-    if (isChecked || now > fivePM) return;
+    if (isChecked || now > fivePM || accessToken) return;
 
     if (
       // eslint-disable-next-line no-alert
