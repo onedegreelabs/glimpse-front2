@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import '@/styles/globals.css';
 import ReactQueryProviders from '@/lib/provider/ReactQueryProviders';
 import Gradient from './_components/Gradient';
+import Notification from './_components/Notification';
 
 // const consola = localFont({
 //   src: '../styles/font/Satoshi-Variable.ttf',
@@ -23,6 +24,7 @@ export default function RootLayout({
   // 추후 lang en으로 변경
   return (
     <html lang="ko">
+      <Notification />
       <body className="relative mx-auto max-w-sm font-[CustomFont]">
         <Gradient />
         <ReactQueryProviders>
