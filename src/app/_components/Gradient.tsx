@@ -1,10 +1,17 @@
+'use client';
+
+import { HIDE_GRADIENT_PATHNAME } from '@/constant/constant';
+import { usePathname } from 'next/navigation';
 import { Fragment } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 function Gradient() {
+  const pathname = usePathname();
   const numDivs = 4;
   const baseHeight = 320;
   const gap = 100;
+
+  if (HIDE_GRADIENT_PATHNAME.includes(pathname)) return null;
 
   return (
     <div className="fixed top-0 mx-auto h-dvh w-full max-w-sm overflow-hidden">
