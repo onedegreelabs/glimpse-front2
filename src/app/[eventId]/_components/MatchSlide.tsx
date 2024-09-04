@@ -60,8 +60,8 @@ function MatchSlide() {
             <p className="select-none text-lg font-bold">Go match</p>
           </div>
           <div className="absolute right-6 flex gap-1">
-            <ArrowSVG2 />
-            <ArrowSVG2 />
+            <ArrowSVG2 className="h-4 w-[9px] stroke-white" />
+            <ArrowSVG2 className="h-4 w-[9px] stroke-white" />
           </div>
         </motion.div>
         {currenPathname === 'match' && (

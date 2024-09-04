@@ -51,3 +51,5 @@ export { default as YoutubeSVG } from './link/youtube.svg';
 export { default as GithubSVG } from './link/github.svg';
 
 export { default as ArrowSVG3 } from './arrow3.svg';
+
+export { default as PlusSVG } from './plus.svg';

@@ -30,6 +30,7 @@ const config: Config = {
         },
         gray: {
           B25: '#F3F3F3',
+          B27: '#F6F6F6',
           B30: '#EFEFEF',
           B35: '#E4E4E4',
           B40: '#DFDFDF',
