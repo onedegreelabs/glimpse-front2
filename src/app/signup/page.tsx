@@ -7,10 +7,11 @@ import {
   TelegramSVG,
   WebSVG,
 } from '@/icons/index';
+import { getJobCategories } from '@/lib/apis/server/userApi';
 import ProfileImage from './_components/ProfileImage';
 import JobCategory from './_components/JobCategory';
 
-function SignupPage() {
+async function SignupPage() {
   const SOCIAL_LIST = [
     { svg: <WebSVG className="size-6" />, id: 'website' },
     { svg: <InstagramSVG className="size-6" />, id: 'Instagram' },
@@ -26,6 +27,8 @@ function SignupPage() {
       id: 'URL',
     },
   ];
+
+  const jobCategories = await getJobCategories();
 
   return (
     <main className="text-gr min-h-screen w-full bg-white text-gray-B80">
@@ -56,7 +59,7 @@ function SignupPage() {
           </div>
         </div>
         <h2 className="mb-4 text-base font-bold text-blue-B50">Job category</h2>
-        <JobCategory />
+        <JobCategory jobCategories={jobCategories} />
         <h2 className="mb-4 text-base font-bold text-blue-B50">Job title</h2>
         <input
           className="mb-[30px] h-[54px] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"

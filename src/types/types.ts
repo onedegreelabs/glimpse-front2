@@ -85,3 +85,9 @@ export interface TokenInfo {
   iat: number;
   exp: number;
 }
+
+export interface JobCategorie {
+  id: number;
+  korName: string;
+  engName: string;
+}

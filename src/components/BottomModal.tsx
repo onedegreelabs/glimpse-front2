@@ -38,7 +38,7 @@ function BottomModal({ children, closeHandler }: BottomModalProps) {
     <article className="fixed left-1/2 top-1/2 z-event h-screen w-screen -translate-x-1/2 -translate-y-1/2 transform bg-black/40">
       <section
         ref={ref}
-        className="absolute bottom-0 left-1/2 w-full max-w-sm -translate-x-1/2 transform rounded-t-3xl bg-white px-[26px] pb-[50px] pt-[42px]"
+        className="absolute bottom-0 left-1/2 w-full max-w-sm -translate-x-1/2 transform rounded-t-3xl bg-white pt-[42px]"
       >
         <button
           type="button"
