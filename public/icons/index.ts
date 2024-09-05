@@ -57,3 +57,5 @@ export { default as PlusSVG } from './plus.svg';
 export { default as WebSVG } from './link/web.svg';
 
 export { default as TelegramSVG } from './link/telegram.svg';
+
+export { default as CrossSVG } from './cross.svg';

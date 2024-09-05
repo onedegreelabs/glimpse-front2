@@ -1,6 +1,5 @@
 import {
   ArrowSVG2,
-  ArrowSVG3,
   GithubSVG,
   InstagramSVG,
   LinkSVG,
@@ -9,6 +8,7 @@ import {
   WebSVG,
 } from '@/icons/index';
 import ProfileImage from './_components/ProfileImage';
+import JobCategory from './_components/JobCategory';
 
 function SignupPage() {
   const SOCIAL_LIST = [
@@ -41,7 +41,6 @@ function SignupPage() {
         <h1 className="mb-[50px] text-xl font-bold text-blue-B50">
           Register your profile card
         </h1>
-
         <ProfileImage />
         <input
           className="mb-4 h-[54px] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
@@ -57,13 +56,7 @@ function SignupPage() {
           </div>
         </div>
         <h2 className="mb-4 text-base font-bold text-blue-B50">Job category</h2>
-        <button
-          type="button"
-          className="relative mb-[30px] h-[54px] w-full rounded-2xl border border-solid border-gray-B40 text-sm font-semibold text-gray-B80/55"
-        >
-          Select job category
-          <ArrowSVG3 className="absolute -right-7 top-5 size-16 fill-gray-B40" />
-        </button>
+        <JobCategory />
         <h2 className="mb-4 text-base font-bold text-blue-B50">Job title</h2>
         <input
           className="mb-[30px] h-[54px] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
