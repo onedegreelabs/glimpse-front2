@@ -1,33 +1,10 @@
-import {
-  ArrowSVG2,
-  GithubSVG,
-  InstagramSVG,
-  LinkSVG,
-  LinkedinSVG,
-  TelegramSVG,
-  WebSVG,
-} from '@/icons/index';
+import { ArrowSVG2 } from '@/icons/index';
 import { getJobCategories } from '@/lib/apis/server/userApi';
 import ProfileImage from './_components/ProfileImage';
 import JobCategory from './_components/JobCategory';
+import SocialsLinks from './_components/SocialsLinks';
 
 async function SignupPage() {
-  const SOCIAL_LIST = [
-    { svg: <WebSVG className="size-6" />, id: 'website' },
-    { svg: <InstagramSVG className="size-6" />, id: 'Instagram' },
-    { svg: <LinkedinSVG className="size-6" />, id: 'LinkedIn' },
-    { svg: <GithubSVG className="size-6" />, id: 'GitHub' },
-    { svg: <TelegramSVG className="size-6" />, id: 'Telegram' },
-    {
-      svg: (
-        <div className="flex size-6 items-center justify-center rounded-full bg-blue-B50">
-          <LinkSVG className="size-3 fill-yellow-primary" />
-        </div>
-      ),
-      id: 'URL',
-    },
-  ];
-
   const jobCategories = await getJobCategories();
 
   return (
@@ -72,32 +49,7 @@ async function SignupPage() {
           className="mb-[30px] h-[54px] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
           placeholder="e.g.) Glimpse"
         />
-        <div className="mb-[30px] flex w-full flex-col rounded-2xl border border-solid border-gray-B40 px-4 py-[22px]">
-          <h2 className="mb-4 text-base font-bold text-blue-B50">
-            Socials/Links
-          </h2>
-          {SOCIAL_LIST.map(({ svg, id }) => (
-            <label
-              key={id}
-              htmlFor={id}
-              className="mb-[14px] flex items-center gap-[14px]"
-            >
-              {svg}
-              <input
-                id={id}
-                className="h-[54px] flex-grow rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
-                placeholder={`Enter ${id} address`}
-                type="url"
-              />
-            </label>
-          ))}
-          <button
-            type="button"
-            className="h-14 w-full rounded-3xl bg-yellow-primary text-sm font-semibold text-blue-secondary disabled:bg-gray-B30"
-          >
-            Add links
-          </button>
-        </div>
+        <SocialsLinks />
         <button
           type="submit"
           className="group h-14 w-full rounded-3xl bg-yellow-primary text-sm disabled:bg-gray-B30"
