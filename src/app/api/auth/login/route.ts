@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
 
-export const POST = async (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   if (!END_POINT) {
     return NextResponse.json({
       status: 500,
@@ -13,19 +13,11 @@ export const POST = async (request: NextRequest) => {
   const email = request.nextUrl.searchParams.get('email');
 
   const response = await fetch(`${END_POINT}/auth/token?p=email`, {
-    method: 'POST',
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Basic ${btoa(`${email}: `)}`,
     },
-    body: JSON.stringify({
-      terms: [
-        {
-          id: 2,
-          agreed: true,
-        },
-      ],
-    }),
   });
 
   if (!response.ok) {

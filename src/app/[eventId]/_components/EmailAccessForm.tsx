@@ -1,13 +1,12 @@
 'use client';
 
-import { CheckSVG, LockSVG, Spinner1 } from '@/icons/index';
+import { LockSVG, Spinner1 } from '@/icons/index';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { login } from '@/lib/apis/authApi';
 import { FetchError } from '@/types/types';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
-import { useTermsModalStore } from '@/store/termsModalStore';
 import TermsModal from './TermsModal';
 
 function ErrorMessage({
@@ -34,11 +33,11 @@ function ErrorMessage({
 
 type EmailFormInputs = {
   email: string;
-  isAgreedToTerms: boolean;
 };
 
 function EmailAccessForm() {
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const {
     register,
@@ -46,11 +45,6 @@ function EmailAccessForm() {
     watch,
     formState: { errors },
   } = useForm<EmailFormInputs>();
-
-  const { isOpen, setIsOpen } = useTermsModalStore((state) => ({
-    isOpen: state.isOpen,
-    setIsOpen: state.setIsOpen,
-  }));
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -84,8 +78,6 @@ function EmailAccessForm() {
   const SubmitError: SubmitErrorHandler<EmailFormInputs> = () => {
     if (errors.email) {
       setErrorMessage(errors.email.message ?? '');
-    } else if (errors.isAgreedToTerms) {
-      setErrorMessage(errors.isAgreedToTerms.message ?? '');
     }
   };
 
@@ -94,15 +86,16 @@ function EmailAccessForm() {
   };
 
   return (
-    <section className="fixed inset-0 z-blur mx-auto max-w-[386px] bg-gradient-to-b from-transparent from-15% via-white via-60% to-white text-gray-B80 backdrop-blur-[2px]">
+    <section className="fixed inset-0 z-blur mx-auto max-w-[386px] bg-blue-B50/60 text-gray-B80 backdrop-blur-[8px]">
       <form
         className="flex size-full flex-col items-center"
         onSubmit={handleSubmit(onSubmit, SubmitError)}
       >
-        <div className="mt-16 flex size-full flex-col items-center justify-center gap-3">
+        <div className="mt-16 flex size-full w-[256px] flex-col items-center justify-center gap-3">
           <LockSVG />
-          <p className="mb-[18px] max-w-[262px] text-center font-bold text-blue-secondary">
-            Unlock to view participants profiles and find your matches!
+          <p className="mb-[40px] text-center font-bold text-yellow-primary">
+            Register your profile card to view participants profiles and find
+            your matches!
           </p>
           <input
             {...register('email', {
@@ -113,60 +106,13 @@ function EmailAccessForm() {
               },
             })}
             type="email"
-            placeholder="Enter your registration email"
-            className="w-[246px] rounded-md bg-white px-4 py-[14px] text-sm outline outline-1 outline-blue-secondary focus:outline-2"
+            placeholder="Enter your email"
+            className="w-full rounded-2xl bg-white px-4 py-[14px] text-sm outline outline-1 outline-blue-secondary focus:outline-2"
           />
-        </div>
-        <div className="mb-14 flex w-full flex-col gap-4 px-7">
-          <div className="relative flex gap-2">
-            {errorMessage && (
-              <ErrorMessage
-                message={errorMessage}
-                onClose={() => setErrorMessage('')}
-              />
-            )}
-            <input
-              {...register('isAgreedToTerms', {
-                required: 'You must agree to the terms and conditions.',
-              })}
-              id="agreement"
-              type="checkbox"
-              className="peer hidden"
-            />
-            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-            <label
-              htmlFor="agreement"
-              className="size-4 cursor-pointer rounded-sm border border-solid border-gray-500 fill-none peer-checked:bg-yellow-primary peer-checked:fill-blue-secondary"
-            >
-              <CheckSVG className="size-4" />
-            </label>
-            <div className="text-xs">
-              <div>
-                <button
-                  type="button"
-                  onClick={() => setIsOpen(true)}
-                  className="text-blue-secondary underline underline-offset-1"
-                >
-                  개인정보수집
-                </button>{' '}
-                및{' '}
-                <button
-                  type="button"
-                  onClick={() => setIsOpen(true)}
-                  className="text-blue-secondary underline underline-offset-1"
-                >
-                  이용동의
-                </button>
-              </div>
-              Consent to Collect and Use Personal Information
-            </div>
-          </div>
           <button
             type="submit"
-            disabled={
-              !(watch('email') && watch('isAgreedToTerms')) || isPending
-            }
-            className="group h-14 w-full rounded-lg bg-yellow-primary disabled:bg-gray-B30"
+            disabled={!watch('email') || isPending}
+            className="group h-[54px] w-full rounded-2xl bg-yellow-primary disabled:bg-gray-B30"
           >
             {isPending ? (
               <div className="flex items-center justify-center">
@@ -174,10 +120,34 @@ function EmailAccessForm() {
               </div>
             ) : (
               <p className="text-gray-B60 group-enabled:font-bold group-enabled:text-blue-secondary">
-                Unlock
+                Sign In
               </p>
             )}
           </button>
+        </div>
+        <div className="mb-[26px] flex w-full flex-col gap-4 px-7">
+          <div className="relative flex gap-2">
+            {errorMessage && (
+              <ErrorMessage
+                message={errorMessage}
+                onClose={() => setErrorMessage('')}
+              />
+            )}
+            <div className="text-xs">
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(true)}
+                  className="text-yellow-primary underline underline-offset-1"
+                >
+                  개인정보수집 및 이용동의
+                </button>
+              </div>
+              <p className="text-gray-B65">
+                Consent to Collect and Use Personal Information
+              </p>
+            </div>
+          </div>
         </div>
       </form>
       {isOpen && <TermsModal closeHandler={closeTermsModal} />}

@@ -36,6 +36,7 @@ const config: Config = {
           B40: '#DFDFDF',
           B45: '#CFCFCF',
           B60: '#ACACAC',
+          B65: '#A5A5A5',
           B70: '#95959D',
           B80: '#555555',
         },
