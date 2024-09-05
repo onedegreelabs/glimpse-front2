@@ -86,7 +86,7 @@ export default function IntroText({ intro, id, isCuration }: IntroTextProps) {
         >
           {isExpanded ? 'see less' : 'see more'}
           <ArrowSVG3
-            className={`${isExpanded ? 'rotate-180' : ''} transform`}
+            className={`${isExpanded ? 'rotate-180' : ''} size-3 transform fill-white`}
           />
         </button>
       )}

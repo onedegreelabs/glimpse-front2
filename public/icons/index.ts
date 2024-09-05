@@ -53,3 +53,7 @@ export { default as GithubSVG } from './link/github.svg';
 export { default as ArrowSVG3 } from './arrow3.svg';
 
 export { default as PlusSVG } from './plus.svg';
+
+export { default as WebSVG } from './link/web.svg';
+
+export { default as TelegramSVG } from './link/telegram.svg';
