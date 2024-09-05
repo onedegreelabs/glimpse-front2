@@ -91,19 +91,30 @@ export interface JobCategorie {
   engName: string;
 }
 
-export interface RegisterInputs {
+interface JobCategory {
+  id: number;
+}
+
+export interface SocialMedia {
+  type: string;
+  url: string;
+}
+
+export interface BaseRegisterInputs {
   image: string;
   name: string;
   intro: string;
   jobTitle: string;
-  jobCategory: {
-    id: number;
-  } | null;
   belong: string;
   socialMedia: SocialMedia[];
 }
 
-export interface SocialMedia {
-  type: SocialMediaType;
-  url: string;
+export interface RegisterInputs
+  extends Omit<BaseRegisterInputs, 'jobCategory'> {
+  jobCategory: JobCategory | null;
+}
+
+export interface RegisterFormDataDto
+  extends Omit<BaseRegisterInputs, 'jobCategory'> {
+  jobCategory: JobCategory;
 }

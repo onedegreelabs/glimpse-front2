@@ -13,6 +13,13 @@ function ProfileImage({ onChange }: { onChange: (image: string) => void }) {
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64Image = reader.result as string;
+
+        // const imageData = {
+        //   uri: base64Image,
+        //   type: file.type,
+        //   name: file.name,
+        // };
+
         setProfileImage(base64Image);
         onChange(base64Image);
       };

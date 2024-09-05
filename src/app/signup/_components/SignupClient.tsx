@@ -4,6 +4,8 @@ import { ArrowSVG2 } from '@/icons/index';
 import { JobCategorie, RegisterInputs } from '@/types/types';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import ErrorMessage from '@/components/ErrorMessage';
+import { useMutation } from '@tanstack/react-query';
+import { register } from '@/lib/apis/authApi';
 import ProfileImage from './ProfileImage';
 import JobCategory from './JobCategory';
 import SocialsLinks from './SocialsLinks';
@@ -14,10 +16,47 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
     control,
     clearErrors,
     formState: { errors },
+    watch,
   } = useForm<RegisterInputs>();
 
+  const name = watch('name');
+  const jobTitle = watch('jobTitle');
+  const belong = watch('belong');
+  const jobCategory = watch('jobCategory');
+
+  const isFormValid = !!(name && jobTitle && belong && jobCategory);
+
+  const { mutate: handleSignup } = useMutation({
+    mutationFn: (data: FormData) => register(data),
+    onSuccess: () => {
+      console.log('성공');
+    },
+    onError: () => {
+      console.log('실패');
+    },
+  });
+
   const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
-    console.log(data);
+    if (data.jobCategory) {
+      const formData = new FormData();
+
+      if (data.image) {
+        formData.append('image', data.image);
+      }
+
+      const reqData = {
+        ...data,
+        email: 'test3@test.com',
+        method: 'EMAIL',
+        terms: [{ termId: 2, agreed: true }],
+      };
+
+      console.log(reqData);
+
+      formData.append('data', JSON.stringify(reqData));
+
+      handleSignup(formData);
+    }
   };
 
   return (
@@ -65,6 +104,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
           render={({ field }) => (
             <input
               {...field}
+              type="text"
               placeholder="Name"
               value={field.value}
               onChange={(e) => {
@@ -100,7 +140,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
                 }}
                 className="size-full resize-none px-4 text-sm font-semibold outline-none placeholder:font-medium"
               />
-              <div className="text-gray-B45 px-4 text-right text-xs font-light">
+              <div className="px-4 text-right text-xs font-light text-gray-B45">
                 {field.value.length}/500
               </div>
             </div>
@@ -198,6 +238,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
 
         <button
           type="submit"
+          disabled={!isFormValid}
           className="group h-14 w-full rounded-3xl bg-yellow-primary text-sm disabled:bg-gray-B30"
         >
           <p className="text-gray-B60 group-enabled:font-bold group-enabled:text-blue-secondary">

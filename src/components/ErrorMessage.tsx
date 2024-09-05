@@ -5,9 +5,11 @@ import { FieldErrors } from 'react-hook-form';
 
 function ErrorMessage({
   errors,
+  message = '',
   onClose,
 }: {
   errors: FieldErrors;
+  message?: string;
   onClose: () => void;
 }) {
   useEffect(() => {
@@ -20,7 +22,7 @@ function ErrorMessage({
 
   const firstErrorMessage =
     Object.values(errors).length > 0
-      ? (Object.values(errors)[0]?.message as string)
+      ? ((Object.values(errors)[0]?.message as string) ?? message)
       : '';
 
   return (

@@ -1,25 +1,16 @@
 'use client';
 
-import BottomModal from '@/components/BottomModal';
 import {
   GithubSVG,
   InstagramSVG,
-  LinkSVG,
   LinkedinSVG,
   TelegramSVG,
   WebSVG,
 } from '@/icons/index';
 import { SocialMedia, SocialMediaType } from '@/types/types';
 import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-
-function URLMark() {
-  return (
-    <div className="flex size-6 items-center justify-center rounded-full bg-blue-B50">
-      <LinkSVG className="size-3 fill-yellow-primary" />
-    </div>
-  );
-}
+import URLMark from './URLMark';
+import OtherLink from './OtherLink';
 
 interface SocialsLinksProps {
   socialList: SocialMedia[];
@@ -59,10 +50,7 @@ function SocialsLinks({ socialList, onChange }: SocialsLinksProps) {
       id: 'OTHERS',
     },
   ];
-  const [urls, setUrls] = useState([
-    { id: uuidv4(), url: '' },
-    { id: uuidv4(), url: '' },
-  ]);
+
   const [isOpen, setIsOpen] = useState(false);
 
   const handleCloseModal = () => {
@@ -86,23 +74,6 @@ function SocialsLinks({ socialList, onChange }: SocialsLinksProps) {
     onChange(updatedList);
   };
 
-  const othersChangeHandler = (
-    index: number,
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const newUrls = [...urls];
-    newUrls[index].url = event.target.value;
-    setUrls(newUrls);
-  };
-
-  const handleSave = () => {
-    const updatedSocialMedia = urls.map((item) => ({
-      type: 'OTHERS' as SocialMediaType,
-      url: item.url,
-    }));
-    onChange([...socialList, ...updatedSocialMedia]);
-  };
-
   return (
     <>
       <div className="mb-[30px] flex w-full flex-col rounded-2xl border border-solid border-gray-B40 px-4 py-[22px]">
@@ -120,55 +91,27 @@ function SocialsLinks({ socialList, onChange }: SocialsLinksProps) {
               id={id}
               className="h-[54px] flex-grow rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
               placeholder={`Enter ${placeholder} address`}
-              type="url"
               onChange={(event) =>
                 socialChangeHandler(event, id as SocialMediaType)
               }
             />
           </label>
         ))}
-        {/* <button
+        <button
           type="button"
           onClick={() => setIsOpen(true)}
           className="h-14 w-full rounded-3xl bg-yellow-primary text-sm font-semibold text-blue-secondary disabled:bg-gray-B30"
         >
           Add links
-        </button> */}
+        </button>
       </div>
-      {isOpen && (
-        <BottomModal closeHandler={handleCloseModal}>
-          <div className="flex flex-col gap-[10px] px-[26px] pb-[50px]">
-            <h1 className="mb-3 text-lg font-bold text-blue-B50">
-              Add Socials/Links
-            </h1>
-            {urls.map((item, index) => (
-              // eslint-disable-next-line jsx-a11y/label-has-associated-control
-              <label
-                key={item.id}
-                htmlFor={item.id}
-                className="mb-[14px] flex items-center gap-[14px]"
-              >
-                <URLMark />
-                <input
-                  id={item.id}
-                  className="h-[54px] flex-grow rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
-                  placeholder="Enter URL address"
-                  type="url"
-                  value={item.url}
-                  onChange={(event) => othersChangeHandler(index, event)}
-                />
-              </label>
-            ))}
-            <button
-              type="button"
-              className="mt-4 h-14 w-full rounded-3xl bg-yellow-primary text-sm disabled:bg-gray-B30"
-              onClick={handleSave}
-            >
-              <p className="font-bold text-blue-secondary">Save</p>
-            </button>
-          </div>
-        </BottomModal>
-      )}
+
+      <OtherLink
+        isOpen={isOpen}
+        socialList={socialList}
+        onChange={onChange}
+        handleCloseModal={handleCloseModal}
+      />
     </>
   );
 }
