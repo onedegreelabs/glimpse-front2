@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowSVG2 } from '@/icons/index';
+import { Spinner1 } from '@/icons/index';
 import { JobCategorie, RegisterInputs } from '@/types/types';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import ErrorMessage from '@/components/ErrorMessage';
@@ -9,6 +9,7 @@ import { register } from '@/lib/apis/authApi';
 import ProfileImage from './ProfileImage';
 import JobCategory from './JobCategory';
 import SocialsLinks from './SocialsLinks';
+import SignupHeader from './SignupHeader';
 
 function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
   const {
@@ -19,6 +20,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
     watch,
   } = useForm<RegisterInputs>();
 
+  const formValues = watch();
   const name = watch('name');
   const jobTitle = watch('jobTitle');
   const belong = watch('belong');
@@ -26,7 +28,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
 
   const isFormValid = !!(name && jobTitle && belong && jobCategory);
 
-  const { mutate: handleSignup } = useMutation({
+  const { mutate: handleSignup, isPending } = useMutation({
     mutationFn: (data: FormData) => register(data),
     onSuccess: () => {
       console.log('성공');
@@ -44,14 +46,24 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
         formData.append('image', data.image);
       }
 
+      const modifiedSocialMedia = data.socialMedia
+        .filter(({ url }) => url)
+        .map(({ type, url }) => ({
+          type:
+            ['WEBSITE', 'GITHUB', 'LINKEDIN', 'INSTAGRAM'].includes(type) ||
+            type.startsWith('OTHERS')
+              ? 'OTHERS'
+              : type,
+          url,
+        }));
+
       const reqData = {
         ...data,
-        email: 'test3@test.com',
+        email: 'test5@test.com',
+        socialMedia: modifiedSocialMedia,
         method: 'EMAIL',
         terms: [{ termId: 2, agreed: true }],
       };
-
-      console.log(reqData);
 
       formData.append('data', JSON.stringify(reqData));
 
@@ -61,14 +73,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
 
   return (
     <main className="min-h-screen w-full bg-white text-gray-B80">
-      <header className="my-[6px] px-1 py-[10px]">
-        <button type="button" aria-label="back-router" className="px-1 py-1">
-          <ArrowSVG2 className="size-4 rotate-180 transform stroke-black stroke-2" />
-        </button>
-      </header>
-      <div className="relative h-1 w-full bg-gray-B25">
-        <span className="absolute top-0 h-1 w-4 bg-blue-B50" />
-      </div>
+      <SignupHeader formValues={formValues} />
       <form
         className="w-full px-[26px] pb-[50px] pt-[30px]"
         onSubmit={handleSubmit(onSubmit)}
@@ -238,12 +243,18 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
 
         <button
           type="submit"
-          disabled={!isFormValid}
+          disabled={!isFormValid || isPending}
           className="group h-14 w-full rounded-3xl bg-yellow-primary text-sm disabled:bg-gray-B30"
         >
-          <p className="text-gray-B60 group-enabled:font-bold group-enabled:text-blue-secondary">
-            Start Networking
-          </p>
+          {isPending ? (
+            <div className="flex items-center justify-center">
+              <Spinner1 className="size-6 animate-spin text-white" />
+            </div>
+          ) : (
+            <p className="text-gray-B60 group-enabled:font-bold group-enabled:text-blue-secondary">
+              Start Networking
+            </p>
+          )}
         </button>
       </form>
       {Object.values(errors).length > 0 && (

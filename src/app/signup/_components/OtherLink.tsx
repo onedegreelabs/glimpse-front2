@@ -1,6 +1,7 @@
 import BottomModal from '@/components/BottomModal';
 import { Controller, useForm } from 'react-hook-form';
 import { SocialMedia, SocialMediaType } from '@/types/types';
+import { URL_REGEX } from '@/constant/constant';
 import { useState } from 'react';
 import ErrorMessage from '@/components/ErrorMessage';
 import URLMark from './URLMark';
@@ -87,9 +88,7 @@ function OtherLink({
                 control={control}
                 rules={{
                   pattern: {
-                    value:
-                      // eslint-disable-next-line no-useless-escape
-                      /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([/\w \.-]*)*\/?$/,
+                    value: URL_REGEX,
                     message: 'Please enter a valid URL',
                   },
                 }}
