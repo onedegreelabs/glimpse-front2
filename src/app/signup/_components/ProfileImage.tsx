@@ -1,21 +1,29 @@
 'use client';
 
-import { PlusSVG } from '@/icons/index';
+import { CrossSVG, PlusSVG } from '@/icons/index';
 import Image from 'next/image';
 import { useState } from 'react';
 
-function ProfileImage() {
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+function ProfileImage({ onChange }: { onChange: (image: string) => void }) {
+  const [profileImage, setProfileImage] = useState('');
 
   const uploadImageHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProfileImage(reader.result as string);
+        const base64Image = reader.result as string;
+        setProfileImage(base64Image);
+        onChange(base64Image);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const deleteImageHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setProfileImage('');
+    onChange('');
   };
 
   const handleEditClick = () => {
@@ -34,6 +42,14 @@ function ProfileImage() {
       >
         {profileImage ? (
           <>
+            <button
+              type="button"
+              onClick={deleteImageHandler}
+              aria-label="delete-image"
+              className="absolute -right-3 -top-3"
+            >
+              <CrossSVG className="size-6" />
+            </button>
             <Image
               src={profileImage}
               alt="profile"

@@ -22,17 +22,16 @@ export interface GetParticipantsInfoParams {
   search?: string;
 }
 
+export type SocialMediaType =
+  | 'WEBSITE'
+  | 'GITHUB'
+  | 'LINKEDIN'
+  | 'INSTAGRAM'
+  | 'OTHERS';
+
 export interface SocialMediaDto {
   id: number;
-  type:
-    | 'GITHUB'
-    | 'MEDIUM'
-    | 'FIGMA'
-    | 'LINKEDIN'
-    | 'DRIBBLE'
-    | 'INSTAGRAM'
-    | 'FACEBOOK'
-    | 'OTHERS';
+  type: SocialMediaType;
   url: string;
 }
 
@@ -90,4 +89,21 @@ export interface JobCategorie {
   id: number;
   korName: string;
   engName: string;
+}
+
+export interface RegisterInputs {
+  image: string;
+  name: string;
+  intro: string;
+  jobTitle: string;
+  jobCategory: {
+    id: number;
+  } | null;
+  belong: string;
+  socialMedia: SocialMedia[];
+}
+
+export interface SocialMedia {
+  type: SocialMediaType;
+  url: string;
 }

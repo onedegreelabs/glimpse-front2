@@ -5,7 +5,12 @@ import { ArrowSVG3 } from '@/icons/index';
 import { JobCategorie } from '@/types/types';
 import { useState } from 'react';
 
-function JobCategory({ jobCategories }: { jobCategories: JobCategorie[] }) {
+interface JobCategoryProps {
+  jobCategories: JobCategorie[];
+  onChange: (jobCategory: { id: number } | null) => void;
+}
+
+function JobCategory({ jobCategories, onChange }: JobCategoryProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedJobCategory, setSelectedJobCategory] =
     useState<JobCategorie | null>(null);
@@ -16,6 +21,7 @@ function JobCategory({ jobCategories }: { jobCategories: JobCategorie[] }) {
 
   const handleJobCategoryChange = (jobCategory: JobCategorie) => {
     setSelectedJobCategory(jobCategory);
+    onChange({ id: jobCategory.id });
   };
 
   return (
