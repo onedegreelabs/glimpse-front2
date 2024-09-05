@@ -5,10 +5,10 @@ import {
   InstagramSVG,
   LinkSVG,
   LinkedinSVG,
-  PlusSVG,
   TelegramSVG,
   WebSVG,
 } from '@/icons/index';
+import ProfileImage from './_components/ProfileImage';
 
 function SignupPage() {
   const SOCIAL_LIST = [
@@ -41,21 +41,8 @@ function SignupPage() {
         <h1 className="mb-[50px] text-xl font-bold text-blue-B50">
           Register your profile card
         </h1>
-        <div className="mb-[30px] flex justify-center">
-          <label
-            htmlFor="image-upload"
-            aria-label="input-profile-image"
-            className="flex size-20 cursor-pointer items-center justify-center rounded-full bg-gray-B27"
-          >
-            <PlusSVG />
-            <input
-              id="image-upload"
-              type="file"
-              accept="image/*"
-              className="hidden"
-            />
-          </label>
-        </div>
+
+        <ProfileImage />
         <input
           className="mb-4 h-[54px] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
           placeholder="Name"
