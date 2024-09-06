@@ -9,6 +9,7 @@ import { register } from '@/lib/apis/authApi';
 import { useSignupStore } from '@/store/signupStore';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { eventJoin } from '@/lib/apis/eventsApi';
 import ProfileImage from './ProfileImage';
 import JobCategory from './JobCategory';
 import SocialsLinks from './SocialsLinks';
@@ -33,7 +34,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
     if (!(userInfo.email || userInfo.eventId)) {
       router.back();
     }
-  }, []);
+  }, [router, userInfo.email, userInfo.eventId]);
 
   const formValues = watch();
   const name = watch('name');
@@ -43,10 +44,18 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
 
   const isFormValid = !!(name && jobTitle && belong && jobCategory);
 
-  const { mutate: handleSignup, isPending } = useMutation({
+  const { mutate: handleEventJoin, isPending: eventJoinPending } = useMutation({
+    mutationFn: () => eventJoin(userInfo.eventId),
+    onSuccess: () => {
+      router.push(`/${userInfo.eventId}/all`);
+      router.refresh();
+    },
+  });
+
+  const { mutate: handleSignup, isPending: signupPending } = useMutation({
     mutationFn: (data: FormData) => register(data),
     onSuccess: () => {
-      console.log('성공');
+      handleEventJoin();
     },
     onError: () => {
       console.log('실패');
@@ -258,10 +267,10 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
 
         <button
           type="submit"
-          disabled={!isFormValid || isPending}
+          disabled={!isFormValid || signupPending || eventJoinPending}
           className="group h-14 w-full rounded-3xl bg-yellow-primary text-sm disabled:bg-gray-B30"
         >
-          {isPending ? (
+          {signupPending || eventJoinPending ? (
             <div className="flex items-center justify-center">
               <Spinner1 className="size-6 animate-spin text-white" />
             </div>

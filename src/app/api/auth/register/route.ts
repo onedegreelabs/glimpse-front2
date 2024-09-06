@@ -10,14 +10,14 @@ export const POST = async (request: NextRequest) => {
     });
   }
 
-  const data = await request.formData();
+  const formData = await request.formData();
 
   const response = await fetch(`${END_POINT}/auth/register`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
     },
-    body: data,
+    body: formData,
   });
 
   if (!response.ok) {
@@ -34,9 +34,33 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
-  const result = await response.json();
+  const { statusCode, data } = await response.json();
 
-  console.log(result);
+  const nextResponse = new NextResponse(
+    JSON.stringify({ status: statusCode, data }),
+    {
+      status: statusCode,
+      headers: { ...response.headers, 'Content-Type': 'application/json' },
+    },
+  );
 
-  return NextResponse.json(result);
+  const cookies = response.headers.get('Set-Cookie');
+  if (cookies) {
+    const cookieArray = cookies.split(/,(?=[^;]*=)/);
+
+    const updatedCookies = cookieArray.map(
+      (cookie) => `${cookie.replace(/; SameSite=[^;]*/g, '')}; SameSite=Strict`,
+    );
+
+    updatedCookies.forEach((cookie) => {
+      nextResponse.headers.append('Set-Cookie', cookie.trim());
+    });
+  } else {
+    return NextResponse.json({
+      status: 500,
+      message: '환경 변수가 설정되지 않았습니다.',
+    });
+  }
+
+  return nextResponse;
 };
