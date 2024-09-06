@@ -18,18 +18,21 @@ function ParticipantCard({
   isWishlisted,
   krComment = 'Park I-cheol is an entrepreneur in the AI.',
   isCuration = false,
-  intro = 'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...',
+  intro: initalIntro,
 }: ParticipantCardProps) {
   const name = user?.name ?? 'Emma Stone';
   const jobs = user?.jobCategory ?? { id: 1, engName: 'Designer' };
   const socialMedia = user?.socialMedia ?? [];
   const jobTitle = user?.jobTitle ?? 'Management & Business';
   const belong = user?.belong ?? 'Glimpse';
+  const intro =
+    initalIntro ??
+    'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...';
 
   return (
     <li className="relative flex flex-col items-center">
       <div
-        className={`relative flex min-h-40 w-full flex-col rounded-3xl border border-solid pb-[20px] pl-5 pr-4 pt-4 ${participantRole === 'HOST' ? 'border-white/30 bg-blue-B70/50' : 'border-white/30 bg-white/20'}`}
+        className={`relative flex min-h-40 w-full flex-col rounded-3xl border border-solid pb-4 pl-5 pr-4 pt-4 ${participantRole === 'HOST' ? 'border-white/30 bg-blue-B70/50' : 'border-white/30 bg-white/20'}`}
       >
         <header className="flex w-full">
           <div className="w-full">
