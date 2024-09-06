@@ -12,14 +12,14 @@ export const POST = async (request: NextRequest) => {
 
   const eventId = request.nextUrl.searchParams.get('eventId');
   const accessToken = request.cookies.get('accessToken')?.value;
-  const reqData = await request.json();
+  const { intro } = await request.json();
 
   const response = await fetch(`${END_POINT}/events/${eventId}/participants`, {
     method: 'POST',
     headers: {
       Cookie: `accessToken=${accessToken}`,
     },
-    body: JSON.stringify({ intro: reqData }),
+    body: JSON.stringify({ intro }),
   });
 
   if (!response.ok) {
