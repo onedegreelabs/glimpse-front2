@@ -6,7 +6,7 @@ import { useMemo, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 interface IntroTextProps {
-  intro: string;
+  intro: string | null;
   isCuration: boolean;
   id?: number;
 }
@@ -25,9 +25,9 @@ export default function IntroText({ intro, id, isCuration }: IntroTextProps) {
   const [isExpanded, setExpanded] = useState(
     !!(id && expandedItemList.includes(id)),
   );
-  const isClamped = useMemo(() => intro.length > 60, [intro.length]);
+  const isClamped = useMemo(() => intro && intro.length > 60, [intro]);
 
-  const paragraphs = intro.split('\n');
+  const paragraphs = intro?.split('\n') ?? [];
 
   const toggleHandler = () => {
     if (!id) return;

@@ -18,16 +18,13 @@ function ParticipantCard({
   isWishlisted,
   krComment = 'Park I-cheol is an entrepreneur in the AI.',
   isCuration = false,
-  intro: initalIntro,
+  intro = 'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...',
 }: ParticipantCardProps) {
   const name = user?.name ?? 'Emma Stone';
   const jobs = user?.jobCategory ?? { id: 1, engName: 'Designer' };
   const socialMedia = user?.socialMedia ?? [];
   const jobTitle = user?.jobTitle ?? 'Management & Business';
   const belong = user?.belong ?? 'Glimpse';
-  const intro =
-    initalIntro ??
-    'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...';
 
   return (
     <li className="relative flex flex-col items-center">
