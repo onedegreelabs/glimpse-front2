@@ -37,7 +37,7 @@ function JobCategory({ jobCategories, onChange }: JobCategoryProps) {
         <ArrowSVG3 className="absolute -right-7 top-5 size-16 fill-gray-B40" />
       </button>
       {isOpen && (
-        <BottomModal closeHandler={handleCloseModal}>
+        <BottomModal closeModal={handleCloseModal}>
           <div className="flex flex-col gap-[10px]">
             <h1 className="mb-1 px-[26px] text-lg font-bold text-blue-B50">
               Job category

@@ -70,7 +70,7 @@ function OtherLink({
 
   return (
     isOpen && (
-      <BottomModal closeHandler={handleCloseModal}>
+      <BottomModal closeModal={handleCloseModal}>
         <div className="flex flex-col gap-[10px] px-[26px] pb-[50px]">
           <h1 className="mb-3 text-lg font-bold text-blue-B50">
             Add Socials/Links
