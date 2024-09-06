@@ -55,7 +55,7 @@ function SocialContainer({
     TWITTER: <TwitterSVG />,
     YOUTUBE: <YoutubeSVG />,
     TELEGRAM: <TelegramSVG className="size-[20px]" />,
-    OTHERS: <URLMark size="size-[20px]" />,
+    OTHERS: <URLMark bgSize="size-[20px]" svgSize="size-[10px]" />,
     WEBSITE: <WebSVG className="size-[20px]" />,
   } as { [key: string]: React.ReactNode };
 
