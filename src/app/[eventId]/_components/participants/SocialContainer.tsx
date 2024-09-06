@@ -14,12 +14,14 @@ import {
   YoutubeSVG,
   GithubSVG,
   TelegramSVG,
+  WebSVG,
 } from '@/icons/index';
 import { useClickAway } from '@uidotdev/usehooks';
 import { useState } from 'react';
 
 import Link from 'next/link';
 import { EventParticipantProfileCardDto, SocialMediaDto } from '@/types/types';
+import URLMark from '@/app/signup/_components/URLMark';
 
 interface SocialContainerProps {
   participantRole: EventParticipantProfileCardDto['role'];
@@ -53,6 +55,8 @@ function SocialContainer({
     TWITTER: <TwitterSVG />,
     YOUTUBE: <YoutubeSVG />,
     TELEGRAM: <TelegramSVG className="size-[20px]" />,
+    OTHERS: <URLMark size="size-[20px]" />,
+    WEBSITE: <WebSVG className="size-[20px]" />,
   } as { [key: string]: React.ReactNode };
 
   return (
@@ -67,7 +71,7 @@ function SocialContainer({
       </button>
       {isOpen && (
         <ul
-          className={`${socialList.length === 0 || (socialList.length >= 2 ? 'grid-cols-[auto_auto_auto]' : 'grid-cols-[auto_auto]')} absolute right-0 mt-1 grid gap-2 rounded-lg bg-white p-2`}
+          className={`${socialList.length === 0 || (socialList.length >= 2 ? 'grid-cols-[auto_auto_auto]' : 'grid-cols-[auto_auto]')} absolute right-0 z-10 mt-1 grid gap-2 rounded-lg bg-white p-2`}
         >
           <li>
             <Link href={`mailto:${email}`}>

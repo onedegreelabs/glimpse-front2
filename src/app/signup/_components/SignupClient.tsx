@@ -83,7 +83,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
   });
 
   const normalizeUrl = (url: string) =>
-    !/^https?:\/\//i.test(url) ? `https://${url}` : url;
+    /^(http|https):\/\//i.test(url) ? url : `https://${url}`;
 
   const processSocialMedia = (data: RegisterInputs) =>
     Object.entries(data)
@@ -120,10 +120,11 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
       const filteredData = Object.fromEntries(
         Object.entries(remainingData).filter(
           ([key]) =>
-            !((key as (typeof SOCIAL_MEDIA_KEYS)[number]) in SOCIAL_MEDIA_KEYS),
+            !SOCIAL_MEDIA_KEYS.includes(
+              key as (typeof SOCIAL_MEDIA_KEYS)[number],
+            ),
         ),
       );
-
       const reqData = {
         ...filteredData,
         email: userInfo.email,
