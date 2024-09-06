@@ -4,7 +4,11 @@ import { CrossSVG, PlusSVG } from '@/icons/index';
 import Image from 'next/image';
 import { useState } from 'react';
 
-function ProfileImage({ onChange }: { onChange: (image: string) => void }) {
+function ProfileImage({
+  onChange,
+}: {
+  onChange: (image: File | null) => void;
+}) {
   const [profileImage, setProfileImage] = useState('');
 
   const uploadImageHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +25,7 @@ function ProfileImage({ onChange }: { onChange: (image: string) => void }) {
         // };
 
         setProfileImage(base64Image);
-        onChange(base64Image);
+        onChange(file);
       };
       reader.readAsDataURL(file);
     }
@@ -30,7 +34,7 @@ function ProfileImage({ onChange }: { onChange: (image: string) => void }) {
   const deleteImageHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setProfileImage('');
-    onChange('');
+    onChange(null);
   };
 
   const handleEditClick = () => {

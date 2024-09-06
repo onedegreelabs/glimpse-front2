@@ -49,13 +49,14 @@ export const postCurations = async ({ eventId }: { eventId: string }) => {
   }
 };
 
-export const eventJoin = async (eventId: string) => {
+export const eventJoin = async (eventId: string, intro: string) => {
   const response = await fetch(`/api/events/eventJoin?eventId=${eventId}`, {
     method: 'POST',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify({ intro }),
   });
 
   if (!response.ok) {

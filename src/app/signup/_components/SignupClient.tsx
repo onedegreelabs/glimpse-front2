@@ -23,6 +23,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
     formState: { errors },
     watch,
     setError,
+    getValues,
   } = useForm<RegisterInputs>();
 
   const router = useRouter();
@@ -46,7 +47,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
   const isFormValid = !!(name && jobTitle && belong && jobCategory);
 
   const { mutate: handleEventJoin, isPending: eventJoinPending } = useMutation({
-    mutationFn: () => eventJoin(userInfo.eventId),
+    mutationFn: () => eventJoin(userInfo.eventId, getValues('intro')),
     onSuccess: () => {
       router.push(`/${userInfo.eventId}/all`);
       router.refresh();
@@ -89,8 +90,10 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
           url,
         }));
 
+      const { image, ...filteredData } = data;
+
       const reqData = {
-        ...data,
+        ...filteredData,
         email: userInfo.email,
         socialMedia: modifiedSocialMedia,
         method: 'EMAIL',

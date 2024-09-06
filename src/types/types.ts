@@ -104,7 +104,7 @@ export interface SocialMedia {
 }
 
 export interface BaseRegisterInputs {
-  image: string;
+  image: File | null;
   name: string;
   intro: string;
   jobTitle: string;

@@ -79,7 +79,7 @@ function ParticipantCard({
                     />
                   </div>
                 </dt>
-                <dd className="flex flex-wrap text-xs text-white/60">
+                <dd className="flex flex-wrap pb-2 text-xs text-white/60">
                   <span className="mr-1">{jobs.engName}</span>
                   <span className="whitespace-nowrap">@ {belong}</span>
                 </dd>
@@ -88,7 +88,7 @@ function ParticipantCard({
           </div>
         </header>
         <span
-          className={`${participantRole === 'HOST' ? 'my-2' : 'mb-2'} w-fit rounded-full bg-white/20 px-2 py-[7px] text-xs`}
+          className={`${participantRole === 'HOST' ? 'my-2' : 'mb-2'} w-fit rounded-full bg-white/20 px-2 py-[5px] text-xs`}
         >
           {jobTitle}
         </span>
