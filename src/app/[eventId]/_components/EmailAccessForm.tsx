@@ -1,6 +1,6 @@
 'use client';
 
-import { LockSVG, Spinner1 } from '@/icons/index';
+import { Spinner1 } from '@/icons/index';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { login } from '@/lib/apis/authApi';
@@ -100,7 +100,6 @@ function EmailAccessForm({ eventId }: { eventId: string }) {
         onSubmit={handleSubmit(onSubmit, SubmitError)}
       >
         <div className="mt-16 flex size-full w-[256px] flex-col items-center justify-center gap-3">
-          <LockSVG />
           <p className="mb-[40px] text-center font-bold text-yellow-primary">
             Register your profile card to view participants profiles and find
             your matches!
@@ -128,7 +127,7 @@ function EmailAccessForm({ eventId }: { eventId: string }) {
               </div>
             ) : (
               <p className="text-gray-B60 group-enabled:font-bold group-enabled:text-blue-secondary">
-                Sign In
+                Register
               </p>
             )}
           </button>
@@ -146,14 +145,16 @@ function EmailAccessForm({ eventId }: { eventId: string }) {
                 <button
                   type="button"
                   onClick={() => setIsOpen(true)}
-                  className="text-yellow-primary underline underline-offset-1"
+                  className="text-left text-yellow-primary underline underline-offset-2"
                 >
-                  개인정보수집 및 이용동의
+                  By registering your profile, you consent to the collection and
+                  use of personal information.
+                  <p>
+                    프로필을 등록하시면 개인정보 수집 및 이용에 동의하시게
+                    됩니다.
+                  </p>
                 </button>
               </div>
-              <p className="text-gray-B65">
-                Consent to Collect and Use Personal Information
-              </p>
             </div>
           </div>
         </div>

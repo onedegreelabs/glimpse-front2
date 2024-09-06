@@ -25,7 +25,7 @@ function SignupHeader({ formValues }: { formValues: RegisterInputs }) {
       </button>
       <div className="relative h-1 w-full bg-gray-B25">
         <span
-          className="absolute top-0 h-1 bg-blue-B50"
+          className="absolute top-0 h-1 max-w-full bg-blue-B50"
           style={{ width: `${progressWidth}%` }}
         />
       </div>

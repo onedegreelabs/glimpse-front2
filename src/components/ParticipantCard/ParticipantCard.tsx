@@ -16,7 +16,8 @@ function ParticipantCard({
   user,
   userId,
   isWishlisted,
-  krComment = 'Park I-cheol is an entrepreneur in the AI.',
+  krComment,
+  enComment = 'Park I-cheol is an entrepreneur in the AI.',
   isCuration = false,
   intro = 'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...',
 }: ParticipantCardProps) {
@@ -97,6 +98,9 @@ function ParticipantCard({
       {isCuration && (
         <div className="mr-[0.1px] grid w-[86.31%] grid-cols-[auto_1fr] items-center gap-[6px] rounded-b-xl bg-yellow-primary pb-[11px] pl-[14px] pr-[11px] pt-[1px] text-xs font-medium text-blue-B50">
           <CommentSVG className="self-start" />
+          {enComment}
+          <br />
+          <br />
           {krComment}
         </div>
       )}

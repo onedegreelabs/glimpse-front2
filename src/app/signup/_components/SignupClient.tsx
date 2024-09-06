@@ -2,7 +2,12 @@
 
 import { Spinner1 } from '@/icons/index';
 import { FetchError, JobCategorie, RegisterInputs } from '@/types/types';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import {
+  Controller,
+  FormProvider,
+  SubmitHandler,
+  useForm,
+} from 'react-hook-form';
 import ErrorMessage from '@/components/ErrorMessage';
 import { useMutation } from '@tanstack/react-query';
 import { register } from '@/lib/apis/authApi';
@@ -10,12 +15,14 @@ import { useSignupStore } from '@/store/signupStore';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { eventJoin } from '@/lib/apis/eventsApi';
+import { SOCIAL_MEDIA_KEYS } from '@/constant/constant';
 import ProfileImage from './ProfileImage';
 import JobCategory from './JobCategory';
 import SocialsLinks from './SocialsLinks';
 import SignupHeader from './SignupHeader';
 
 function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
+  const formMethods = useForm<RegisterInputs>();
   const {
     handleSubmit,
     control,
@@ -24,7 +31,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
     watch,
     setError,
     getValues,
-  } = useForm<RegisterInputs>();
+  } = formMethods;
 
   const router = useRouter();
 
@@ -34,7 +41,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
 
   useEffect(() => {
     if (!(userInfo.email || userInfo.eventId)) {
-      router.back();
+      router.push(`/8d6fdb11-f7cf-4771-a172-71d6da10d72c/all`); // 수정 예정
     }
   }, [router, userInfo.email, userInfo.eventId]);
 
@@ -68,8 +75,36 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
           message: 'This user already exists.',
         });
       }
+
+      // eslint-disable-next-line no-console
+      console.error(error);
+      throw error;
     },
   });
+
+  const normalizeUrl = (url: string) =>
+    /^(http|https):\/\//i.test(url) ? url : `https://${url}`;
+
+  const processSocialMedia = (data: RegisterInputs) =>
+    Object.entries(data)
+      .filter(
+        ([key, value]) =>
+          SOCIAL_MEDIA_KEYS.includes(
+            key as (typeof SOCIAL_MEDIA_KEYS)[number],
+          ) && value,
+      )
+      .map(([key, value]) => ({
+        type: [
+          'WEBSITE',
+          'GITHUB',
+          'LINKEDIN',
+          'INSTAGRAM',
+          'TELEGRAM',
+        ].includes(key)
+          ? key
+          : 'OTHERS',
+        url: normalizeUrl(value),
+      }));
 
   const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
     if (data.jobCategory) {
@@ -79,23 +114,21 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
         formData.append('image', data.image);
       }
 
-      const modifiedSocialMedia = data.socialMedia
-        .filter(({ url }) => url)
-        .map(({ type, url }) => ({
-          type:
-            ['WEBSITE', 'GITHUB', 'LINKEDIN', 'INSTAGRAM'].includes(type) ||
-            type.startsWith('OTHERS')
-              ? 'OTHERS'
-              : type,
-          url,
-        }));
+      const socialMedia = processSocialMedia(data);
 
-      const { image, ...filteredData } = data;
-
+      const { image, ...remainingData } = data;
+      const filteredData = Object.fromEntries(
+        Object.entries(remainingData).filter(
+          ([key]) =>
+            !SOCIAL_MEDIA_KEYS.includes(
+              key as (typeof SOCIAL_MEDIA_KEYS)[number],
+            ),
+        ),
+      );
       const reqData = {
         ...filteredData,
         email: userInfo.email,
-        socialMedia: modifiedSocialMedia,
+        socialMedia,
         method: 'EMAIL',
         terms: [{ termId: 2, agreed: true }],
       };
@@ -215,11 +248,8 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
             },
             validate: {
               validCharacters: (value) => {
-                const isValid = /^[a-zA-Z가-힣]*$/.test(value);
-                return (
-                  isValid ||
-                  'Please enter your name using only Korean or English characters.'
-                );
+                const isValid = /^[a-zA-Z가-힣\s]*$/.test(value);
+                return isValid || 'Special characters are not supported.';
               },
             },
           }}
@@ -267,14 +297,10 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
             />
           )}
         />
-        <Controller
-          name="socialMedia"
-          control={control}
-          defaultValue={[]}
-          render={({ field }) => (
-            <SocialsLinks socialList={field.value} onChange={field.onChange} />
-          )}
-        />
+
+        <FormProvider {...formMethods}>
+          <SocialsLinks />
+        </FormProvider>
 
         <button
           type="submit"

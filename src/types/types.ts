@@ -114,7 +114,15 @@ export interface BaseRegisterInputs {
 }
 
 export interface RegisterInputs
-  extends Omit<BaseRegisterInputs, 'jobCategory'> {
+  extends Omit<BaseRegisterInputs, 'jobCategory' | 'socialMedia'> {
+  WEBSITE: string;
+  INSTAGRAM: string;
+  LINKEDIN: string;
+  GITHUB: string;
+  TELEGRAM: string;
+  OTHERS: string;
+  OTHERS2: string;
+  OTHERS3: string;
   jobCategory: JobCategory | null;
 }
 
