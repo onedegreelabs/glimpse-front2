@@ -13,6 +13,7 @@ import {
   TwitterSVG,
   YoutubeSVG,
   GithubSVG,
+  TelegramSVG,
 } from '@/icons/index';
 import { useClickAway } from '@uidotdev/usehooks';
 import { useState } from 'react';
@@ -41,16 +42,17 @@ function SocialContainer({
   };
 
   const SOCIAL_SVG = {
-    GITHUB: <GithubSVG />,
-    FACEBOOK: <FacebookSVG />,
+    GITHUB: <GithubSVG className="size-[20px]" />,
+    FACEBOOK: <FacebookSVG className="size-[20px]" />,
     GOOGLE: <GoogleSVG />,
-    INSTAGRAM: <InstagramSVG />,
+    INSTAGRAM: <InstagramSVG className="size-[20px]" />,
     LINE: <LineSVG />,
-    LINKEDIN: <LinkedinSVG />,
-    PINTEREST: <PinterestSVG />,
+    LINKEDIN: <LinkedinSVG className="size-[20px]" />,
+    PINTEREST: <PinterestSVG className="size-[20px]" />,
     SKYPE: <SkypeSVG />,
     TWITTER: <TwitterSVG />,
     YOUTUBE: <YoutubeSVG />,
+    TELEGRAM: <TelegramSVG className="size-[20px]" />,
   } as { [key: string]: React.ReactNode };
 
   return (
@@ -61,7 +63,7 @@ function SocialContainer({
         aria-label="Share participant link"
         className={`flex size-8 items-center justify-center rounded-full hover:fill-yellow-primary ${isOpen ? 'fill-yellow-primary' : 'fill-white'} ${participantRole === 'HOST' ? 'bg-white/15' : 'bg-gray-B25/30'}`}
       >
-        <LinkSVG />
+        <LinkSVG className="size-4" />
       </button>
       {isOpen && (
         <ul

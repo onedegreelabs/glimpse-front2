@@ -67,7 +67,7 @@ export default function IntroText({ intro, id, isCuration }: IntroTextProps) {
     <div className="flex flex-col">
       <div
         ref={contentRef}
-        className={`relative mb-3 mt-4 text-sm ${isExpanded ? 'line-clamp-none' : 'line-clamp-2'}`}
+        className={`relative mb-3 text-sm ${isExpanded ? 'line-clamp-none' : 'line-clamp-2'}`}
       >
         {isExpanded
           ? paragraphs.map((line) => (
@@ -86,7 +86,7 @@ export default function IntroText({ intro, id, isCuration }: IntroTextProps) {
         >
           {isExpanded ? 'see less' : 'see more'}
           <ArrowSVG3
-            className={`${isExpanded ? 'rotate-180' : ''} transform`}
+            className={`${isExpanded ? 'rotate-180' : ''} size-3 transform fill-white`}
           />
         </button>
       )}

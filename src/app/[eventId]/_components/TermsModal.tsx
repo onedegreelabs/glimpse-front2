@@ -8,7 +8,7 @@ function TermsModal({ closeHandler }: { closeHandler: () => void }) {
   });
 
   return (
-    <div className="z-60 absolute left-1/2 top-1/2 flex size-full -translate-x-1/2 -translate-y-1/2 transform items-center justify-center bg-black/40 px-6 text-gray-B80">
+    <div className="absolute left-1/2 top-1/2 z-event flex size-full -translate-x-1/2 -translate-y-1/2 transform items-center justify-center bg-black/40 px-6 text-gray-B80">
       <div ref={ref} className="h-[400px] w-full rounded-3xl bg-white p-6">
         <p className="text-sm font-bold">
           Consent to Collect and Use Personal Information

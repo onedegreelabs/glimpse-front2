@@ -48,3 +48,24 @@ export const postCurations = async ({ eventId }: { eventId: string }) => {
     throw error;
   }
 };
+
+export const eventJoin = async (eventId: string, intro: string) => {
+  const response = await fetch(`/api/events/eventJoin?eventId=${eventId}`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ intro }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    const error: FetchError = new Error(
+      errorData.message || '이벤트 참가자 등록 오류',
+    ) as FetchError;
+    error.status = response.status;
+    error.errorCode = errorData.errorCode || 'UNKNOWN_ERROR';
+    throw error;
+  }
+};

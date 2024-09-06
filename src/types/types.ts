@@ -22,40 +22,43 @@ export interface GetParticipantsInfoParams {
   search?: string;
 }
 
+export type SocialMediaType =
+  | 'WEBSITE'
+  | 'GITHUB'
+  | 'LINKEDIN'
+  | 'INSTAGRAM'
+  | 'OTHERS'
+  | 'TELEGRAM';
+
 export interface SocialMediaDto {
   id: number;
-  type:
-    | 'GITHUB'
-    | 'MEDIUM'
-    | 'FIGMA'
-    | 'LINKEDIN'
-    | 'DRIBBLE'
-    | 'INSTAGRAM'
-    | 'FACEBOOK'
-    | 'OTHERS';
+  type: SocialMediaType;
   url: string;
 }
 
 interface JobDto {
   id: number;
-  name: string;
+  korName: string;
+  engName: string;
 }
 
 interface UserProfileDto {
   id: number;
+  name: string;
   profileImageUrl?: string;
+  socialMedia: SocialMediaDto[];
+  jobCategory: JobDto;
+  jobTitle: string;
+  belong: string;
+  email: string;
 }
 
 export interface EventParticipantProfileCardDto {
   id: number;
   isWishlisted: boolean;
   role: 'HOST' | 'GUEST';
-  email: string;
-  name: string;
-  intro?: string;
-  jobs: JobDto[];
+  intro?: string | null;
   user: UserProfileDto;
-  socialMedia: SocialMediaDto[];
 }
 
 export interface ParticipantsResponseDto {
@@ -84,4 +87,38 @@ export interface TokenInfo {
   role: string;
   iat: number;
   exp: number;
+}
+
+export interface JobCategorie {
+  id: number;
+  korName: string;
+  engName: string;
+}
+
+interface JobCategory {
+  id: number;
+}
+
+export interface SocialMedia {
+  type: string;
+  url: string;
+}
+
+export interface BaseRegisterInputs {
+  image: File | null;
+  name: string;
+  intro: string;
+  jobTitle: string;
+  belong: string;
+  socialMedia: SocialMedia[];
+}
+
+export interface RegisterInputs
+  extends Omit<BaseRegisterInputs, 'jobCategory'> {
+  jobCategory: JobCategory | null;
+}
+
+export interface RegisterFormDataDto
+  extends Omit<BaseRegisterInputs, 'jobCategory'> {
+  jobCategory: JobCategory;
 }

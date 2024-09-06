@@ -30,10 +30,13 @@ const config: Config = {
         },
         gray: {
           B25: '#F3F3F3',
+          B27: '#F6F6F6',
           B30: '#EFEFEF',
           B35: '#E4E4E4',
           B40: '#DFDFDF',
+          B45: '#CFCFCF',
           B60: '#ACACAC',
+          B65: '#A5A5A5',
           B70: '#95959D',
           B80: '#555555',
         },

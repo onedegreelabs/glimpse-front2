@@ -24,7 +24,7 @@ const page = async ({
 
   return (
     <>
-      {!accessToken && <EmailAccessForm />}
+      {!accessToken && <EmailAccessForm eventId={eventId} />}
       <div className="px-6 pb-28 pt-1">
         <MatchingComponent eventId={eventId} isCurated={isCurated} />
         {isCurated ? (
