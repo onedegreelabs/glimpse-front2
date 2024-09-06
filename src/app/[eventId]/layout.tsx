@@ -34,7 +34,7 @@ export default async function layout({
 
   return (
     <main className="relative flex min-h-screen w-full flex-col pb-4">
-      <EventDetails eventId={eventId} />
+      <EventDetails eventId={eventId} accessToken={accessToken} />
       {/* 추후 suspensive 적용 */}
       <section className="relative size-full flex-grow text-white">
         <ParticipantsNav

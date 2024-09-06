@@ -1,7 +1,7 @@
 'use client';
 
 import { Spinner1 } from '@/icons/index';
-import { JobCategorie, RegisterInputs } from '@/types/types';
+import { FetchError, JobCategorie, RegisterInputs } from '@/types/types';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import ErrorMessage from '@/components/ErrorMessage';
 import { useMutation } from '@tanstack/react-query';
@@ -22,6 +22,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
     clearErrors,
     formState: { errors },
     watch,
+    setError,
   } = useForm<RegisterInputs>();
 
   const router = useRouter();
@@ -57,8 +58,15 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
     onSuccess: () => {
       handleEventJoin();
     },
-    onError: () => {
-      console.log('실패');
+    onError: (error) => {
+      const fetchError = error as FetchError;
+
+      if (fetchError && fetchError.errorCode === 'G01002') {
+        setError('jobCategory', {
+          type: 'manual',
+          message: 'This user already exists.',
+        });
+      }
     },
   });
 

@@ -1,13 +1,21 @@
 import { ArrowSVG, DateSVG, LocationSVG } from '@/icons/index';
 import { getEventInfo } from '@/lib/apis/server/eventsApi';
 import Link from 'next/link';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
-async function EventDetails({ eventId }: { eventId: string }) {
+interface EventDetailsProps {
+  eventId: string;
+  accessToken?: RequestCookie;
+}
+
+async function EventDetails({ eventId, accessToken }: EventDetailsProps) {
   const { title, startAt, externalLink, location, locationType } =
     await getEventInfo(eventId);
 
   return (
-    <header className="flex w-full max-w-sm items-center justify-between bg-white px-4 py-5">
+    <header
+      className={`flex w-full max-w-sm items-center justify-between bg-white px-4 py-5 ${accessToken ? 'z-event' : ''}`}
+    >
       <div className="flex w-4/5 flex-col gap-3">
         <h1 className="truncate text-sm font-medium text-blue-secondary">
           {title}
