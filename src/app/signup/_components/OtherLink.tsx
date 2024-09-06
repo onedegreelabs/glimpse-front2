@@ -80,7 +80,7 @@ function OtherLink({
             <label
               key={item.id}
               htmlFor={item.id}
-              className="mb-[14px] flex items-center gap-[14px]"
+              className="mb-[14px] flex w-full items-center gap-[14px]"
             >
               <URLMark />
               <Controller
@@ -96,7 +96,7 @@ function OtherLink({
                   <input
                     {...field}
                     id={item.id}
-                    className="h-[54px] flex-grow rounded-2xl border border-solid px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
+                    className="h-[54px] w-full flex-grow rounded-2xl border border-solid px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
                     placeholder="Enter URL address"
                     type="url"
                     onChange={(event) => {
