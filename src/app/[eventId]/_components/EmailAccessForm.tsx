@@ -147,8 +147,12 @@ function EmailAccessForm({ eventId }: { eventId: string }) {
                   onClick={() => setIsOpen(true)}
                   className="text-left text-yellow-primary underline underline-offset-2"
                 >
-                  개인정보수집 및 이용동의
-                  <p>Consent to Collect and Use Personal Information</p>
+                  By registering your profile, you consent to the collection and
+                  use of personal information.
+                  <p>
+                    프로필을 등록하시면 개인정보 수집 및 이용에 동의하시게
+                    됩니다.
+                  </p>
                 </button>
               </div>
             </div>
