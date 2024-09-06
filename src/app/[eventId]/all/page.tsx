@@ -31,7 +31,7 @@ export default async function page({
 
   return (
     <>
-      {!accessToken && <EmailAccessForm />}
+      {!accessToken && <EmailAccessForm eventId={eventId} />}
       <div className="px-6">
         <SearchParticipants
           search={searchParams.search ?? ''}

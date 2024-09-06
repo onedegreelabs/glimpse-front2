@@ -6,6 +6,9 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import ErrorMessage from '@/components/ErrorMessage';
 import { useMutation } from '@tanstack/react-query';
 import { register } from '@/lib/apis/authApi';
+import { useSignupStore } from '@/store/signupStore';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import ProfileImage from './ProfileImage';
 import JobCategory from './JobCategory';
 import SocialsLinks from './SocialsLinks';
@@ -19,6 +22,18 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
     formState: { errors },
     watch,
   } = useForm<RegisterInputs>();
+
+  const router = useRouter();
+
+  const { userInfo } = useSignupStore((state) => ({
+    userInfo: state.userInfo,
+  }));
+
+  useEffect(() => {
+    if (!(userInfo.email || userInfo.eventId)) {
+      router.back();
+    }
+  }, []);
 
   const formValues = watch();
   const name = watch('name');
@@ -59,7 +74,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
 
       const reqData = {
         ...data,
-        email: 'test5@test.com',
+        email: userInfo.email,
         socialMedia: modifiedSocialMedia,
         method: 'EMAIL',
         terms: [{ termId: 2, agreed: true }],

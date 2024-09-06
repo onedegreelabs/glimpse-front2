@@ -7,6 +7,7 @@ import { login } from '@/lib/apis/authApi';
 import { FetchError } from '@/types/types';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
+import { useSignupStore } from '@/store/signupStore';
 import TermsModal from './TermsModal';
 
 function ErrorMessage({
@@ -35,7 +36,7 @@ type EmailFormInputs = {
   email: string;
 };
 
-function EmailAccessForm() {
+function EmailAccessForm({ eventId }: { eventId: string }) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -43,8 +44,13 @@ function EmailAccessForm() {
     register,
     handleSubmit,
     watch,
+    getValues,
     formState: { errors },
   } = useForm<EmailFormInputs>();
+
+  const { setUserInfo } = useSignupStore((state) => ({
+    setUserInfo: state.setUserInfo,
+  }));
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -62,9 +68,11 @@ function EmailAccessForm() {
       const fetchError = error as FetchError;
 
       if (fetchError && fetchError.errorCode === 'G01001') {
-        setErrorMessage(
-          'Wrong email address. Please enter the email address that you provided in the match application (Google form).',
-        );
+        // setErrorMessage(
+        //   'Wrong email address. Please enter the email address that you provided in the match application (Google form).',
+        // );
+        setUserInfo({ email: getValues('email'), eventId });
+        router.push('/signup');
       } else {
         setErrorMessage('An unknown error occurred. Please contact support.');
       }
