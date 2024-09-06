@@ -16,21 +16,23 @@ function ParticipantCard({
   user,
   userId,
   isWishlisted,
-  email,
-  socialMedia,
   krComment = 'Park I-cheol is an entrepreneur in the AI.',
   isCuration = false,
-  name = 'Emma Stone',
-  jobs = [{ id: 1, name: 'Designer' }],
   intro = 'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...',
 }: ParticipantCardProps) {
+  const name = user?.name ?? 'Emma Stone';
+  const jobs = user?.jobCategory ?? { id: 1, engName: 'Designer' };
+  const socialMedia = user?.socialMedia ?? [];
+  const jobTitle = user?.jobTitle ?? 'Management & Business';
+  const belong = user?.belong ?? 'Glimpse';
+
   return (
     <li className="relative flex flex-col items-center">
       <div
         className={`relative flex min-h-40 w-full flex-col rounded-3xl border border-solid pb-[20px] pl-5 pr-4 pt-4 ${participantRole === 'HOST' ? 'border-white/30 bg-blue-B70/50' : 'border-white/30 bg-white/20'}`}
       >
         <header className="flex w-full">
-          <div className="grid w-full grid-cols-[1fr_auto]">
+          <div className="w-full">
             <div className="mt-3 grid grid-cols-[auto_1fr] gap-[10px]">
               <div
                 className={`relative flex size-12 flex-shrink-0 items-center justify-center rounded-full ${participantRole === 'HOST' ? 'mb-3 border-[4px] border-solid border-yellow-primary bg-white fill-gray-B40' : 'mb-3 bg-gray-B35/40 fill-white'}`}
@@ -56,28 +58,37 @@ function ParticipantCard({
               <dl
                 className={`flex w-full min-w-0 flex-col ${participantRole === 'HOST' ? 'justify-center' : ''}`}
               >
-                <dt className="truncate text-lg font-bold">{name}</dt>
-                <dd className="truncate text-xs text-white/60">
-                  {jobs.map((job) => job.name).join(', ')}
+                <dt className="relative grid grid-cols-[1fr_auto] text-lg font-bold">
+                  <div className="truncate">{name}</div>
+                  <div className="w-[74px]" />
+                  <div className="absolute -top-3 right-0 flex gap-[6px]">
+                    {userId !== user?.id && (
+                      <WishlistButton
+                        id={user?.id}
+                        participantRole={participantRole}
+                        isWishlisted={isWishlisted}
+                      />
+                    )}
+                    <SocialContainer
+                      email={user?.email}
+                      participantRole={participantRole}
+                      socialList={socialMedia}
+                    />
+                  </div>
+                </dt>
+                <dd className="flex flex-wrap text-xs text-white/60">
+                  <span className="mr-1">{jobs.engName}</span>
+                  <span className="whitespace-nowrap">@ {belong}</span>
                 </dd>
               </dl>
             </div>
-            <div className="flex gap-[6px]">
-              {userId !== user?.id && (
-                <WishlistButton
-                  id={user?.id}
-                  participantRole={participantRole}
-                  isWishlisted={isWishlisted}
-                />
-              )}
-              <SocialContainer
-                participantRole={participantRole}
-                email={email}
-                socialList={socialMedia ?? []}
-              />
-            </div>
           </div>
         </header>
+        <span
+          className={`${participantRole === 'HOST' ? 'my-2' : 'mb-2'} w-fit rounded-full bg-white/20 px-2 py-[7px] text-xs`}
+        >
+          {jobTitle}
+        </span>
         <IntroText intro={intro} id={user?.id} isCuration={isCuration} />
         {isCuration && (
           <div className="absolute -bottom-0.5 left-1/2 h-[11px] w-[86.7%] -translate-x-1/2 transform rounded-t-full bg-yellow-primary" />

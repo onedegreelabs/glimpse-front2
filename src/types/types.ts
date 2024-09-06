@@ -37,24 +37,27 @@ export interface SocialMediaDto {
 
 interface JobDto {
   id: number;
-  name: string;
+  korName: string;
+  engName: string;
 }
 
 interface UserProfileDto {
   id: number;
+  name: string;
   profileImageUrl?: string;
+  socialMedia: SocialMediaDto[];
+  jobCategory: JobDto;
+  jobTitle: string;
+  belong: string;
+  email: string;
 }
 
 export interface EventParticipantProfileCardDto {
   id: number;
   isWishlisted: boolean;
   role: 'HOST' | 'GUEST';
-  email: string;
-  name: string;
   intro?: string;
-  jobs: JobDto[];
   user: UserProfileDto;
-  socialMedia: SocialMediaDto[];
 }
 
 export interface ParticipantsResponseDto {

@@ -29,6 +29,8 @@ export default async function page({
     });
   }
 
+  console.log(participantsInfo);
+
   return (
     <>
       {!accessToken && <EmailAccessForm eventId={eventId} />}
