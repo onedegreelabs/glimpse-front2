@@ -17,6 +17,7 @@ export const POST = async (request: NextRequest) => {
   const response = await fetch(`${END_POINT}/events/${eventId}/participants`, {
     method: 'POST',
     headers: {
+      'Content-Type': 'application/json',
       Cookie: `accessToken=${accessToken}`,
     },
     body: JSON.stringify({ intro }),
