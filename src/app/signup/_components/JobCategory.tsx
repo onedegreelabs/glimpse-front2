@@ -43,7 +43,7 @@ function JobCategory({ jobCategories, onChange }: JobCategoryProps) {
               Job category
             </h1>
             <p className="mb-3 px-[26px]">Select only one</p>
-            <ul className="flex max-h-[55vh] flex-col gap-[10px] overflow-y-auto px-[26px] text-sm font-medium text-black">
+            <ul className="mb-5 flex max-h-[55vh] flex-col gap-[10px] overflow-y-auto px-[26px] text-sm font-medium text-black">
               {jobCategories.map((jobCategory) => (
                 <li
                   key={jobCategory.id}
