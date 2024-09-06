@@ -13,6 +13,7 @@ import {
   TwitterSVG,
   YoutubeSVG,
   GithubSVG,
+  TelegramSVG,
 } from '@/icons/index';
 import { useClickAway } from '@uidotdev/usehooks';
 import { useState } from 'react';
@@ -51,6 +52,7 @@ function SocialContainer({
     SKYPE: <SkypeSVG />,
     TWITTER: <TwitterSVG />,
     YOUTUBE: <YoutubeSVG />,
+    TELEGRAM: <TelegramSVG className="size-[20px]" />,
   } as { [key: string]: React.ReactNode };
 
   return (

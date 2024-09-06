@@ -12,8 +12,6 @@ export const POST = async (request: NextRequest) => {
 
   const formData = await request.formData();
 
-  console.log(formData);
-
   const response = await fetch(`${END_POINT}/auth/register`, {
     method: 'POST',
     headers: {
@@ -24,8 +22,6 @@ export const POST = async (request: NextRequest) => {
 
   if (!response.ok) {
     const { message, errorCode } = await response.json();
-    console.log(message);
-    console.log(errorCode);
     return NextResponse.json(
       {
         status: response.status,

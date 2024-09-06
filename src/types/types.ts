@@ -27,7 +27,8 @@ export type SocialMediaType =
   | 'GITHUB'
   | 'LINKEDIN'
   | 'INSTAGRAM'
-  | 'OTHERS';
+  | 'OTHERS'
+  | 'TELEGRAM';
 
 export interface SocialMediaDto {
   id: number;
