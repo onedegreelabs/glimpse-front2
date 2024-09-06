@@ -78,7 +78,7 @@ function ParticipantCard({
                 </dt>
                 <dd className="flex flex-wrap pb-2 text-xs text-white/60">
                   <span className="mr-1">{jobs.engName}</span>
-                  <span className="whitespace-nowrap">@ {belong}</span>
+                  <span className="truncate whitespace-nowrap">@ {belong}</span>
                 </dd>
               </dl>
             </div>

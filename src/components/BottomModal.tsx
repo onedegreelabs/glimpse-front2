@@ -3,15 +3,20 @@
 import { CrossSVG } from '@/icons/index';
 import { useClickAway } from '@uidotdev/usehooks';
 import { usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 interface BottomModalProps {
   children: React.ReactNode;
-  closeHandler: () => void;
+  closeModal: () => void;
 }
 
-function BottomModal({ children, closeHandler }: BottomModalProps) {
+function BottomModal({ children, closeModal }: BottomModalProps) {
   const pathname = usePathname();
+
+  const closeHandler = useCallback(() => {
+    window.history.back();
+    closeModal();
+  }, [closeModal]);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -28,7 +33,7 @@ function BottomModal({ children, closeHandler }: BottomModalProps) {
       window.removeEventListener('popstate', handlePopState);
       document.body.style.overflow = 'auto';
     };
-  }, [pathname, closeHandler]);
+  }, [pathname, closeModal, closeHandler]);
 
   const ref = useClickAway<HTMLElement>(() => {
     closeHandler();

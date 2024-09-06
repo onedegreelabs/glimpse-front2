@@ -84,12 +84,13 @@ function SocialsLinks({ socialList, onChange }: SocialsLinksProps) {
           <label
             key={id}
             htmlFor={id}
-            className="mb-[14px] flex items-center gap-[14px]"
+            className="mb-[14px] flex w-full min-w-fit items-center gap-[14px] overflow-auto"
           >
             {svg}
             <input
               id={id}
-              className="h-[54px] flex-grow rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
+              type="url"
+              className="h-[54px] w-full flex-grow rounded-2xl border border-solid border-gray-B40 px-4 text-sm font-semibold text-black placeholder:font-medium"
               placeholder={`Enter ${placeholder} address`}
               onChange={(event) =>
                 socialChangeHandler(event, id as SocialMediaType)
