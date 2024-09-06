@@ -127,7 +127,7 @@ function EmailAccessForm({ eventId }: { eventId: string }) {
               </div>
             ) : (
               <p className="text-gray-B60 group-enabled:font-bold group-enabled:text-blue-secondary">
-                Sign In
+                Register
               </p>
             )}
           </button>

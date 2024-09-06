@@ -34,7 +34,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
 
   useEffect(() => {
     if (!(userInfo.email || userInfo.eventId)) {
-      router.back();
+      router.push(`/8d6fdb11-f7cf-4771-a172-71d6da10d72c/all`); // 수정 예정
     }
   }, [router, userInfo.email, userInfo.eventId]);
 
@@ -68,6 +68,10 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
           message: 'This user already exists.',
         });
       }
+
+      // eslint-disable-next-line no-console
+      console.error(error);
+      throw error;
     },
   });
 
