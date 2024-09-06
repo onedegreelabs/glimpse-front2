@@ -2,5 +2,15 @@ export const PARTICIPANTS_TAKE = 10;
 
 export const HIDE_GRADIENT_PATHNAME = ['/signup'];
 
-// eslint-disable-next-line no-useless-escape
-export const URL_REGEX = /^(http|https):\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/;
+export const URL_REGEX = /^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
+
+export const SOCIAL_MEDIA_KEYS = [
+  'WEBSITE',
+  'GITHUB',
+  'LINKEDIN',
+  'INSTAGRAM',
+  'TELEGRAM',
+  'OTHERS',
+  'OTHERS2',
+  'OTHERS3',
+] as const;

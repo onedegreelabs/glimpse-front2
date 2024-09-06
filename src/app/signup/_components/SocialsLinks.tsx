@@ -7,17 +7,16 @@ import {
   TelegramSVG,
   WebSVG,
 } from '@/icons/index';
-import { SocialMedia, SocialMediaType } from '@/types/types';
+import { SocialMediaType } from '@/types/types';
 import { useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+import { URL_REGEX } from '@/constant/constant';
 import URLMark from './URLMark';
 import OtherLink from './OtherLink';
 
-interface SocialsLinksProps {
-  socialList: SocialMedia[];
-  onChange: (socialList: SocialMedia[]) => void;
-}
+function SocialsLinks() {
+  const { control } = useFormContext();
 
-function SocialsLinks({ socialList, onChange }: SocialsLinksProps) {
   const SOCIAL_LIST = [
     {
       svg: <WebSVG className="size-6" />,
@@ -57,23 +56,6 @@ function SocialsLinks({ socialList, onChange }: SocialsLinksProps) {
     setIsOpen(false);
   };
 
-  const socialChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    id: SocialMediaType,
-  ) => {
-    const url = event.target.value;
-
-    const updatedList = socialList.map((item) =>
-      item.type === id ? { ...item, url } : item,
-    );
-
-    if (!updatedList.some((item) => item.type === id)) {
-      updatedList.push({ type: id, url });
-    }
-
-    onChange(updatedList);
-  };
-
   return (
     <>
       <div className="mb-[30px] flex w-full flex-col rounded-2xl border border-solid border-gray-B40 px-4 py-[22px]">
@@ -81,22 +63,33 @@ function SocialsLinks({ socialList, onChange }: SocialsLinksProps) {
           Socials/Links
         </h2>
         {SOCIAL_LIST.map(({ svg, id, placeholder }) => (
-          <label
+          <Controller
             key={id}
-            htmlFor={id}
-            className="mb-[14px] flex w-full min-w-fit items-center gap-[14px] overflow-auto"
-          >
-            {svg}
-            <input
-              id={id}
-              type="url"
-              className="h-[54px] w-full flex-grow rounded-2xl border border-solid border-gray-B40 px-4 text-sm font-semibold text-black placeholder:font-medium"
-              placeholder={`Enter ${placeholder} address`}
-              onChange={(event) =>
-                socialChangeHandler(event, id as SocialMediaType)
-              }
-            />
-          </label>
+            name={id as SocialMediaType}
+            control={control}
+            defaultValue=""
+            rules={{
+              validate: (value) => {
+                if (!value) return true;
+                const isValid = URL_REGEX.test(value);
+                return isValid || 'Please check the URL address.';
+              },
+            }}
+            render={({ field }) => (
+              <label
+                htmlFor={id}
+                className="mb-[14px] flex w-full min-w-fit items-center gap-[14px] overflow-auto"
+              >
+                {svg}
+                <input
+                  {...field}
+                  id={id}
+                  className="h-[54px] w-full flex-grow rounded-2xl border border-solid border-gray-B40 px-4 text-sm font-semibold text-black placeholder:font-medium"
+                  placeholder={`Enter ${placeholder} address`}
+                />
+              </label>
+            )}
+          />
         ))}
         <button
           type="button"
@@ -107,12 +100,7 @@ function SocialsLinks({ socialList, onChange }: SocialsLinksProps) {
         </button>
       </div>
 
-      <OtherLink
-        isOpen={isOpen}
-        socialList={socialList}
-        onChange={onChange}
-        handleCloseModal={handleCloseModal}
-      />
+      {isOpen && <OtherLink handleCloseModal={handleCloseModal} />}
     </>
   );
 }
