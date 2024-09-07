@@ -166,7 +166,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
             },
             validate: {
               validCharacters: (value) => {
-                const isValid = /^[a-zA-Z가-힣]*$/.test(value);
+                const isValid = /^[a-zA-Z가-힣\s]*$/.test(value);
                 return (
                   isValid ||
                   'Please enter your name using only Korean or English characters.'
