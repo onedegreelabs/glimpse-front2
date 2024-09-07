@@ -51,7 +51,7 @@ function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
   const belong = watch('belong');
   const jobCategory = watch('jobCategory');
 
-  const isFormValid = !!(name && jobTitle && belong && jobCategory);
+  const isFormValid = !!(jobTitle && belong && jobCategory);
 
   const { mutate: handleEventJoin, isPending: eventJoinPending } = useMutation({
     mutationFn: () => eventJoin(userInfo.eventId, getValues('intro')),
