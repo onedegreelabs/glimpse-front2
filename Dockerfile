@@ -1,8 +1,8 @@
-FROM node:18.18.2-alpine
+FROM node:20.17.0-alpine
 
 WORKDIR /usr/src/app
 
-COPY build ./build
+COPY .next ./.next
 
 COPY .env .
 
