@@ -1,4 +1,4 @@
-name: Dev Glimpse Client Deploy
+name: Prod Glimpse Client Deploy
 
 on:
   push:
