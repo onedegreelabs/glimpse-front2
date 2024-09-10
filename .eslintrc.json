@@ -1,22 +1,36 @@
 {
-  "extends": ["next/core-web-vitals", "airbnb", "airbnb-typescript"],
+  "extends": [
+    "next/core-web-vitals",
+    "airbnb",
+    "airbnb-typescript",
+    "prettier"
+  ],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
   "rules": {
     "react/react-in-jsx-scope": "off",
+    "object-curly-newline": ["error", { "consistent": true }],
     "linebreak-style": 0,
     "react/jsx-one-expression-per-line": "off",
     "react/jsx-props-no-spreading": "off",
-    "import/no-extraneous-dependencies": [
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "import/prefer-default-export": ["off", { "target": "single" }],
+    "operator-linebreak": [0],
+    "import/extensions": [
       "error",
+      "ignorePackages",
       {
-        "devDependencies": true,
-        "optionalDependencies": true,
-        "peerDependencies": false
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
       }
     ],
-    "import/prefer-default-export": ["off", { "target": "single" }],
-    "operator-linebreak": [0]
+    "implicit-arrow-linebreak": "off",
+    "react/require-default-props": [
+      "error",
+      { "ignoreFunctionalComponents": true }
+    ]
   }
 }
