@@ -15,7 +15,7 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'aws-s3-glimpse.s3.ap-northeast-2.amazonaws.com',
         port: '',
-        pathname: '/image/users/*',
+        pathname: '/users/*',
       },
     ],
     domains: ['aws-s3-glimpse.s3.ap-northeast-2.amazonaws.com'],
