@@ -10,14 +10,6 @@ const nextConfig = {
     return config;
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'aws-s3-glimpse.s3.ap-northeast-2.amazonaws.com',
-        port: '',
-        pathname: '/users/*',
-      },
-    ],
     domains: ['aws-s3-glimpse.s3.ap-northeast-2.amazonaws.com'],
   },
 };
