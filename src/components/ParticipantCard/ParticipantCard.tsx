@@ -41,7 +41,6 @@ function ParticipantCard({
                 {user?.profileImageUrl ? (
                   <div className="absolute left-0 top-0 size-full overflow-hidden rounded-full">
                     <Image
-                      loader={() => user.profileImageUrl ?? ''}
                       src={user.profileImageUrl}
                       alt={`${name} profile`}
                       fill

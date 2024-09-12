@@ -10,7 +10,16 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ['aws-s3-glimpse.s3.ap-northeast-2.amazonaws.com'],
+    // loader: 'custom',
+    // loaderFile: './src/utils/loader.ts',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'aws-s3-glimpse.s3.ap-northeast-2.amazonaws.com',
+        port: '',
+        pathname: '/users/*',
+      },
+    ],
   },
 };
 
