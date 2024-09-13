@@ -25,7 +25,7 @@ function Participants({
   search,
   userId,
 }: ParticipantsProps) {
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, error } =
     useInfiniteQuery({
       queryKey: ['participants', search],
       queryFn: ({ pageParam }) =>
@@ -80,7 +80,7 @@ function Participants({
           userId={userId}
         />
       ))}
-      {isFetchingNextPage ? (
+      {isFetchingNextPage || error ? (
         Array.from({ length: PARTICIPANTS_TAKE }, () => (
           <Loading key={uuidv4()} />
         ))
