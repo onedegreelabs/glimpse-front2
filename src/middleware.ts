@@ -1,19 +1,7 @@
-import { jwtDecode } from 'jwt-decode';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { accessTokenReissuance } from './lib/apis/server/authApi';
-import { TokenInfo } from './types/types';
-
-const isTokenExpired = (token: string) => {
-  const currentTime = Date.now() / 1000;
-  const decoded = jwtDecode<{ exp?: number }>(token) as TokenInfo;
-
-  if (decoded.exp && decoded.exp < currentTime) {
-    throw new Error('accessToken expired');
-  }
-
-  return decoded.userId;
-};
+import isValidJWT from './utils/auth/isValidJWT';
 
 const handleTokenReissuance = async (
   request: NextRequest,
@@ -23,9 +11,13 @@ const handleTokenReissuance = async (
 
   try {
     if (refreshToken) {
-      return await accessTokenReissuance(refreshToken, response);
+      const isAccessTokenValid = await isValidJWT(refreshToken, 'REFRESH');
+
+      if (isAccessTokenValid) {
+        return await accessTokenReissuance(refreshToken, response);
+      }
     }
-    throw new Error('refreshToken');
+    throw new Error('Missing refreshToken');
   } catch (error) {
     response.cookies.delete('accessToken');
     response.cookies.delete('refreshToken');
@@ -37,20 +29,17 @@ export default async function middleware(request: NextRequest) {
   const accessToken = request.cookies.get('accessToken')?.value;
   const refreshToken = request.cookies.get('refreshToken')?.value;
 
-  let userId = null;
-
   if (accessToken) {
-    try {
-      userId = isTokenExpired(accessToken);
-      const response = NextResponse.next();
+    const isAccessTokenValid = await isValidJWT(accessToken, 'ACCESS');
 
-      response.headers.set('X-User-Id', `${userId}` || '');
-
-      return response;
-    } catch (error) {
-      return handleTokenReissuance(request, refreshToken);
+    if (isAccessTokenValid) {
+      return NextResponse.next();
     }
-  } else if (refreshToken) {
+
+    return handleTokenReissuance(request, refreshToken);
+  }
+
+  if (refreshToken) {
     return handleTokenReissuance(request, refreshToken);
   }
 

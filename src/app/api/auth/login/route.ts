@@ -1,3 +1,4 @@
+import appendCookiesToResponse from '@/utils/auth/appendCookiesToResponse';
 import { NextRequest, NextResponse } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
@@ -42,23 +43,13 @@ export const GET = async (request: NextRequest) => {
     },
   );
 
-  const cookies = response.headers.get('Set-Cookie');
-  if (cookies) {
-    const cookieArray = cookies.split(/,(?=[^;]*=)/);
-
-    const updatedCookies = cookieArray.map(
-      (cookie) => `${cookie.replace(/; SameSite=[^;]*/g, '')}; SameSite=Strict`,
-    );
-
-    updatedCookies.forEach((cookie) => {
-      nextResponse.headers.append('Set-Cookie', cookie.trim());
-    });
-  } else {
+  try {
+    appendCookiesToResponse(response, nextResponse);
+  } catch (error) {
     return NextResponse.json({
       status: 500,
-      message: '환경 변수가 설정되지 않았습니다.',
+      message: error,
     });
   }
-
   return nextResponse;
 };
