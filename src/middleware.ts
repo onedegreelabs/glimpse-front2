@@ -1,38 +1,36 @@
 import { jwtDecode } from 'jwt-decode';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { accessTokenReissuance } from './lib/apis/server/authApi';
 import { TokenInfo } from './types/types';
 
 const isTokenExpired = (token: string) => {
-  if (!token || token.split('.').length !== 3) {
-    throw new Error('Invalid token format');
-  }
-
-  const decoded = jwtDecode<{ exp?: number }>(token) as TokenInfo;
   const currentTime = Date.now() / 1000;
+  const decoded = jwtDecode<{ exp?: number }>(token) as TokenInfo;
 
   if (decoded.exp && decoded.exp < currentTime) {
     throw new Error('accessToken expired');
   }
 
-  return decoded?.userId;
+  return decoded.userId;
 };
 
 const handleTokenReissuance = async (
   request: NextRequest,
   refreshToken?: string,
 ) => {
-  const nextResponse = NextResponse.redirect(request.url);
+  const response = NextResponse.redirect(request.url);
 
-  if (refreshToken) {
-    const loginUrl = new URL('/refresh', request.nextUrl);
-    loginUrl.searchParams.set('from', request.nextUrl.pathname);
-    return NextResponse.redirect(loginUrl);
+  try {
+    if (refreshToken) {
+      return await accessTokenReissuance(refreshToken, response);
+    }
+    throw new Error('refreshToken');
+  } catch (error) {
+    response.cookies.delete('accessToken');
+    response.cookies.delete('refreshToken');
+    return response;
   }
-
-  nextResponse.cookies.delete('accessToken');
-  nextResponse.cookies.delete('refreshToken');
-  return nextResponse;
 };
 
 export default async function middleware(request: NextRequest) {
@@ -60,5 +58,8 @@ export default async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/:path*/all', '/:path*/match'],
+  matcher: [
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    '/(api|trpc)(.*)',
+  ],
 };
