@@ -1,9 +1,9 @@
-import { cookies, headers } from 'next/headers';
 import { ParticipantsResponseDto } from '@/types/types';
 import { getParticipantsInfo } from '@/lib/apis/server/eventsApi';
 import { PARTICIPANTS_TAKE } from '@/constant/constant';
 import { SadFaceSVG } from '@/icons/index';
 import ParticipantCard from '@/components/ParticipantCard/ParticipantCard';
+import getUserInfo from '@/utils/auth/getUserInfo';
 import SearchParticipants from './_components/SearchParticipants';
 import Participants from '../_components/participants/Participants';
 import EmailAccessForm from '../_components/EmailAccessForm';
@@ -15,12 +15,10 @@ export default async function page({
   params: { eventId: string };
   searchParams: { search?: string };
 }) {
-  const userId = headers().get('X-User-Id') as string;
-  const cookieStore = cookies();
-  const accessToken = cookieStore.get('accessToken');
+  const userInfo = await getUserInfo();
   let participantsInfo: ParticipantsResponseDto | null = null;
 
-  if (accessToken) {
+  if (userInfo) {
     participantsInfo = await getParticipantsInfo({
       eventId,
       take: PARTICIPANTS_TAKE,
@@ -31,7 +29,7 @@ export default async function page({
 
   return (
     <>
-      {!accessToken && <EmailAccessForm eventId={eventId} />}
+      {!userInfo && <EmailAccessForm eventId={eventId} />}
       <div className="px-6">
         <SearchParticipants
           search={searchParams.search ?? ''}
@@ -48,9 +46,9 @@ export default async function page({
             </div>
           )}
 
-        {participantsInfo ? (
+        {participantsInfo && userInfo ? (
           <Participants
-            userId={Number(userId)}
+            userId={Number(userInfo.userId)}
             initialParticipants={participantsInfo.participants}
             totalItemCount={participantsInfo.totalItemCount}
             eventId={eventId}

@@ -6,8 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "lint:fix": "eslint ./**/*.{js,jsx,ts,tsx} --cache --fix",
+    "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'",
+    "lint:fix": "eslint --fix './src/**/*.{ts,tsx,js,jsx}'",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -17,7 +17,7 @@
     "@tanstack/react-query-devtools": "^5.51.24",
     "@uidotdev/usehooks": "^2.4.1",
     "framer-motion": "^11.3.29",
-    "jwt-decode": "^4.0.0",
+    "jose": "^5.8.0",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",

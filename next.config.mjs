@@ -10,6 +10,8 @@ const nextConfig = {
     return config;
   },
   images: {
+    loader: 'custom',
+    loaderFile: './src/utils/loader.ts',
     remotePatterns: [
       {
         protocol: 'https',
@@ -18,7 +20,6 @@ const nextConfig = {
         pathname: '/users/*',
       },
     ],
-    domains: ['aws-s3-glimpse.s3.ap-northeast-2.amazonaws.com'],
   },
 };
 
