@@ -5,7 +5,7 @@ import { ArrowSVG } from '@/icons/index';
 import { usePathname } from 'next/navigation';
 
 function ScrollUpBtn() {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const pathname = usePathname();
   const currentPathname = pathname.split('/').at(-1);
 
@@ -17,6 +17,8 @@ function ScrollUpBtn() {
   };
 
   useEffect(() => {
+    setIsVisible(window.scrollY !== 0);
+
     const handleScroll = () => {
       if (window.scrollY === 0) {
         setIsVisible(false);
