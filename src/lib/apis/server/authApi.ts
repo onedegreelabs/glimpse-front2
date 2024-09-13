@@ -1,22 +1,13 @@
 import { FetchError } from '@/types/types';
+import appendCookiesToResponse from '@/utils/auth/appendCookiesToResponse';
+import { NextResponse } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
 
-const extractTokensFromHeaders = (headers: Headers) => {
-  const accessToken = headers
-    .get('Set-Cookie')
-    ?.split('accessToken=')[1]
-    ?.split(';')[0];
-  const refreshToken = headers
-    .get('Set-Cookie')
-    ?.split('refreshToken=')[1]
-    ?.split(';')[0];
-  return { accessToken, refreshToken };
-};
-
 export const accessTokenReissuance = async (
   refreshToken: string,
-): Promise<{ accessToken: string; refreshToken: string }> => {
+  nextResponse: NextResponse<unknown>,
+): Promise<NextResponse> => {
   const response = await fetch(`${END_POINT}/auth/token`, {
     method: 'PUT',
     credentials: 'include',
@@ -35,12 +26,7 @@ export const accessTokenReissuance = async (
     throw error;
   }
 
-  const { accessToken, refreshToken: newRefreshToken } =
-    extractTokensFromHeaders(response.headers);
+  appendCookiesToResponse(response, nextResponse);
 
-  if (!accessToken || !newRefreshToken) {
-    throw new Error('토큰 재발급 후 토큰 값 없음');
-  }
-
-  return { accessToken, refreshToken: newRefreshToken };
+  return nextResponse;
 };
