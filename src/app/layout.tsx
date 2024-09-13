@@ -17,8 +17,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  imageModal,
 }: Readonly<{
   children: React.ReactNode;
+  imageModal: React.ReactNode;
 }>) {
   // 추후 lang en으로 변경
 
@@ -28,7 +30,10 @@ export default function RootLayout({
       <body className="relative mx-auto max-w-sm font-[CustomFont]">
         <Gradient />
         <ReactQueryProviders>
-          <div className="min-h-screen bg-background">{children}</div>
+          <div className="min-h-screen bg-background">
+            {children}
+            {imageModal}
+          </div>
         </ReactQueryProviders>
       </body>
       {process.env.NEXT_PUBLIC_GTM_ID && (

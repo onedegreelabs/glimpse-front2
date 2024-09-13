@@ -1,6 +1,7 @@
 import { CommentSVG, DefaultProfileSVG } from '@/icons/index';
 import { CuratedParticipantDto } from '@/types/types';
 import Image from 'next/image';
+import Link from 'next/link';
 import SocialContainer from '../../app/[eventId]/_components/participants/SocialContainer';
 import WishlistButton from '../../app/[eventId]/_components/participants/WishlistButton';
 import IntroText from './IntroText';
@@ -39,14 +40,18 @@ function ParticipantCard({
                 className={`relative flex size-12 flex-shrink-0 items-center justify-center rounded-full ${participantRole === 'HOST' ? 'mb-3 border-[4px] border-solid border-yellow-primary bg-white fill-gray-B40' : 'mb-3 bg-gray-B35/40 fill-white'}`}
               >
                 {user?.profileImageUrl ? (
-                  <div className="absolute left-0 top-0 size-full overflow-hidden rounded-full">
+                  <Link
+                    href={`/image?src=${user.profileImageUrl}`}
+                    className="absolute left-0 top-0 size-full overflow-hidden rounded-full"
+                    scroll={false}
+                  >
                     <Image
                       src={user.profileImageUrl}
                       alt={`${name} profile`}
                       fill
                       sizes="48px"
                     />
-                  </div>
+                  </Link>
                 ) : (
                   <DefaultProfileSVG />
                 )}

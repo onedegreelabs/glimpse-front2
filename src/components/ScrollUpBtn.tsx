@@ -36,7 +36,7 @@ function ScrollUpBtn() {
       {isVisible && (
         <button
           type="button"
-          className={`${currentPathname === 'all' ? 'mb-4' : 'mb-[90px]'} fixed bottom-0 z-10 flex size-[46px] items-center justify-center rounded-full bg-yellow-primary`}
+          className={`${currentPathname === 'match' ? 'mb-[90px]' : 'mb-4'} fixed bottom-0 z-10 flex size-[46px] items-center justify-center rounded-full bg-yellow-primary`}
           aria-label="scroll-up-button"
           onClick={handleScrollUp}
         >
