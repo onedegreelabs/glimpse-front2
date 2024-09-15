@@ -29,9 +29,10 @@ function ParticipantsNav({
       <div className="flex w-full gap-[30px]">
         <Link
           href={`/${eventId}/all`}
-          className={`relative flex items-center text-[32px] font-black ${currentPathname === 'all' ? 'text-white' : 'text-white/30 hover:text-white/60'} ${
-            currentPathname === 'all' &&
-            'after:absolute after:-right-3 after:top-1.5 after:size-2 after:rounded-full after:bg-yellow-primary after:content-[""]'
+          className={`relative flex items-center text-[32px] font-black ${currentPathname === 'match' ? 'text-white/30 hover:text-white/60' : 'text-white'} ${
+            currentPathname === 'match'
+              ? ''
+              : 'after:absolute after:-right-3 after:top-1.5 after:size-2 after:rounded-full after:bg-yellow-primary after:content-[""]'
           }`}
         >
           All<p className="mb-1 text-[26px]">(</p>

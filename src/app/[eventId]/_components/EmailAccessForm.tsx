@@ -36,7 +36,7 @@ type EmailFormInputs = {
   email: string;
 };
 
-function EmailAccessForm({ eventId }: { eventId: string }) {
+function EmailAccessForm() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -71,7 +71,7 @@ function EmailAccessForm({ eventId }: { eventId: string }) {
         // setErrorMessage(
         //   'Wrong email address. Please enter the email address that you provided in the match application (Google form).',
         // );
-        setUserInfo({ email: getValues('email'), eventId });
+        setUserInfo({ email: getValues('email') });
         router.push('/signup');
       } else {
         setErrorMessage('An unknown error occurred. Please contact support.');
@@ -94,7 +94,7 @@ function EmailAccessForm({ eventId }: { eventId: string }) {
   };
 
   return (
-    <section className="fixed inset-0 z-blur mx-auto max-w-[386px] bg-blue-B50/60 text-gray-B80 backdrop-blur-[8px]">
+    <article className="fixed inset-0 z-blur mx-auto max-w-[386px] bg-blue-B50/60 text-gray-B80 backdrop-blur-[8px]">
       <form
         className="flex size-full flex-col items-center"
         onSubmit={handleSubmit(onSubmit, SubmitError)}
@@ -160,7 +160,7 @@ function EmailAccessForm({ eventId }: { eventId: string }) {
         </div>
       </form>
       {isOpen && <TermsModal closeHandler={closeTermsModal} />}
-    </section>
+    </article>
   );
 }
 
