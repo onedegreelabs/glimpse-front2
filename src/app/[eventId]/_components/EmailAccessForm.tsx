@@ -1,5 +1,6 @@
 'use client';
 
+import Cookies from 'js-cookie';
 import { Spinner1 } from '@/icons/index';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { useEffect, useState } from 'react';
@@ -7,7 +8,6 @@ import { login } from '@/lib/apis/authApi';
 import { FetchError } from '@/types/types';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
-import { useSignupStore } from '@/store/signupStore';
 import TermsModal from './TermsModal';
 
 function ErrorMessage({
@@ -36,7 +36,7 @@ type EmailFormInputs = {
   email: string;
 };
 
-function EmailAccessForm() {
+function EmailAccessForm({ eventId }: { eventId: string }) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -47,10 +47,6 @@ function EmailAccessForm() {
     getValues,
     formState: { errors },
   } = useForm<EmailFormInputs>();
-
-  const { setUserInfo } = useSignupStore((state) => ({
-    setUserInfo: state.setUserInfo,
-  }));
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -71,7 +67,8 @@ function EmailAccessForm() {
         // setErrorMessage(
         //   'Wrong email address. Please enter the email address that you provided in the match application (Google form).',
         // );
-        setUserInfo({ email: getValues('email') });
+        Cookies.set('eventId', eventId);
+        Cookies.set('email', getValues('email'));
         router.push('/signup');
       } else {
         setErrorMessage('An unknown error occurred. Please contact support.');
