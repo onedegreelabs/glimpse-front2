@@ -26,7 +26,7 @@ function ErrorMessage({
       : '';
 
   return (
-    <p className="fixed bottom-11 w-full max-w-sm rounded-md bg-[#E7001B] px-[10px] py-3 text-xs text-white">
+    <p className="w-full max-w-sm rounded-md bg-[#E7001B] px-[10px] py-3 text-xs text-white">
       {firstErrorMessage}
     </p>
   );

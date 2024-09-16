@@ -130,3 +130,8 @@ export interface RegisterFormDataDto
   extends Omit<BaseRegisterInputs, 'jobCategory'> {
   jobCategory: JobCategory;
 }
+
+export interface SigninFormInputs {
+  email: string;
+  password: string;
+}
