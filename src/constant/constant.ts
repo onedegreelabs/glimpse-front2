@@ -1,6 +1,6 @@
 export const PARTICIPANTS_TAKE = 10;
 
-export const HIDE_GRADIENT_PATHNAME = ['/signup'];
+export const HIDE_GRADIENT_PATHNAME = ['/signup', '/signin'];
 
 export const URL_REGEX =
   /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:[0-9]{1,5})?(\/[^\s]*)?$/;

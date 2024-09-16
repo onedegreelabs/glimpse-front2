@@ -1,10 +1,10 @@
-import { getJobCategories } from '@/lib/apis/server/userApi';
-import SignupClient from './_components/SignupClient';
+// import { getJobCategories } from '@/lib/apis/server/userApi';
+// import SignupClient from './_components/SignupClient';
 
-async function SignupPage() {
-  const jobCategories = await getJobCategories();
+// async function SignupPage() {
+//   const jobCategories = await getJobCategories();
 
-  return <SignupClient jobCategories={jobCategories} />;
-}
+//   return <SignupClient jobCategories={jobCategories} />;
+// }
 
-export default SignupPage;
+// export default SignupPage;

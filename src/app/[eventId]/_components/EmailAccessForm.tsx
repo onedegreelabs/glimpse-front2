@@ -1,13 +1,13 @@
 'use client';
 
 import Cookies from 'js-cookie';
-import { Spinner1 } from '@/icons/index';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { login } from '@/lib/apis/authApi';
 import { FetchError } from '@/types/types';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
+import Button from '@/components/Button';
 import TermsModal from './TermsModal';
 
 function ErrorMessage({
@@ -113,21 +113,13 @@ function EmailAccessForm({ eventId }: { eventId: string }) {
             placeholder="Enter your email"
             className="w-full rounded-2xl bg-white px-4 py-[14px] text-sm outline outline-1 outline-blue-secondary focus:outline-2"
           />
-          <button
+          <Button
             type="submit"
             disabled={!watch('email') || isPending}
-            className="group h-[54px] w-full rounded-2xl bg-yellow-primary disabled:bg-gray-B30"
+            isPending={isPending}
           >
-            {isPending ? (
-              <div className="flex items-center justify-center">
-                <Spinner1 className="size-6 animate-spin text-white" />
-              </div>
-            ) : (
-              <p className="text-gray-B60 group-enabled:font-bold group-enabled:text-blue-secondary">
-                Register
-              </p>
-            )}
-          </button>
+            Register
+          </Button>
         </div>
         <div className="mb-[26px] flex w-full flex-col gap-4 px-7">
           <div className="relative flex gap-2">
