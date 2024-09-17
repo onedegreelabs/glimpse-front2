@@ -23,7 +23,7 @@ function ErrorMessage({
   const firstErrorMessage =
     Object.values(errors).length > 0
       ? ((Object.values(errors)[0]?.message as string) ?? message)
-      : '';
+      : message;
 
   return firstErrorMessage ? (
     <p className="w-full max-w-sm rounded-md bg-[#E7001B] px-[10px] py-3 text-xs text-white">

@@ -1,6 +1,7 @@
 import Button from '@/components/Button';
 import { sendVerificationCode } from '@/lib/apis/authApi';
-import { FetchError, SigninFormInputs } from '@/types/types';
+import { SigninFormInputs } from '@/types/types';
+import { captureException } from '@sentry/nextjs';
 import { useMutation } from '@tanstack/react-query';
 import {
   Controller,
@@ -31,10 +32,8 @@ function EmailAccessForm({
       handleNextStep();
     },
     onError: (error) => {
-      const fetchError = error as FetchError;
-      if (fetchError) {
-        console.error(error);
-      }
+      handleErrorMessage('An unknown error occurred. Please contact support.');
+      captureException(error);
     },
   });
 
