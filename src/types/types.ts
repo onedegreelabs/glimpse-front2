@@ -133,5 +133,8 @@ export interface RegisterFormDataDto
 
 export interface SigninFormInputs {
   email: string;
-  password: string;
+}
+
+export interface VerificationCode {
+  [key: string]: string;
 }
