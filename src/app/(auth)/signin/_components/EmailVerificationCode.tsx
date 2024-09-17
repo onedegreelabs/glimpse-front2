@@ -18,6 +18,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { captureException } from '@sentry/nextjs';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface EmailVerificationCodeProps {
   handleMessage: ({
@@ -32,16 +33,9 @@ interface EmailVerificationCodeProps {
 function EmailVerificationCode({ handleMessage }: EmailVerificationCodeProps) {
   const router = useRouter();
   const { getValues } = useFormContext<SigninFormInputs>();
-  const {
-    control,
-    watch,
-    setFocus,
-    setValue,
-    reset,
-    handleSubmit,
-    // formState: { errors },
-    setError,
-  } = useForm<VerificationCode>();
+  const { control, watch, setFocus, setValue, reset, handleSubmit } =
+    useForm<VerificationCode>();
+  const [isInvalidCode, setIsInvalidCode] = useState(false);
 
   const currentEmail = getValues('email');
 
@@ -77,10 +71,7 @@ function EmailVerificationCode({ handleMessage }: EmailVerificationCodeProps) {
           router.push('/signup');
           break;
         case 'G01014':
-          handleMessage({
-            message: 'Invalid code. Please try again.',
-          });
-          setError('code1', { message: '', type: 'value' });
+          setIsInvalidCode(true);
           break;
         default:
           handleMessage({
@@ -123,6 +114,10 @@ function EmailVerificationCode({ handleMessage }: EmailVerificationCodeProps) {
     e: React.ChangeEvent<HTMLInputElement>,
     currentIndex: number,
   ) => {
+    if (isInvalidCode) {
+      setIsInvalidCode(false);
+    }
+
     const { value } = e.target;
 
     const digits = value.replace(/\D/g, '');
@@ -152,7 +147,7 @@ function EmailVerificationCode({ handleMessage }: EmailVerificationCodeProps) {
         <p className="mb-[22px] text-center text-sm text-gray-B60">
           Enter the 6-digit code sent to <br /> {currentEmail}
         </p>
-        <div className="flex w-full justify-center gap-[5px]">
+        <div className="relative flex w-full justify-center gap-[5px]">
           {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
           {Array.from({ length: 6 }, (_, index) => (
             <Controller
@@ -163,20 +158,35 @@ function EmailVerificationCode({ handleMessage }: EmailVerificationCodeProps) {
               rules={{
                 required: true,
               }}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  onChange={(e) => {
-                    handleCodeChange(e, index);
-                  }}
-                  type="number"
-                  max="9"
-                  min="0"
-                  className={`h-[54px] w-1/6 max-w-[46px] rounded-xl text-center ${verificationCode[index] ? 'outline-blue-B50' : ''}`}
-                />
-              )}
+              render={({ field }) => {
+                const isCodeEntered = !!verificationCode[index];
+                const borderColorClass = isInvalidCode
+                  ? 'outline-red-B10 text-red-B10 focus:outline-red-B10'
+                  : 'outline-blue-B50';
+                const inputClassName = `h-[54px] w-1/6 max-w-[46px] rounded-xl text-center text-sm ${
+                  isCodeEntered ? borderColorClass : ''
+                }`;
+
+                return (
+                  <input
+                    {...field}
+                    onChange={(e) => {
+                      handleCodeChange(e, index);
+                    }}
+                    type="number"
+                    max="9"
+                    min="0"
+                    className={inputClassName}
+                  />
+                );
+              }}
             />
           ))}
+          {isInvalidCode && (
+            <p className="absolute -bottom-5 left-4 text-xs text-red-B10">
+              Invalid code, please try again.
+            </p>
+          )}
         </div>
       </form>
       <div className="flex flex-col items-center gap-[18px]">
@@ -192,7 +202,9 @@ function EmailVerificationCode({ handleMessage }: EmailVerificationCodeProps) {
         <Button
           onClick={handleSubmit(onSubmit, onSubmitError)}
           type="submit"
-          disabled={isCodeComplete || resendCodePending || loginPending}
+          disabled={
+            isCodeComplete || resendCodePending || loginPending || isInvalidCode
+          }
           isPending={loginPending}
         >
           Next

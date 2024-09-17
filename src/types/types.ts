@@ -138,3 +138,8 @@ export interface SigninFormInputs {
 export interface VerificationCode {
   [key: string]: string;
 }
+
+export interface LoginDto {
+  email: string;
+  code: string;
+}

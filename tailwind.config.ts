@@ -16,6 +16,9 @@ const config: Config = {
           'linear-gradient(-74deg, #2C5EEB 0%, #FFEE1A 34%, #2C5EEB 66%, #FFEE1A 100%)',
       },
       colors: {
+        red: {
+          B10: '#E7001B',
+        },
         blue: {
           secondary: '#002387',
           B30: '#2C5DEA',

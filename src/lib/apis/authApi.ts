@@ -1,7 +1,7 @@
-import { FetchError } from '@/types/types';
+import { FetchError, LoginDto } from '@/types/types';
 
-export const login = async (email: string) => {
-  const response = await fetch(`/api/auth/login?email=${email}`);
+export const login = async ({ email, code }: LoginDto) => {
+  const response = await fetch(`/api/auth/login?email=${email}&code=${code}`);
 
   if (!response.ok) {
     const errorData = await response.json();
