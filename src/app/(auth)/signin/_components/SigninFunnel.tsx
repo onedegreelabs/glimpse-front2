@@ -36,7 +36,7 @@ function SigninFunnel() {
         {STEP_COMPONENTS[currentStep]}
       </FormProvider>
       {errorMessage && (
-        <div className="absolute bottom-12 left-1/2 w-full -translate-x-1/2 transform">
+        <div className="absolute bottom-12 left-1/2 w-11/12 -translate-x-1/2 transform">
           <ErrorMessage
             errors={errors}
             message={errorMessage}
