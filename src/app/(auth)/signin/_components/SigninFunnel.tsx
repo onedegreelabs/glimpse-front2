@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { SigninFormInputs } from '@/types/types';
-import ErrorMessage from '@/components/ErrorMessage';
+import Message from '@/components/Message';
 import EmailAccessForm from './EmailAccessForm';
 import EmailVerificationCode from './EmailVerificationCode';
 
@@ -13,23 +13,32 @@ function SigninFunnel() {
     formState: { errors },
   } = formMethod;
 
-  const [errorMessage, setErrorMessage] = useState('');
-  const [currentStep, setCurrentStep] = useState(1);
+  const [toastMessage, setToastMessage] = useState({
+    message: '',
+    isErrors: false,
+  });
+  const [currentStep, setCurrentStep] = useState(0);
 
   const handleNextStep = () => {
     setCurrentStep((step) => step + 1);
   };
 
-  const handleErrorMessage = (message: string) => {
-    setErrorMessage(message);
+  const handleMessage = ({
+    message,
+    isErrors = true,
+  }: {
+    message: string;
+    isErrors?: boolean;
+  }) => {
+    setToastMessage({ message, isErrors });
   };
 
   const STEP_COMPONENTS = [
     <EmailAccessForm
       handleNextStep={handleNextStep}
-      handleErrorMessage={handleErrorMessage}
+      handleMessage={handleMessage}
     />,
-    <EmailVerificationCode />,
+    <EmailVerificationCode handleMessage={handleMessage} />,
   ] as const;
 
   return (
@@ -37,12 +46,13 @@ function SigninFunnel() {
       <FormProvider {...formMethod}>
         {STEP_COMPONENTS[currentStep]}
       </FormProvider>
-      {errorMessage && (
+      {toastMessage.message && (
         <div className="absolute bottom-12 left-1/2 w-11/12 -translate-x-1/2 transform">
-          <ErrorMessage
+          <Message
             errors={errors}
-            message={errorMessage}
-            onClose={() => setErrorMessage('')}
+            message={toastMessage.message}
+            isErrors={toastMessage.isErrors}
+            onClose={() => handleMessage({ message: '' })}
           />
         </div>
       )}

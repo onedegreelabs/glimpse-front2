@@ -1,14 +1,106 @@
-// import Button from '@/components/Button';
+import Button from '@/components/Button';
 import { RefreshSVG } from '@/icons/index';
-import { SigninFormInputs, VerificationCode } from '@/types/types';
-import { Controller, useForm, useFormContext } from 'react-hook-form';
+import { login, sendVerificationCode } from '@/lib/apis/authApi';
+import {
+  FetchError,
+  LoginDto,
+  SigninFormInputs,
+  VerificationCode,
+} from '@/types/types';
+import { useMutation } from '@tanstack/react-query';
+import {
+  Controller,
+  SubmitErrorHandler,
+  SubmitHandler,
+  useForm,
+  useFormContext,
+} from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
+import { captureException } from '@sentry/nextjs';
+import { useRouter } from 'next/navigation';
 
-function EmailVerificationCode() {
+interface EmailVerificationCodeProps {
+  handleMessage: ({
+    message,
+    isErrors,
+  }: {
+    message: string;
+    isErrors?: boolean;
+  }) => void;
+}
+
+function EmailVerificationCode({ handleMessage }: EmailVerificationCodeProps) {
+  const router = useRouter();
   const { getValues } = useFormContext<SigninFormInputs>();
-  const { control, watch, setFocus, setValue } = useForm<VerificationCode>();
+  const {
+    control,
+    watch,
+    setFocus,
+    setValue,
+    reset,
+    handleSubmit,
+    // formState: { errors },
+    setError,
+  } = useForm<VerificationCode>();
 
-  const email = getValues('email');
+  const currentEmail = getValues('email');
+
+  const { mutate: handleSendVerificationCode, isPending: resendCodePending } =
+    useMutation({
+      mutationFn: (email: string) => sendVerificationCode(email),
+      onSuccess: () => {
+        reset();
+        handleMessage({
+          message:
+            'A new verification code has been sent. Please check your inbox.',
+          isErrors: false,
+        });
+      },
+      onError: (error) => {
+        handleMessage({
+          message: 'An unknown error occurred. Please contact support.',
+        });
+        captureException(error);
+      },
+    });
+
+  const { mutate: handleLogin, isPending: loginPending } = useMutation({
+    mutationFn: ({ email, code }: LoginDto) => login({ email, code }),
+    onSuccess: () => {
+      // router.refresh();
+    },
+    onError: (error) => {
+      const fetchError = error as FetchError;
+
+      switch (fetchError.errorCode) {
+        case 'G01001':
+          router.push('/signup');
+          break;
+        case 'G01014':
+          handleMessage({
+            message: 'Invalid code. Please try again.',
+          });
+          setError('code1', { message: '', type: 'value' });
+          break;
+        default:
+          handleMessage({
+            message: 'An unknown error occurred. Please contact support.',
+          });
+          captureException(error);
+      }
+    },
+  });
+
+  const onSubmit: SubmitHandler<VerificationCode> = async (data) => {
+    const code = Object.values(data).join('');
+    handleLogin({ email: currentEmail, code });
+  };
+
+  const onSubmitError: SubmitErrorHandler<VerificationCode> = () => {
+    // if (errors.email) {
+    //   handleMessage({ message: errors.email.message ?? '' });
+    // }
+  };
 
   const verificationCode = watch([
     'code0',
@@ -19,7 +111,7 @@ function EmailVerificationCode() {
     'code5',
   ]);
 
-  // const isCodeComplete = !verificationCode.every((code) => code);
+  const isCodeComplete = !verificationCode.every((code) => code);
 
   const updateFocus = (index: number) => {
     setTimeout(() => {
@@ -58,7 +150,7 @@ function EmailVerificationCode() {
           Enter confirmation code
         </h1>
         <p className="mb-[22px] text-center text-sm text-gray-B60">
-          Enter the 6-digit code sent to <br /> {email}
+          Enter the 6-digit code sent to <br /> {currentEmail}
         </p>
         <div className="flex w-full justify-center gap-[5px]">
           {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
@@ -90,14 +182,21 @@ function EmailVerificationCode() {
       <div className="flex flex-col items-center gap-[18px]">
         <button
           type="submit"
-          className="flex items-center gap-[3px] text-sm text-blue-B50"
+          disabled={resendCodePending}
+          onClick={() => handleSendVerificationCode(currentEmail)}
+          className="group flex items-center gap-[3px] text-sm text-blue-B50 disabled:text-gray-B60"
         >
-          <RefreshSVG className="stroke-blue-Bfill-blue-B50 size-[10px] fill-blue-B50" />{' '}
+          <RefreshSVG className="stroke-blue-Bfill-blue-B50 size-[10px] fill-blue-B50 group-disabled:animate-spin group-disabled:fill-gray-B60" />{' '}
           Resend code
         </button>
-        {/* <Button type="submit" disabled={isCodeComplete}>
+        <Button
+          onClick={handleSubmit(onSubmit, onSubmitError)}
+          type="submit"
+          disabled={isCodeComplete || resendCodePending || loginPending}
+          isPending={loginPending}
+        >
           Next
-        </Button> */}
+        </Button>
       </div>
     </>
   );

@@ -12,12 +12,18 @@ import {
 
 interface EmailAccessFormProps {
   handleNextStep: () => void;
-  handleErrorMessage: (message: string) => void;
+  handleMessage: ({
+    message,
+    isErrors,
+  }: {
+    message: string;
+    isErrors?: boolean;
+  }) => void;
 }
 
 function EmailAccessForm({
   handleNextStep,
-  handleErrorMessage,
+  handleMessage,
 }: EmailAccessFormProps) {
   const {
     control,
@@ -32,7 +38,9 @@ function EmailAccessForm({
       handleNextStep();
     },
     onError: (error) => {
-      handleErrorMessage('An unknown error occurred. Please contact support.');
+      handleMessage({
+        message: 'An unknown error occurred. Please contact support.',
+      });
       captureException(error);
     },
   });
@@ -43,7 +51,7 @@ function EmailAccessForm({
 
   const onSubmitError: SubmitErrorHandler<SigninFormInputs> = () => {
     if (errors.email) {
-      handleErrorMessage(errors.email.message ?? '');
+      handleMessage({ message: errors.email.message ?? '' });
     }
   };
 
