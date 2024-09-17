@@ -14,8 +14,15 @@
   }
 }
 
-.background-mask {
-  mask-image: linear-gradient(to right, black 0%, black 100%);
+@layer utilities {
+  .py-dynamic {
+    padding-top: calc(min(3rem, 2.5vh));
+    padding-bottom: calc(min(3rem, 10vh));
+  }
+
+  .background-mask {
+    mask-image: linear-gradient(to right, black 0%, black 100%);
+  }
 }
 
 @font-face {

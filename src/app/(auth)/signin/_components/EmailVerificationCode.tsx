@@ -144,10 +144,10 @@ function EmailVerificationCode({ handleMessage }: EmailVerificationCodeProps) {
         <h1 className="text-xl font-bold text-blue-B50">
           Enter confirmation code
         </h1>
-        <p className="mb-[22px] text-center text-sm text-gray-B60">
+        <p className="mb-5 text-center text-sm text-gray-B60">
           Enter the 6-digit code sent to <br /> {currentEmail}
         </p>
-        <div className="relative flex w-full justify-center gap-[5px]">
+        <div className="relative mb-6 flex w-full justify-center gap-[5px]">
           {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
           {Array.from({ length: 6 }, (_, index) => (
             <Controller

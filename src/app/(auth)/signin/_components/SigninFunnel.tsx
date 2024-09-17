@@ -42,7 +42,7 @@ function SigninFunnel() {
   ] as const;
 
   return (
-    <section className="relative flex h-full flex-grow flex-col justify-between px-[26px] py-12">
+    <section className="py-dynamic relative flex h-full flex-grow flex-col justify-between px-[26px]">
       <FormProvider {...formMethod}>
         {STEP_COMPONENTS[currentStep]}
       </FormProvider>
