@@ -69,7 +69,7 @@ function EmailAccessForm({
               {...field}
               type="email"
               placeholder="e.g. addresses12@gmail.com"
-              className="mb-4 h-[54px] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
+              className="mb-4 h-[54px] w-full rounded-2xl px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
             />
           )}
         />

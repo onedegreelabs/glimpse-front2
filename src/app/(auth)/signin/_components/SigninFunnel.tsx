@@ -5,6 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { SigninFormInputs } from '@/types/types';
 import ErrorMessage from '@/components/ErrorMessage';
 import EmailAccessForm from './EmailAccessForm';
+import EmailVerificationCode from './EmailVerificationCode';
 
 function SigninFunnel() {
   const formMethod = useForm<SigninFormInputs>();
@@ -13,7 +14,7 @@ function SigninFunnel() {
   } = formMethod;
 
   const [errorMessage, setErrorMessage] = useState('');
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(1);
 
   const handleNextStep = () => {
     setCurrentStep((step) => step + 1);
@@ -28,6 +29,7 @@ function SigninFunnel() {
       handleNextStep={handleNextStep}
       handleErrorMessage={handleErrorMessage}
     />,
+    <EmailVerificationCode />,
   ] as const;
 
   return (
