@@ -25,11 +25,11 @@ function ErrorMessage({
       ? ((Object.values(errors)[0]?.message as string) ?? message)
       : '';
 
-  return (
+  return firstErrorMessage ? (
     <p className="w-full max-w-sm rounded-md bg-[#E7001B] px-[10px] py-3 text-xs text-white">
       {firstErrorMessage}
     </p>
-  );
+  ) : null;
 }
 
 export default ErrorMessage;

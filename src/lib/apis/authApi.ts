@@ -52,3 +52,23 @@ export const register = async (data: FormData) => {
     throw error;
   }
 };
+
+export const sendVerificationCode = async (email: string) => {
+  const response = await fetch('/api/auth/sendVerificationCode', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+    headers: {
+      Accept: 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    const error: FetchError = new Error(
+      errorData.message || '인증 코드 전송 오류',
+    ) as FetchError;
+    error.status = response.status;
+    error.errorCode = errorData.errorCode || 'UNKNOWN_ERROR';
+    throw error;
+  }
+};

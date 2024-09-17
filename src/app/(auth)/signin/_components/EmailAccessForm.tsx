@@ -1,5 +1,5 @@
 import Button from '@/components/Button';
-import { login } from '@/lib/apis/authApi';
+import { sendVerificationCode } from '@/lib/apis/authApi';
 import { FetchError, SigninFormInputs } from '@/types/types';
 import { useMutation } from '@tanstack/react-query';
 import {
@@ -26,7 +26,7 @@ function EmailAccessForm({
   } = useFormContext<SigninFormInputs>();
 
   const { mutate: handleSendVerificationCode, isPending } = useMutation({
-    mutationFn: (email: string) => login(email),
+    mutationFn: (email: string) => sendVerificationCode(email),
     onSuccess: () => {
       handleNextStep();
     },
