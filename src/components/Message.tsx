@@ -29,7 +29,7 @@ function Message({
 
   return firstMessage ? (
     <p
-      className={`${isErrors ? 'bg-[#E7001B]' : 'bg-blue-B50'} w-full max-w-sm rounded-md px-[10px] py-3 text-xs text-white`}
+      className={`${isErrors ? 'bg-red-B10' : 'bg-blue-B50'} w-full max-w-sm rounded-md px-[10px] py-3 text-xs text-white`}
     >
       {firstMessage}
     </p>

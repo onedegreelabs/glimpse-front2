@@ -15,3 +15,7 @@ export const SOCIAL_MEDIA_KEYS = [
   'OTHERS2',
   'OTHERS3',
 ] as const;
+
+export const DEFAULT_VERIFICATION_CODE_TIME = 180;
+
+export const DEFAULT_RESEND_TIME = 60;

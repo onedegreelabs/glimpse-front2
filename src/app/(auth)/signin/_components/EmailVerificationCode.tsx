@@ -1,5 +1,3 @@
-import Button from '@/components/Button';
-import { RefreshSVG } from '@/icons/index';
 import { login, sendVerificationCode } from '@/lib/apis/authApi';
 import {
   FetchError,
@@ -10,7 +8,6 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import {
   Controller,
-  SubmitErrorHandler,
   SubmitHandler,
   useForm,
   useFormContext,
@@ -18,8 +15,9 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { captureException } from '@sentry/nextjs';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Cookies from 'js-cookie';
+import EmailVerificationCodeButton from './EmailVerificationCodeButton';
 
 interface EmailVerificationCodeProps {
   eventId: string;
@@ -37,32 +35,38 @@ function EmailVerificationCode({
   eventId,
 }: EmailVerificationCodeProps) {
   const router = useRouter();
+
   const { getValues } = useFormContext<SigninFormInputs>();
   const { control, watch, setFocus, setValue, reset, handleSubmit } =
     useForm<VerificationCode>();
+
   const [isInvalidCode, setIsInvalidCode] = useState(false);
 
   const currentEmail = getValues('email');
 
-  const { mutate: handleSendVerificationCode, isPending: resendCodePending } =
-    useMutation({
-      mutationFn: (email: string) => sendVerificationCode(email),
-      onSuccess: () => {
-        reset();
-        setIsInvalidCode(false);
-        handleMessage({
-          message:
-            'A new verification code has been sent. Please check your inbox.',
-          isErrors: false,
-        });
-      },
-      onError: (error) => {
-        handleMessage({
-          message: 'An unknown error occurred. Please contact support.',
-        });
-        captureException(error);
-      },
-    });
+  const {
+    mutate: handleSendVerificationCode,
+    isPending: resendCodePending,
+    isSuccess,
+  } = useMutation({
+    mutationFn: (email: string) => sendVerificationCode(email),
+    onSuccess: () => {
+      reset();
+      setIsInvalidCode(false);
+
+      handleMessage({
+        message:
+          'A new verification code has been sent. Please check your inbox.',
+        isErrors: false,
+      });
+    },
+    onError: (error) => {
+      handleMessage({
+        message: 'An unknown error occurred. Please contact support.',
+      });
+      captureException(error);
+    },
+  });
 
   const { mutate: handleLogin, isPending: loginPending } = useMutation({
     mutationFn: ({ email, code }: LoginDto) => login({ email, code }),
@@ -80,6 +84,8 @@ function EmailVerificationCode({
         case 'G01014':
           setIsInvalidCode(true);
           break;
+        case '':
+          break;
         default:
           handleMessage({
             message: 'An unknown error occurred. Please contact support.',
@@ -95,12 +101,6 @@ function EmailVerificationCode({
     handleLogin({ email: currentEmail, code });
   };
 
-  const onSubmitError: SubmitErrorHandler<VerificationCode> = () => {
-    // if (errors.email) {
-    //   handleMessage({ message: errors.email.message ?? '' });
-    // }
-  };
-
   const verificationCode = watch([
     'code0',
     'code1',
@@ -112,11 +112,14 @@ function EmailVerificationCode({
 
   const isCodeComplete = !verificationCode.every((code) => code);
 
-  const updateFocus = (index: number) => {
-    setTimeout(() => {
-      setFocus(`code${index}`);
-    }, 0);
-  };
+  const updateFocus = useCallback(
+    (index: number) => {
+      setTimeout(() => {
+        setFocus(`code${index}`);
+      }, 0);
+    },
+    [setFocus],
+  );
 
   const handleCodeChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -146,6 +149,13 @@ function EmailVerificationCode({
     }
   };
 
+  const displayResendLimitMessage = () => {
+    handleMessage({
+      message: 'You can resend the code only once per minute.',
+      isErrors: false,
+    });
+  };
+
   return (
     <>
       <form className="flex flex-col items-center gap-5">
@@ -165,6 +175,13 @@ function EmailVerificationCode({
               defaultValue=""
               rules={{
                 required: true,
+                validate: (value) => {
+                  const numValue = parseInt(value, 10);
+                  return (
+                    (numValue >= 0 && numValue <= 9) ||
+                    'Only integers between 0 and 9 are allowed'
+                  );
+                },
               }}
               render={({ field }) => {
                 const isCodeEntered = !!verificationCode[index];
@@ -197,27 +214,17 @@ function EmailVerificationCode({
           )}
         </div>
       </form>
-      <div className="flex flex-col items-center gap-[18px]">
-        <button
-          type="submit"
-          disabled={resendCodePending}
-          onClick={() => handleSendVerificationCode(currentEmail)}
-          className="group flex items-center gap-[3px] text-sm text-blue-B50 disabled:text-gray-B60"
-        >
-          <RefreshSVG className="stroke-blue-Bfill-blue-B50 size-[10px] fill-blue-B50 group-disabled:animate-spin group-disabled:fill-gray-B60" />{' '}
-          Resend code
-        </button>
-        <Button
-          onClick={handleSubmit(onSubmit, onSubmitError)}
-          type="submit"
-          disabled={
-            isCodeComplete || resendCodePending || loginPending || isInvalidCode
-          }
-          isPending={loginPending}
-        >
-          Next
-        </Button>
-      </div>
+      <EmailVerificationCodeButton
+        isResendButtonDisabled={resendCodePending}
+        onSendVerificationCode={() => handleSendVerificationCode(currentEmail)}
+        isVerificationButtonDisabled={
+          isCodeComplete || resendCodePending || loginPending || isInvalidCode
+        }
+        isVerifyingCode={loginPending}
+        onVerifyCode={handleSubmit(onSubmit)}
+        isSendVerificationSuccess={isSuccess}
+        displayResendLimitMessage={displayResendLimitMessage}
+      />
     </>
   );
 }
