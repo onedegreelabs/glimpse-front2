@@ -28,9 +28,9 @@ function Button({
           <Spinner1 className="size-6 animate-spin text-white" />
         </div>
       ) : (
-        <p className="text-gray-B60 group-enabled:font-bold group-enabled:text-blue-secondary">
+        <div className="text-gray-B60 group-enabled:font-bold group-enabled:text-blue-secondary">
           {children}
-        </p>
+        </div>
       )}
     </button>
   );

@@ -79,9 +79,9 @@ function EmailVerificationButton({
       >
         {verificationCodeTimer > 0 ? formatTime(verificationCodeTimer) : 'Next'}
         {verificationCodeTimer === 0 && (
-          <p className="absolute bottom-12 left-1/2 w-11/12 max-w-sm -translate-x-1/2 transform rounded-md bg-red-B10 px-[10px] py-3 text-xs text-white">
+          <div className="absolute bottom-12 left-1/2 w-11/12 max-w-sm -translate-x-1/2 transform rounded-md bg-red-B10 px-[10px] py-3 text-xs text-white">
             Input time has expired. Please resend the verification code.
-          </p>
+          </div>
         )}
       </Button>
     </div>

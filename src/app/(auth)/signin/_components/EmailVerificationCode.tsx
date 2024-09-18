@@ -53,7 +53,6 @@ function EmailVerificationCode({
     onSuccess: () => {
       reset();
       setIsInvalidCode(false);
-
       handleMessage({
         message:
           'A new verification code has been sent. Please check your inbox.',
@@ -61,11 +60,23 @@ function EmailVerificationCode({
       });
     },
     onError: (error) => {
-      handleMessage({
-        message: 'An unknown error occurred. Please contact support.',
-      });
-      captureException(error);
+      const fetchError = error as FetchError;
+
+      if (
+        fetchError.errorCode === 'G01017' ||
+        fetchError.errorCode === 'G01018'
+      ) {
+        handleMessage({
+          message: `You've reached the resend limit. Please try again an hour later.`,
+        });
+      } else {
+        handleMessage({
+          message: 'An unknown error occurred. Please contact support.',
+        });
+        captureException(error);
+      }
     },
+    retry: false,
   });
 
   const { mutate: handleLogin, isPending: loginPending } = useMutation({
@@ -84,7 +95,11 @@ function EmailVerificationCode({
         case 'G01014':
           setIsInvalidCode(true);
           break;
-        case '':
+        case 'G01015':
+        case 'G01016':
+          handleMessage({
+            message: `You've reached the resend limit for email verification requests. Please try again an hour later.`,
+          });
           break;
         default:
           handleMessage({
