@@ -7,7 +7,7 @@ import Message from '@/components/Message';
 import EmailAccessForm from './EmailAccessForm';
 import EmailVerificationCode from './EmailVerificationCode';
 
-function SigninFunnel() {
+function SigninFunnel({ eventId }: { eventId: string }) {
   const formMethod = useForm<SigninFormInputs>();
   const {
     formState: { errors },
@@ -38,7 +38,7 @@ function SigninFunnel() {
       handleNextStep={handleNextStep}
       handleMessage={handleMessage}
     />,
-    <EmailVerificationCode handleMessage={handleMessage} />,
+    <EmailVerificationCode handleMessage={handleMessage} eventId={eventId} />,
   ] as const;
 
   return (

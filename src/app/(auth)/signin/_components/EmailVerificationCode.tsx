@@ -19,8 +19,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { captureException } from '@sentry/nextjs';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import Cookies from 'js-cookie';
 
 interface EmailVerificationCodeProps {
+  eventId: string;
   handleMessage: ({
     message,
     isErrors,
@@ -30,7 +32,10 @@ interface EmailVerificationCodeProps {
   }) => void;
 }
 
-function EmailVerificationCode({ handleMessage }: EmailVerificationCodeProps) {
+function EmailVerificationCode({
+  handleMessage,
+  eventId,
+}: EmailVerificationCodeProps) {
   const router = useRouter();
   const { getValues } = useFormContext<SigninFormInputs>();
   const { control, watch, setFocus, setValue, reset, handleSubmit } =
@@ -62,16 +67,14 @@ function EmailVerificationCode({ handleMessage }: EmailVerificationCodeProps) {
   const { mutate: handleLogin, isPending: loginPending } = useMutation({
     mutationFn: ({ email, code }: LoginDto) => login({ email, code }),
     onSuccess: () => {
-      console.log('helloo');
-      // router.refresh();
+      router.push(`/${eventId}/all`);
     },
     onError: (error) => {
       const fetchError = error as FetchError;
 
-      console.log(fetchError.errorCode);
-
       switch (fetchError.errorCode) {
         case 'G01001':
+          Cookies.set('email', currentEmail);
           router.push('/signup');
           break;
         case 'G01014':

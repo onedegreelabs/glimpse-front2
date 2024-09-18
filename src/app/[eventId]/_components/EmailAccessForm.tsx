@@ -1,151 +1,62 @@
-// 'use client';
+'use client';
 
-// import Cookies from 'js-cookie';
-// import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
-// import { useEffect, useState } from 'react';
-// import { login } from '@/lib/apis/authApi';
-// import { FetchError } from '@/types/types';
-// import { useRouter } from 'next/navigation';
-// import { useMutation } from '@tanstack/react-query';
-// import Button from '@/components/Button';
-// import TermsModal from './TermsModal';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import Cookies from 'js-cookie';
+import TermsModal from './TermsModal';
 
-// function ErrorMessage({
-//   message,
-//   onClose,
-// }: {
-//   message: string;
-//   onClose: () => void;
-// }) {
-//   useEffect(() => {
-//     const timer = setTimeout(() => {
-//       onClose();
-//     }, 5000);
+function EmailAccessForm({ eventId }: { eventId: string }) {
+  const [isOpen, setIsOpen] = useState(false);
 
-//     return () => clearTimeout(timer);
-//   }, [onClose]);
+  useEffect(() => {
+    Cookies.remove('eventId');
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
 
-//   return (
-//     <p className="absolute -top-3 w-full rounded-md bg-[#E7001B] px-[10px] py-3 text-xs text-white">
-//       {message}
-//     </p>
-//   );
-// }
+  const closeTermsModal = () => {
+    setIsOpen(false);
+  };
 
-// type EmailFormInputs = {
-//   email: string;
-// };
+  const handleRegisterClick = () => {
+    Cookies.set('eventId', eventId);
+  };
 
-// function EmailAccessForm({ eventId }: { eventId: string }) {
-//   const router = useRouter();
-//   const [isOpen, setIsOpen] = useState(false);
-//   const [errorMessage, setErrorMessage] = useState('');
-//   const {
-//     register,
-//     handleSubmit,
-//     watch,
-//     getValues,
-//     formState: { errors },
-//   } = useForm<EmailFormInputs>();
+  return (
+    <article className="fixed inset-0 z-blur mx-auto max-w-[386px] bg-blue-B50/60 text-gray-B80 backdrop-blur-[8px]">
+      <div className="flex size-full flex-col items-center">
+        <div className="mt-16 flex size-full w-[256px] flex-col items-center justify-center gap-3">
+          <p className="mb-[40px] text-center font-bold text-yellow-primary">
+            Register your participant card to view participants profiles and
+            find your matches!
+          </p>
+          <Link
+            href="/signin"
+            onClick={handleRegisterClick}
+            className="flex h-[54px] w-full items-center justify-center rounded-2xl bg-yellow-primary font-bold text-blue-secondary"
+          >
+            Register
+          </Link>
+        </div>
+        <div className="mb-[26px] flex w-full flex-col gap-4 px-7">
+          <button
+            type="button"
+            onClick={() => setIsOpen(true)}
+            className="text-left text-xs text-yellow-primary underline underline-offset-2"
+          >
+            By registering your profile, you consent to the collection and use
+            of personal information.
+            <p>
+              프로필을 등록하시면 개인정보 수집 및 이용에 동의하시게 됩니다.
+            </p>
+          </button>
+        </div>
+      </div>
+      {isOpen && <TermsModal closeHandler={closeTermsModal} />}
+    </article>
+  );
+}
 
-//   useEffect(() => {
-//     document.body.style.overflow = 'hidden';
-//     return () => {
-//       document.body.style.overflow = 'auto';
-//     };
-//   }, []);
-
-//   const { mutate: handleLogin, isPending } = useMutation({
-//     mutationFn: (email: string) => login(email),
-//     onSuccess: () => {
-//       router.refresh();
-//     },
-//     onError: (error) => {
-//       const fetchError = error as FetchError;
-
-//       if (fetchError && fetchError.errorCode === 'G01001') {
-//         router.push('/signup');
-//       } else {
-//         setErrorMessage('An unknown error occurred. Please contact support.');
-//       }
-//     },
-//   });
-
-//   const onSubmit: SubmitHandler<EmailFormInputs> = async (data) => {
-//     handleLogin(data.email);
-//   };
-
-//   const SubmitError: SubmitErrorHandler<EmailFormInputs> = () => {
-//     if (errors.email) {
-//       setErrorMessage(errors.email.message ?? '');
-//     }
-//   };
-
-//   const closeTermsModal = () => {
-//     setIsOpen(false);
-//   };
-
-//   return (
-//     <article className="fixed inset-0 z-blur mx-auto max-w-[386px] bg-blue-B50/60 text-gray-B80 backdrop-blur-[8px]">
-//       <form
-//         className="flex size-full flex-col items-center"
-//         onSubmit={handleSubmit(onSubmit, SubmitError)}
-//       >
-//         <div className="mt-16 flex size-full w-[256px] flex-col items-center justify-center gap-3">
-//           <p className="mb-[40px] text-center font-bold text-yellow-primary">
-//             Register your profile card to view participants profiles and find
-//             your matches!
-//           </p>
-//           <input
-//             {...register('email', {
-//               required: true,
-//               pattern: {
-//                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-//                 message: 'Please enter a valid email address.',
-//               },
-//             })}
-//             type="email"
-//             placeholder="Enter your email"
-//             className="w-full rounded-2xl bg-white px-4 py-[14px] text-sm outline outline-1 outline-blue-secondary focus:outline-2"
-//           />
-//           <Button
-//             type="submit"
-//             disabled={!watch('email') || isPending}
-//             isPending={isPending}
-//           >
-//             Register
-//           </Button>
-//         </div>
-//         <div className="mb-[26px] flex w-full flex-col gap-4 px-7">
-//           <div className="relative flex gap-2">
-//             {errorMessage && (
-//               <ErrorMessage
-//                 message={errorMessage}
-//                 onClose={() => setErrorMessage('')}
-//               />
-//             )}
-//             <div className="text-xs">
-//               <div>
-//                 <button
-//                   type="button"
-//                   onClick={() => setIsOpen(true)}
-//                   className="text-left text-yellow-primary underline underline-offset-2"
-//                 >
-//                   By registering your profile, you consent to the collection and
-//                   use of personal information.
-//                   <p>
-//                     프로필을 등록하시면 개인정보 수집 및 이용에 동의하시게
-//                     됩니다.
-//                   </p>
-//                 </button>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </form>
-//       {isOpen && <TermsModal closeHandler={closeTermsModal} />}
-//     </article>
-//   );
-// }
-
-// export default EmailAccessForm;
+export default EmailAccessForm;
