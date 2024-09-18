@@ -44,6 +44,7 @@ function EmailVerificationCode({ handleMessage }: EmailVerificationCodeProps) {
       mutationFn: (email: string) => sendVerificationCode(email),
       onSuccess: () => {
         reset();
+        setIsInvalidCode(false);
         handleMessage({
           message:
             'A new verification code has been sent. Please check your inbox.',
@@ -61,10 +62,13 @@ function EmailVerificationCode({ handleMessage }: EmailVerificationCodeProps) {
   const { mutate: handleLogin, isPending: loginPending } = useMutation({
     mutationFn: ({ email, code }: LoginDto) => login({ email, code }),
     onSuccess: () => {
+      console.log('helloo');
       // router.refresh();
     },
     onError: (error) => {
       const fetchError = error as FetchError;
+
+      console.log(fetchError.errorCode);
 
       switch (fetchError.errorCode) {
         case 'G01001':
@@ -80,6 +84,7 @@ function EmailVerificationCode({ handleMessage }: EmailVerificationCodeProps) {
           captureException(error);
       }
     },
+    retry: false,
   });
 
   const onSubmit: SubmitHandler<VerificationCode> = async (data) => {
