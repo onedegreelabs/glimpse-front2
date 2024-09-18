@@ -83,6 +83,7 @@ function EmailVerificationCode({
     mutationFn: ({ email, code }: LoginDto) => login({ email, code }),
     onSuccess: () => {
       router.push(`/${eventId}/all`);
+      Cookies.remove('eventId');
     },
     onError: (error) => {
       const fetchError = error as FetchError;
