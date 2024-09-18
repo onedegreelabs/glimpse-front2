@@ -21,7 +21,7 @@ import { useState } from 'react';
 
 import Link from 'next/link';
 import { EventParticipantProfileCardDto, SocialMediaDto } from '@/types/types';
-import URLMark from '@/app/signup/_components/URLMark';
+import URLMark from '@/app/(auth)/signup/_components/URLMark';
 
 interface SocialContainerProps {
   participantRole: EventParticipantProfileCardDto['role'];

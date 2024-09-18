@@ -10,15 +10,19 @@ export const POST = async (request: NextRequest) => {
     });
   }
 
-  const eventId = request.nextUrl.searchParams.get('eventId');
-  const accessToken = request.cookies.get('accessToken')?.value;
+  const data = await request.json();
 
-  const response = await fetch(`${END_POINT}/events/${eventId}/curations`, {
-    method: 'POST',
-    headers: {
-      Cookie: `accessToken=${accessToken}`,
+  const response = await fetch(
+    `${END_POINT}/auth/mails/send-verification-code`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(data),
     },
-  });
+  );
 
   if (!response.ok) {
     const { message, errorCode } = await response.json();

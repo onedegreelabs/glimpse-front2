@@ -12,12 +12,15 @@ export const GET = async (request: NextRequest) => {
   }
 
   const email = request.nextUrl.searchParams.get('email');
+  const code = request.nextUrl.searchParams.get('code');
+
+  const base64Credentials = Buffer.from(`${email}:${code}`).toString('base64');
 
   const response = await fetch(`${END_POINT}/auth/token?p=email`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Basic ${btoa(`${email}: `)}`,
+      Authorization: `Basic ${base64Credentials}`,
     },
   });
 

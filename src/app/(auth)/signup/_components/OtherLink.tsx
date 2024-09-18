@@ -1,6 +1,6 @@
 import BottomModal from '@/components/BottomModal';
 import { Controller, useForm, useFormContext } from 'react-hook-form';
-import ErrorMessage from '@/components/ErrorMessage';
+import Message from '@/components/Message';
 import { URL_REGEX } from '@/constant/constant';
 import URLMark from './URLMark';
 
@@ -80,8 +80,9 @@ function OtherLink({ handleCloseModal }: OtherLinkProps) {
         </button>
       </div>
       {Object.values(errors).length > 0 && (
-        <ErrorMessage
+        <Message
           errors={errors}
+          isErrors
           message="Please enter a valid URL"
           onClose={() => clearErrors()}
         />

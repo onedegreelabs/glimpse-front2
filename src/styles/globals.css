@@ -2,8 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-.background-mask {
-  mask-image: linear-gradient(to right, black 0%, black 100%);
+@layer base {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input {
+    @apply outline outline-gray-B40 focus:outline-blue-B50;
+  }
+}
+
+@layer utilities {
+  .py-dynamic {
+    padding-top: calc(min(3rem, 2.5vh));
+    padding-bottom: calc(min(3rem, 10vh));
+  }
+
+  .background-mask {
+    mask-image: linear-gradient(to right, black 0%, black 100%);
+  }
 }
 
 @font-face {

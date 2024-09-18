@@ -51,7 +51,7 @@ function MatchingComponent({
       >
         <div className="flex size-[62px] items-center justify-center rounded-full bg-blue-secondary">
           <div className="flex size-14 items-center justify-center rounded-full bg-yellow-primary">
-            <RefreshSVG />
+            <RefreshSVG className="size-[18px] fill-blue-secondary stroke-blue-secondary" />
           </div>
         </div>
       </button>
