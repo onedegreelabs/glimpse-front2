@@ -13,6 +13,7 @@ import { register } from '@/lib/apis/authApi';
 import { useRouter } from 'next/navigation';
 import { SOCIAL_MEDIA_KEYS } from '@/constant/constant';
 import Message from '@/components/Message';
+import { useState } from 'react';
 import SocialsLinks from './SocialsLinks';
 import SignupHeader from './SignupHeader';
 import BasicInformation from './BasicInformation';
@@ -39,7 +40,11 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
 
   const router = useRouter();
 
-  //   const [isOpenBasicInfo, setIsOpenBasicInfo] = useState(false);
+  const [isOpenBasicInfo, setIsOpenBasicInfo] = useState(true);
+
+  const toggleBasicInfo = () => {
+    setIsOpenBasicInfo((prev) => !prev);
+  };
 
   const formValues = watch();
   const name = watch('name');
@@ -150,10 +155,22 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
           render={({ field }) => <ProfileImage onChange={field.onChange} />}
         />
 
-        <AccordionButton isOpen label="Basic Information" state="COMPLETED" />
-        <AccordionButton isOpen label="Basic Information" state="PROGRESS" />
-        <BasicInformation control={control} jobCategories={jobCategories} />
+        <AccordionButton
+          isOpen={isOpenBasicInfo}
+          label="Basic Information"
+          state="COMPLETED"
+          toggleHandler={toggleBasicInfo}
+        />
+        {isOpenBasicInfo && (
+          <BasicInformation control={control} jobCategories={jobCategories} />
+        )}
 
+        <AccordionButton
+          isOpen={isOpenBasicInfo}
+          label="Basic Information"
+          state="PROGRESS"
+          toggleHandler={toggleBasicInfo}
+        />
         <FormProvider {...formMethods}>
           <SocialsLinks />
         </FormProvider>

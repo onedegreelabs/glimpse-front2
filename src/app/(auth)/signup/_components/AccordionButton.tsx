@@ -5,17 +5,24 @@ interface AccordionButtonProps {
   isOpen: boolean;
   label: string;
   state: AccordionButtonState;
+  toggleHandler: () => void;
 }
 
-function AccordionButton({ isOpen, label, state }: AccordionButtonProps) {
+function AccordionButton({
+  isOpen,
+  label,
+  state,
+  toggleHandler,
+}: AccordionButtonProps) {
   return (
     <button
       type="button"
       aria-label={`open-${label}`}
-      className={`${state === 'COMPLETED' ? 'bg-yellow-200/50' : 'bg-basic-B10'} mb-7 flex h-16 w-full items-center justify-between rounded-xl pl-4 pr-6 text-sm text-black`}
+      onClick={toggleHandler}
+      className={`${state === 'COMPLETED' ? 'bg-yellow-200/50 pl-[11px]' : 'bg-basic-B10 pl-4'} mb-7 flex h-16 w-full items-center justify-between rounded-xl pr-6 text-sm text-black`}
     >
       <div
-        className={`flex items-center ${state === 'COMPLETED' ? 'gap-[10px]' : 'gap-4'}`}
+        className={`flex items-center ${state === 'COMPLETED' ? 'gap-[10px]' : 'gap-3.5'}`}
       >
         {state === 'COMPLETED' ? (
           <div className="flex size-10 items-center justify-center rounded-full bg-yellow-primary">
