@@ -201,8 +201,8 @@ function EmailVerificationCode({
               render={({ field }) => {
                 const isCodeEntered = !!verificationCode[index];
                 const borderColorClass = isInvalidCode
-                  ? 'outline-red-B10 text-red-B10 focus:outline-red-B10'
-                  : 'outline-blue-B50';
+                  ? 'border-red-B10 text-red-B10 focus:border-red-B10'
+                  : 'border-blue-B50';
                 const inputClassName = `h-[54px] w-1/6 max-w-[46px] rounded-xl text-center text-sm ${
                   isCodeEntered ? borderColorClass : ''
                 }`;

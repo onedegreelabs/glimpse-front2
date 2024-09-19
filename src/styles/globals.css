@@ -10,7 +10,8 @@
   }
 
   input {
-    @apply outline outline-gray-B40 focus:outline-blue-B50;
+    /* @apply outline outline-gray-B40 focus:outline-blue-B50; */
+    @apply border border-solid border-gray-B40 outline-none focus:border-blue-B50;
   }
 }
 

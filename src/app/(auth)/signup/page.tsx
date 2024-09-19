@@ -1,11 +1,25 @@
-// import { getJobCategories } from '@/lib/apis/server/userApi';
-// import SignupClient from './_components/SignupClient';
+import { getJobCategories } from '@/lib/apis/server/userApi';
+import { cookies } from 'next/headers';
+import SignupClient from './_components/SignupClient';
 
 async function SignupPage() {
-  //   const jobCategories = await getJobCategories();
+  const cookieStore = cookies();
+  const eventId = cookieStore.get('eventId')?.value;
+  const email = cookieStore.get('email')?.value;
 
-  //   return <SignupClient jobCategories={jobCategories} />;
-  return <div>sss</div>;
+  // if (!eventId || !email) {
+  //   return null;
+  // }
+
+  const jobCategories = await getJobCategories();
+
+  return (
+    <SignupClient
+      jobCategories={jobCategories}
+      eventId={eventId!}
+      email={email!}
+    />
+  );
 }
 
 export default SignupPage;
