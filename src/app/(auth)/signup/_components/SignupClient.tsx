@@ -48,10 +48,9 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
   const formValues = watch();
   const name = watch('name');
   const jobTitle = watch('jobTitle');
-  const belong = watch('belong');
   const jobCategory = watch('jobCategory');
 
-  const isFormValid = !!(name && jobTitle && belong && jobCategory);
+  const isFormValid = !!(name && jobTitle && jobCategory);
 
   const { mutate: handleSignup, isPending: signupPending } = useMutation({
     mutationFn: (data: FormData) => register(data),
@@ -100,36 +99,34 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
       }));
 
   const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
-    if (data.jobCategory) {
-      const formData = new FormData();
+    const formData = new FormData();
 
-      if (data.image) {
-        formData.append('image', data.image);
-      }
-
-      const socialMedia = processSocialMedia(data);
-
-      const { image, ...remainingData } = data;
-      const filteredData = Object.fromEntries(
-        Object.entries(remainingData).filter(
-          ([key]) =>
-            !SOCIAL_MEDIA_KEYS.includes(
-              key as (typeof SOCIAL_MEDIA_KEYS)[number],
-            ),
-        ),
-      );
-      const reqData = {
-        ...filteredData,
-        email,
-        socialMedia,
-        method: 'EMAIL',
-        terms: [{ termId: 2, agreed: true }],
-      };
-
-      formData.append('data', JSON.stringify(reqData));
-
-      handleSignup(formData);
+    if (data.image) {
+      formData.append('image', data.image);
     }
+
+    const socialMedia = processSocialMedia(data);
+
+    const { image, ...remainingData } = data;
+    const filteredData = Object.fromEntries(
+      Object.entries(remainingData).filter(
+        ([key]) =>
+          !SOCIAL_MEDIA_KEYS.includes(
+            key as (typeof SOCIAL_MEDIA_KEYS)[number],
+          ),
+      ),
+    );
+    const reqData = {
+      ...filteredData,
+      email,
+      socialMedia,
+      method: 'EMAIL',
+      terms: [{ termId: 2, agreed: true }],
+    };
+
+    formData.append('data', JSON.stringify(reqData));
+
+    handleSignup(formData);
   };
 
   return (
@@ -162,7 +159,11 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
             toggleHandler={toggleBasicInfo}
           />
           {isOpenBasicInfo && (
-            <BasicInformation control={control} jobCategories={jobCategories} />
+            <BasicInformation
+              control={control}
+              jobCategories={jobCategories}
+              setError={setError}
+            />
           )}
 
           <AccordionButton
@@ -183,7 +184,9 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
         </Button>
       </form>
       {Object.values(errors).length > 0 && (
-        <Message errors={errors} onClose={() => clearErrors()} isErrors />
+        <div className="fixed bottom-14 left-1/2 -translate-x-1/2 transform">
+          <Message errors={errors} onClose={() => clearErrors()} isErrors />
+        </div>
       )}
     </main>
   );

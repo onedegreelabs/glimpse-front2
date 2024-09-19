@@ -1,14 +1,19 @@
 import { JobCategorie, RegisterInputs } from '@/types/types';
-import { Control, Controller } from 'react-hook-form';
+import { Control, Controller, UseFormSetError } from 'react-hook-form';
 import JobCategory from './JobCategory';
 import Title from './Title';
 
 interface BasicInformationProps {
   control: Control<RegisterInputs, any>;
   jobCategories: JobCategorie[];
+  setError: UseFormSetError<RegisterInputs>;
 }
 
-function BasicInformation({ control, jobCategories }: BasicInformationProps) {
+function BasicInformation({
+  control,
+  jobCategories,
+  setError,
+}: BasicInformationProps) {
   return (
     <ul className="flex flex-col gap-6">
       <Title name="name" title="Name" required>
@@ -25,10 +30,7 @@ function BasicInformation({ control, jobCategories }: BasicInformationProps) {
             validate: {
               validCharacters: (value) => {
                 const isValid = /^[a-zA-Z가-힣\s]*$/.test(value);
-                return (
-                  isValid ||
-                  'Please enter your name using only Korean or English characters.'
-                );
+                return isValid || 'Special characters are not supported.';
               },
             },
           }}
@@ -127,6 +129,12 @@ function BasicInformation({ control, jobCategories }: BasicInformationProps) {
               onChange={(e) => {
                 if (e.target.value.length <= 30) {
                   field.onChange(e);
+                } else {
+                  setError('jobTitle', {
+                    type: 'manual',
+                    message:
+                      'Please enter your job title between 1 and 30 characters.',
+                  });
                 }
               }}
               className="h-[54px] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
@@ -141,7 +149,6 @@ function BasicInformation({ control, jobCategories }: BasicInformationProps) {
           control={control}
           defaultValue=""
           rules={{
-            required: 'Please enter your company/organization.',
             maxLength: {
               value: 30,
               message:
