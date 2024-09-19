@@ -53,7 +53,7 @@ function ProfileImage({
               aria-label="delete-image"
               className="absolute -right-3 -top-3"
             >
-              <CrossSVG className="size-6" />
+              <CrossSVG className="size-6 fill-blue-B50" />
             </button>
             <Image
               src={profileImage}

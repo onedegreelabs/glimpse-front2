@@ -11,6 +11,7 @@ import {
 import { URL_REGEX } from '@/constant/constant';
 import URLMark from './URLMark';
 import Title from './Title';
+import Hashtags from './Hashtags';
 
 interface AdditionalInformationProps {
   control: Control<RegisterInputs, any>;
@@ -53,17 +54,7 @@ function AdditionalInformation({ control }: AdditionalInformationProps) {
   return (
     <ul className="mb-14 flex flex-col gap-6">
       <Title title="Hashtags" required={false}>
-        <div className="relative">
-          <input
-            id="tagIds"
-            type="text"
-            placeholder="Enter hashtags that best describe you"
-            className="h-[54px] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
-          />
-          <button className="absolute right-3 top-4" type="button">
-            add
-          </button>
-        </div>
+        <Hashtags />
       </Title>
       <Title title="Socials/Links" required={false}>
         <p className="-mt-1 text-sm font-light">Please add the desired link.</p>
