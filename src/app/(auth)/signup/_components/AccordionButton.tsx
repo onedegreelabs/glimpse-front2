@@ -19,7 +19,7 @@ function AccordionButton({
       type="button"
       aria-label={`open-${label}`}
       onClick={toggleHandler}
-      className={`${state === 'COMPLETED' ? 'bg-yellow-200/50 pl-[11px]' : 'bg-basic-B10 pl-4'} mb-7 flex h-16 w-full items-center justify-between rounded-xl pr-6 text-sm text-black`}
+      className={`${state === 'COMPLETED' ? 'bg-yellow-200/50 pl-[11px]' : 'bg-basic-B10 pl-4'} ${isOpen ? 'mb-7' : 'mb-3'} flex h-16 w-full items-center justify-between rounded-xl pr-6 text-sm text-black`}
     >
       <div
         className={`flex items-center ${state === 'COMPLETED' ? 'gap-[10px]' : 'gap-3.5'}`}

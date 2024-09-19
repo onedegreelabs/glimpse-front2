@@ -1,25 +1,19 @@
 'use client';
 
-import { Spinner1 } from '@/icons/index';
 import { FetchError, JobCategorie, RegisterInputs } from '@/types/types';
-import {
-  Controller,
-  FormProvider,
-  SubmitHandler,
-  useForm,
-} from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { register } from '@/lib/apis/authApi';
 import { useRouter } from 'next/navigation';
 import { SOCIAL_MEDIA_KEYS } from '@/constant/constant';
 import Message from '@/components/Message';
 import { useState } from 'react';
-import SocialsLinks from './SocialsLinks';
+import Button from '@/components/Button';
 import SignupHeader from './SignupHeader';
 import BasicInformation from './BasicInformation';
 import ProfileImage from './ProfileImage';
 import AccordionButton from './AccordionButton';
-// import { useState } from 'react';
+import AdditionalInformation from './AdditionalInformation';
 
 interface SignupClientProps {
   email: string;
@@ -41,9 +35,14 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
   const router = useRouter();
 
   const [isOpenBasicInfo, setIsOpenBasicInfo] = useState(true);
+  const [isOpenAdditionalInfo, setInOpenAdditionalInfo] = useState(true);
 
   const toggleBasicInfo = () => {
     setIsOpenBasicInfo((prev) => !prev);
+  };
+
+  const toggleAdditionalInfo = () => {
+    setInOpenAdditionalInfo((prev) => !prev);
   };
 
   const formValues = watch();
@@ -134,62 +133,54 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
   };
 
   return (
-    <main className="min-h-screen w-full bg-white text-gray-B80">
+    <main className="flex min-h-screen w-full flex-col bg-white text-gray-B80">
       <SignupHeader formValues={formValues} />
       <form
-        className="w-full px-[26px] pb-[50px] pt-[30px]"
+        className="flex w-full flex-grow flex-col justify-between px-[26px] pb-[50px] pt-[30px]"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h1 className="mb-1 text-xl font-bold text-blue-B50">
-          Welcome to Glimpse!
-        </h1>
-        <p className="text-xs font-light">
-          Complete your profile now,
-          <br />
-          enjoy hassle-free event registration later!
-        </p>
+        <div>
+          <h1 className="mb-1 text-xl font-bold text-blue-B50">
+            Welcome to Glimpse!
+          </h1>
+          <p className="text-xs font-light">
+            Complete your profile now,
+            <br />
+            enjoy hassle-free event registration later!
+          </p>
 
-        <Controller
-          name="image"
-          control={control}
-          render={({ field }) => <ProfileImage onChange={field.onChange} />}
-        />
+          <Controller
+            name="image"
+            control={control}
+            render={({ field }) => <ProfileImage onChange={field.onChange} />}
+          />
 
-        <AccordionButton
-          isOpen={isOpenBasicInfo}
-          label="Basic Information"
-          state="COMPLETED"
-          toggleHandler={toggleBasicInfo}
-        />
-        {isOpenBasicInfo && (
-          <BasicInformation control={control} jobCategories={jobCategories} />
-        )}
+          <AccordionButton
+            isOpen={isOpenBasicInfo}
+            label="Basic Information"
+            state="COMPLETED"
+            toggleHandler={toggleBasicInfo}
+          />
+          {isOpenBasicInfo && (
+            <BasicInformation control={control} jobCategories={jobCategories} />
+          )}
 
-        <AccordionButton
-          isOpen={isOpenBasicInfo}
-          label="Basic Information"
-          state="PROGRESS"
-          toggleHandler={toggleBasicInfo}
-        />
-        <FormProvider {...formMethods}>
-          <SocialsLinks />
-        </FormProvider>
+          <AccordionButton
+            isOpen={isOpenAdditionalInfo}
+            label="Additional Information"
+            state="PROGRESS"
+            toggleHandler={toggleAdditionalInfo}
+          />
+          {isOpenAdditionalInfo && <AdditionalInformation control={control} />}
+        </div>
 
-        <button
+        <Button
           type="submit"
           disabled={!isFormValid || signupPending}
-          className="group h-14 w-full rounded-3xl bg-yellow-primary text-sm disabled:bg-gray-B30"
+          isPending={signupPending}
         >
-          {signupPending ? (
-            <div className="flex items-center justify-center">
-              <Spinner1 className="size-6 animate-spin text-white" />
-            </div>
-          ) : (
-            <p className="text-gray-B60 group-enabled:font-bold group-enabled:text-blue-secondary">
-              Start Networking
-            </p>
-          )}
-        </button>
+          Start Networking
+        </Button>
       </form>
       {Object.values(errors).length > 0 && (
         <Message errors={errors} onClose={() => clearErrors()} isErrors />
