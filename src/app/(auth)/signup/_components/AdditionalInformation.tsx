@@ -54,7 +54,14 @@ function AdditionalInformation({ control }: AdditionalInformationProps) {
   return (
     <ul className="mb-14 flex flex-col gap-6">
       <Title title="Hashtags" required={false}>
-        <Hashtags tagList={[]} />
+        <Controller
+          name="tagIds"
+          control={control}
+          defaultValue={[]}
+          render={({ field }) => (
+            <Hashtags tagList={field.value} addTagList={field.onChange} />
+          )}
+        />
       </Title>
       <Title title="Socials/Links" required={false}>
         <p className="-mt-1 text-sm font-light">Please add the desired link.</p>

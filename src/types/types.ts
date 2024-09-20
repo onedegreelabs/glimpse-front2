@@ -124,6 +124,7 @@ export interface RegisterInputs
   OTHERS2: string;
   OTHERS3: string;
   jobCategory: JobCategory | null;
+  tagIds: Tag[];
 }
 
 export interface RegisterFormDataDto

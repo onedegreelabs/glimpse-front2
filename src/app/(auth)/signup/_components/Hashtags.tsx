@@ -1,14 +1,10 @@
+import Message from '@/components/Message';
 import { CrossSVG, RefreshSVG } from '@/icons/index';
 import { createTag } from '@/lib/apis/tagApi';
 import { Tag } from '@/types/types';
 import { captureException } from '@sentry/nextjs';
 import { useMutation } from '@tanstack/react-query';
-import {
-  Controller,
-  SubmitErrorHandler,
-  SubmitHandler,
-  useForm,
-} from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 interface TagInputs {
   tagName: string;
@@ -16,34 +12,35 @@ interface TagInputs {
 
 interface HashtagsProps {
   tagList: Tag[];
+  addTagList: (tags: Tag[]) => void;
 }
 
-function Hashtags({ tagList }: HashtagsProps) {
+function Hashtags({ tagList, addTagList }: HashtagsProps) {
   const {
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
+    clearErrors,
+    setError,
   } = useForm<TagInputs>();
 
   const { mutate: handleCreateTag, isPending } = useMutation({
     mutationFn: (tagName: string) => createTag(tagName),
     onSuccess: (tag) => {
-      console.log(tag);
+      addTagList([...tagList, tag]);
+      setValue('tagName', '');
     },
     onError: (error) => {
-      // handleMessage({
-      //   message: 'An unknown error occurred. Please contact support.',
-      // });
+      setError('tagName', {
+        message: 'An unknown error occurred. Please contact support.',
+      });
       captureException(error);
     },
   });
 
   const onSubmit: SubmitHandler<TagInputs> = ({ tagName }) => {
     handleCreateTag(tagName);
-  };
-
-  const onSubmitError: SubmitErrorHandler<TagInputs> = () => {
-    console.log(errors);
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -93,7 +90,7 @@ function Hashtags({ tagList }: HashtagsProps) {
       />
 
       <button
-        onClick={handleSubmit(onSubmit, onSubmitError)}
+        onClick={handleSubmit(onSubmit)}
         disabled={isPending}
         className="absolute right-3 top-[17px] flex items-center gap-1 text-sm font-bold text-blue-B50 disabled:text-gray-B65"
         type="button"
@@ -107,7 +104,7 @@ function Hashtags({ tagList }: HashtagsProps) {
       </button>
 
       {tagList.length > 0 && (
-        <ul className="mb-4 flex flex-wrap gap-[6px] text-sm">
+        <ul className="mb-4 flex flex-wrap gap-[6px] px-2 text-sm">
           {tagList.map(({ id, name }) => (
             <li
               key={id}
@@ -121,6 +118,10 @@ function Hashtags({ tagList }: HashtagsProps) {
           ))}
         </ul>
       )}
+
+      <div className="fixed bottom-14 left-1/2 -translate-x-1/2 transform">
+        <Message errors={errors} onClose={() => clearErrors()} isErrors />
+      </div>
     </div>
   );
 }
