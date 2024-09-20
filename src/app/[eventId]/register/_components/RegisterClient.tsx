@@ -2,6 +2,7 @@
 
 import Hashtags from '@/app/(auth)/signup/_components/Hashtags';
 import Button from '@/components/Button';
+import Message from '@/components/Message';
 import Title from '@/components/Title';
 import { eventRegister } from '@/lib/apis/eventsApi';
 import {
@@ -12,6 +13,7 @@ import {
 } from '@/types/types';
 import { captureException } from '@sentry/nextjs';
 import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 interface RegisterClientProps {
@@ -21,7 +23,8 @@ interface RegisterClientProps {
 }
 
 function RegisterClient({ intro, tags, eventId }: RegisterClientProps) {
-  const { handleSubmit, control, setError } = useForm<EventRegisterInputs>();
+  const { handleSubmit, control } = useForm<EventRegisterInputs>();
+  const [severError, setSeverError] = useState<string>('');
 
   const { mutate: handleRegister, isPending } = useMutation({
     mutationFn: (data: EventRegisterDto) => eventRegister(data),
@@ -29,15 +32,16 @@ function RegisterClient({ intro, tags, eventId }: RegisterClientProps) {
     onError: (error) => {
       const fetchError = error as FetchError;
 
-      console.log(fetchError);
-
-      setError('tagIds', {
-        type: 'manual',
-        message: 'An unknown error occurred. Please contact support.',
-      });
-      captureException(error);
+      if (fetchError.status !== 401) {
+        setSeverError('An unknown error occurred. Please contact support.');
+        captureException(error);
+      }
     },
   });
+
+  const clearErrors = () => {
+    setSeverError('');
+  };
 
   const onSubmit: SubmitHandler<EventRegisterInputs> = async (data) => {
     const reqData = {
@@ -96,6 +100,9 @@ function RegisterClient({ intro, tags, eventId }: RegisterClientProps) {
       <Button type="submit" disabled={isPending} isPending={isPending}>
         Register
       </Button>
+      <div className="fixed bottom-14 left-1/2 -translate-x-1/2 transform">
+        <Message message={severError} onClose={() => clearErrors()} isErrors />
+      </div>
     </form>
   );
 }
