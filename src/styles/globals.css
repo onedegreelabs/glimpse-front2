@@ -9,6 +9,24 @@
     margin: 0;
   }
 
+  input[type='search']::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  input[type='search']::-ms-reveal {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  input[type='search']::-webkit-search-decoration,
+  input[type='search']::-webkit-search-cancel-button,
+  input[type='search']::-webkit-search-results-button,
+  input[type='search']::-webkit-search-results-decoration {
+    display: none;
+  }
+
   input {
     /* @apply outline outline-gray-B40 focus:outline-blue-B50; */
     @apply border border-solid border-gray-B40 outline-none focus:border-blue-B50;

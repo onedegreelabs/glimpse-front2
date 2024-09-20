@@ -1,4 +1,3 @@
-import Message from '@/components/Message';
 import { CrossSVG, RefreshSVG } from '@/icons/index';
 import { createTag } from '@/lib/apis/tagApi';
 import { Tag } from '@/types/types';
@@ -21,9 +20,11 @@ function Hashtags({ tagList, updateTagList }: HashtagsProps) {
     handleSubmit,
     formState: { errors },
     setValue,
-    clearErrors,
     setError,
+    watch,
   } = useForm<TagInputs>();
+
+  const currentTag = watch('tagName');
 
   const { mutate: handleCreateTag, isPending } = useMutation({
     mutationFn: (tagName: string) => createTag(tagName),
@@ -44,6 +45,10 @@ function Hashtags({ tagList, updateTagList }: HashtagsProps) {
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!currentTag) {
+      return;
+    }
+
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       handleSubmit(onSubmit)();
@@ -69,7 +74,7 @@ function Hashtags({ tagList, updateTagList }: HashtagsProps) {
             if (tagList.length >= 10) {
               return 'You can only add up to 10 tags.';
             }
-            if (!/^[a-zA-Z0-9_가-힣]+$/.test(tag)) {
+            if (tag.length > 0 && !/^[a-zA-Z0-9_가-힣]+$/.test(tag)) {
               return 'Tags can only include letters, numbers, or underscores.';
             }
             if (tag.length > 20) {
@@ -85,20 +90,24 @@ function Hashtags({ tagList, updateTagList }: HashtagsProps) {
         render={({ field }) => (
           <input
             {...field}
-            type="text"
+            type="search"
             disabled={isPending}
             placeholder="Enter hashtags that best describe you"
-            className={`${tagList.length > 0 ? 'mb-3' : ''} h-[54px] w-full rounded-2xl border border-solid px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium`}
+            className={`${tagList.length > 0 && !errors.tagName ? 'mb-3' : ''} ${errors.tagName ? 'border-red-B10 focus:border-red-B10' : ''} h-[54px] w-full rounded-2xl border border-solid px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium`}
             onKeyDown={handleKeyPress}
           />
         )}
       />
 
+      {errors.tagName && (
+        <p className="mb-3 text-xs text-red-B10">{errors.tagName.message}</p>
+      )}
+
       <button
         onClick={handleSubmit(onSubmit)}
-        disabled={isPending}
+        disabled={isPending || !currentTag || !!errors.tagName}
         className="absolute right-3 top-[17px] flex items-center gap-1 text-sm font-bold text-blue-B50 disabled:text-gray-B65"
-        type="button"
+        type="submit"
       >
         {isPending ? (
           <RefreshSVG className="size-3 animate-spin fill-gray-B65" />
@@ -128,10 +137,6 @@ function Hashtags({ tagList, updateTagList }: HashtagsProps) {
           ))}
         </ul>
       )}
-
-      <div className="fixed bottom-14 left-1/2 -translate-x-1/2 transform">
-        <Message errors={errors} onClose={() => clearErrors()} isErrors />
-      </div>
     </div>
   );
 }
