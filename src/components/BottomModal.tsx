@@ -51,7 +51,7 @@ function BottomModal({ children, closeModal }: BottomModalProps) {
           aria-label="close-modal"
           onClick={closeHandler}
         >
-          <CrossSVG className="size-6" />
+          <CrossSVG className="size-6 fill-blue-B50" />
         </button>
         {children}
       </section>

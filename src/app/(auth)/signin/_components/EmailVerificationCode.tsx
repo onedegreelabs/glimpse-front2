@@ -16,7 +16,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { captureException } from '@sentry/nextjs';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
-import Cookies from 'js-cookie';
 import EmailVerificationCodeButton from './EmailVerificationCodeButton';
 
 interface EmailVerificationCodeProps {
@@ -90,7 +89,6 @@ function EmailVerificationCode({
 
       switch (fetchError.errorCode) {
         case 'G01001':
-          Cookies.set('email', currentEmail);
           router.push('/signup');
           break;
         case 'G01014':
@@ -202,8 +200,8 @@ function EmailVerificationCode({
               render={({ field }) => {
                 const isCodeEntered = !!verificationCode[index];
                 const borderColorClass = isInvalidCode
-                  ? 'outline-red-B10 text-red-B10 focus:outline-red-B10'
-                  : 'outline-blue-B50';
+                  ? 'border-red-B10 text-red-B10 focus:border-red-B10'
+                  : 'border-blue-B50';
                 const inputClassName = `h-[54px] w-1/6 max-w-[46px] rounded-xl text-center text-sm ${
                   isCodeEntered ? borderColorClass : ''
                 }`;

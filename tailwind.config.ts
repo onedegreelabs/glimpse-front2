@@ -27,6 +27,7 @@ const config: Config = {
         },
         yellow: {
           primary: '#FFEE1A',
+          200: '#FFF687',
           300: '#FFEA89',
           500: '#EEBA00',
           600: '#FFD300',
@@ -38,10 +39,16 @@ const config: Config = {
           B35: '#E4E4E4',
           B40: '#DFDFDF',
           B45: '#CFCFCF',
+          B50: '#DDDDDD',
           B60: '#ACACAC',
           B65: '#A5A5A5',
           B70: '#95959D',
           B80: '#555555',
+          B85: '#7E7E77',
+        },
+        basic: {
+          B10: '#F3F2E8',
+          B20: '#DCDAC4',
         },
         background: '#091C53',
       },
@@ -52,11 +59,16 @@ const config: Config = {
       },
       animation: {
         fadeInUp: 'fadeInUp 0.5s ease-in-out',
+        bounce: 'bounce 1s infinite',
       },
       keyframes: {
         fadeInUp: {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        bounce: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-70%)' },
         },
       },
     },

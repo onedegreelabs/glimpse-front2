@@ -5,13 +5,38 @@ import { useRouter } from 'next/navigation';
 function SignupHeader({ formValues }: { formValues: RegisterInputs }) {
   const router = useRouter();
 
-  const filledFieldsCount = Object.values(formValues).filter(
-    (value) => value,
-  ).length;
+  const socialMediaFields = [
+    'GITHUB',
+    'INSTAGRAM',
+    'LINKEDIN',
+    'WEBSITE',
+    'OTHERS',
+  ];
 
-  const totalFieldsCount = 7;
+  const filledFieldsCount = Object.entries(formValues).reduce(
+    (acc, [key, value]) => {
+      if (socialMediaFields.includes(key)) {
+        if (value && acc.socialMediaCount === 0) {
+          acc.socialMediaCount += 1;
+        }
+      } else if (Array.isArray(value)) {
+        if (value.length > 0) {
+          acc.otherCount += 1;
+        }
+      } else if (value) {
+        acc.otherCount += 1;
+      }
 
-  const progressWidth = (filledFieldsCount / totalFieldsCount) * 100;
+      return acc;
+    },
+    { socialMediaCount: 0, otherCount: 0 },
+  );
+
+  const totalFilledCount =
+    filledFieldsCount.socialMediaCount + filledFieldsCount.otherCount;
+
+  const totalFieldsCount = 8;
+  const progressWidth = (totalFilledCount / totalFieldsCount) * 100;
 
   return (
     <header className="sticky top-0 z-header mt-[6px] bg-white px-1 pt-[10px]">

@@ -1,316 +1,257 @@
-// 'use client';
+'use client';
 
-// import { Spinner1 } from '@/icons/index';
-// import { FetchError, JobCategorie, RegisterInputs } from '@/types/types';
-// import {
-//   Controller,
-//   FormProvider,
-//   SubmitHandler,
-//   useForm,
-// } from 'react-hook-form';
-// import ErrorMessage from '@/components/ErrorMessage';
-// import { useMutation } from '@tanstack/react-query';
-// import { register } from '@/lib/apis/authApi';
-// import { useRouter } from 'next/navigation';
-// import { eventJoin } from '@/lib/apis/eventsApi';
-// import { SOCIAL_MEDIA_KEYS } from '@/constant/constant';
-// import ProfileImage from './ProfileImage';
-// import JobCategory from './JobCategory';
-// import SocialsLinks from './SocialsLinks';
-// import SignupHeader from './SignupHeader';
+import {
+  AdditionalInfoList,
+  BasicInfoList,
+  FetchError,
+  JobCategorie,
+  RegisterInputs,
+  SigninFormInputs,
+  SocialMediaType,
+} from '@/types/types';
+import {
+  Controller,
+  SubmitErrorHandler,
+  SubmitHandler,
+  useForm,
+} from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
+import { register } from '@/lib/apis/authApi';
+import { useRouter } from 'next/navigation';
+import { SOCIAL_MEDIA_KEYS } from '@/constant/constant';
+import Message from '@/components/Message';
+import { useEffect, useState } from 'react';
+import Button from '@/components/Button';
+import socialFormatUrl from '@/utils/socialFormatUrl';
+import { captureException } from '@sentry/nextjs';
+import Cookies from 'js-cookie';
+import { BadgeSVG, InboxSVG } from '@/icons/index';
+import SignupHeader from './SignupHeader';
+import BasicInformation from './BasicInformation';
+import ProfileImage from './ProfileImage';
+import AccordionButton from './AccordionButton';
+import AdditionalInformation from './AdditionalInformation';
 
-// function SignupClient({ jobCategories }: { jobCategories: JobCategorie[] }) {
-//   const formMethods = useForm<RegisterInputs>();
-//   const {
-//     handleSubmit,
-//     control,
-//     clearErrors,
-//     formState: { errors },
-//     watch,
-//     setError,
-//     getValues,
-//   } = formMethods;
+interface SignupClientProps {
+  email: string;
+  eventId: string;
+  jobCategories: JobCategorie[];
+}
 
-//   const router = useRouter();
+function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
+  const formMethods = useForm<RegisterInputs>();
+  const {
+    handleSubmit,
+    control,
+    clearErrors,
+    formState: { errors },
+    watch,
+    setError,
+  } = formMethods;
 
-//   const formValues = watch();
-//   const name = watch('name');
-//   const jobTitle = watch('jobTitle');
-//   const belong = watch('belong');
-//   const jobCategory = watch('jobCategory');
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      const confirmationMessage =
+        'Do you want to leave this site?\nChanges and progress you made will not be saved.';
 
-//   const isFormValid = !!(name && jobTitle && belong && jobCategory);
+      event.preventDefault();
+      // eslint-disable-next-line no-param-reassign
+      event.returnValue = confirmationMessage;
+    };
 
-//   const { mutate: handleEventJoin, isPending: eventJoinPending } = useMutation({
-//     mutationFn: () => eventJoin(userInfo.eventId, getValues('intro')),
-//     onSuccess: () => {
-//       router.push(`/${userInfo.eventId}/all`);
-//       router.refresh();
-//     },
-//   });
+    window.addEventListener('beforeunload', handleBeforeUnload);
 
-//   const { mutate: handleSignup, isPending: signupPending } = useMutation({
-//     mutationFn: (data: FormData) => register(data),
-//     onSuccess: () => {
-//       handleEventJoin();
-//     },
-//     onError: (error) => {
-//       const fetchError = error as FetchError;
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
 
-//       if (fetchError && fetchError.errorCode === 'G01002') {
-//         setError('jobCategory', {
-//           type: 'manual',
-//           message: 'This user already exists.',
-//         });
-//       }
+  const router = useRouter();
 
-//       // eslint-disable-next-line no-console
-//       console.error(error);
-//       throw error;
-//     },
-//   });
+  const [isOpenBasicInfo, setIsOpenBasicInfo] = useState(true);
+  const [isOpenAdditionalInfo, setInOpenAdditionalInfo] = useState(true);
 
-//   const normalizeUrl = (url: string) =>
-//     /^(http|https):\/\//i.test(url) ? url : `https://${url}`;
+  const toggleBasicInfo = () => {
+    setIsOpenBasicInfo((prev) => !prev);
+  };
 
-//   const processSocialMedia = (data: RegisterInputs) =>
-//     Object.entries(data)
-//       .filter(
-//         ([key, value]) =>
-//           SOCIAL_MEDIA_KEYS.includes(
-//             key as (typeof SOCIAL_MEDIA_KEYS)[number],
-//           ) && value,
-//       )
-//       .map(([key, value]) => ({
-//         type: [
-//           'WEBSITE',
-//           'GITHUB',
-//           'LINKEDIN',
-//           'INSTAGRAM',
-//           'TELEGRAM',
-//         ].includes(key)
-//           ? key
-//           : 'OTHERS',
-//         url: normalizeUrl(value),
-//       }));
+  const toggleAdditionalInfo = () => {
+    setInOpenAdditionalInfo((prev) => !prev);
+  };
 
-//   const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
-//     if (data.jobCategory) {
-//       const formData = new FormData();
+  const formValues = watch();
+  const isRequired = watch(['name', 'jobTitle', 'jobCategoryId']);
 
-//       if (data.image) {
-//         formData.append('image', data.image);
-//       }
+  const BASIC_INFO_LIST: Array<BasicInfoList> = [
+    'name',
+    'intro',
+    'jobTitle',
+    'jobCategoryId',
+    'belong',
+  ];
 
-//       const socialMedia = processSocialMedia(data);
+  const ADDITIONAL_INFO_LIST: Array<AdditionalInfoList> = [
+    'tagIds',
+    'GITHUB',
+    'INSTAGRAM',
+    'LINKEDIN',
+    'WEBSITE',
+    'OTHERS',
+  ];
 
-//       const { image, ...remainingData } = data;
-//       const filteredData = Object.fromEntries(
-//         Object.entries(remainingData).filter(
-//           ([key]) =>
-//             !SOCIAL_MEDIA_KEYS.includes(
-//               key as (typeof SOCIAL_MEDIA_KEYS)[number],
-//             ),
-//         ),
-//       );
-//       const reqData = {
-//         ...filteredData,
-//         email: userInfo.email,
-//         socialMedia,
-//         method: 'EMAIL',
-//         terms: [{ termId: 2, agreed: true }],
-//       };
+  const basicInfo = watch(BASIC_INFO_LIST);
+  const additionalInfo = watch(ADDITIONAL_INFO_LIST);
 
-//       formData.append('data', JSON.stringify(reqData));
+  const isRequiredFieldsValid = isRequired.every((value) => value);
 
-//       handleSignup(formData);
-//     }
-//   };
+  const { mutate: handleSignup, isPending: signupPending } = useMutation({
+    mutationFn: (data: FormData) => register(data),
+    onSuccess: () => {
+      Cookies.remove('auth_token');
+      Cookies.remove('eventId');
+      router.push(`/${eventId}/all`);
+      router.refresh();
+    },
+    onError: (error) => {
+      const fetchError = error as FetchError;
 
-//   return (
-//     <main className="min-h-screen w-full bg-white text-gray-B80">
-//       <SignupHeader formValues={formValues} />
-//       <form
-//         className="w-full px-[26px] pb-[50px] pt-[30px]"
-//         onSubmit={handleSubmit(onSubmit)}
-//       >
-//         <h1 className="mb-[50px] text-xl font-bold text-blue-B50">
-//           Register your profile card
-//         </h1>
-//         <Controller
-//           name="image"
-//           control={control}
-//           render={({ field }) => <ProfileImage onChange={field.onChange} />}
-//         />
-//         <Controller
-//           name="name"
-//           control={control}
-//           defaultValue=""
-//           rules={{
-//             required: 'Please enter your name.',
-//             maxLength: {
-//               value: 70,
-//               message: 'Please enter your name between 1 and 70 characters.',
-//             },
-//             validate: {
-//               validCharacters: (value) => {
-//                 const isValid = /^[a-zA-Z가-힣\s]*$/.test(value);
-//                 return (
-//                   isValid ||
-//                   'Please enter your name using only Korean or English characters.'
-//                 );
-//               },
-//             },
-//           }}
-//           render={({ field }) => (
-//             <input
-//               {...field}
-//               type="text"
-//               placeholder="Name"
-//               value={field.value}
-//               onChange={(e) => {
-//                 if (e.target.value.length <= 70) {
-//                   field.onChange(e);
-//                 }
-//               }}
-//               maxLength={70}
-//               className="mb-4 h-[54px] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
-//             />
-//           )}
-//         />
-//         <Controller
-//           name="intro"
-//           control={control}
-//           defaultValue=""
-//           rules={{
-//             maxLength: {
-//               value: 500,
-//               message: 'Please enter your bio up to 500 characters.',
-//             },
-//           }}
-//           render={({ field }) => (
-//             <div className="relative mb-7 h-64 w-full rounded-2xl border border-solid border-gray-B40 pb-8 pt-4 has-[:focus]:border-2 has-[:focus]:border-black">
-//               <textarea
-//                 {...field}
-//                 placeholder="Brief intro"
-//                 value={field.value}
-//                 onChange={(e) => {
-//                   if (e.target.value.length <= 500) {
-//                     field.onChange(e);
-//                   }
-//                 }}
-//                 className="size-full resize-none px-4 text-sm font-semibold outline-none placeholder:font-medium"
-//               />
-//               <div className="px-4 text-right text-xs font-light text-gray-B45">
-//                 {field.value.length}/500
-//               </div>
-//             </div>
-//           )}
-//         />
+      if (fetchError && fetchError.errorCode === 'G01002') {
+        setError('jobCategoryId', {
+          type: 'manual',
+          message: 'This user already exists.',
+        });
+      }
 
-//         <h2 className="mb-4 text-base font-bold text-blue-B50">Job category</h2>
-//         <Controller
-//           name="jobCategory"
-//           control={control}
-//           defaultValue={null}
-//           rules={{ required: 'Please select a job category.' }}
-//           render={({ field }) => (
-//             <JobCategory
-//               jobCategories={jobCategories}
-//               onChange={field.onChange}
-//             />
-//           )}
-//         />
+      setError('jobCategoryId', {
+        type: 'manual',
+        message: 'An unknown error occurred. Please contact support.',
+      });
+      captureException(error);
+    },
+  });
 
-//         <h2 className="mb-4 text-base font-bold text-blue-B50">Job title</h2>
-//         <Controller
-//           name="jobTitle"
-//           control={control}
-//           defaultValue=""
-//           rules={{
-//             required: 'Please enter your job title.',
-//             maxLength: {
-//               value: 30,
-//               message:
-//                 'Please enter your job title between 1 and 30 characters.',
-//             },
-//             validate: {
-//               validCharacters: (value) => {
-//                 const isValid = /^[a-zA-Z가-힣\s]*$/.test(value);
-//                 return isValid || 'Special characters are not supported.';
-//               },
-//             },
-//           }}
-//           render={({ field }) => (
-//             <input
-//               {...field}
-//               placeholder="e.g.) Product Manager"
-//               value={field.value}
-//               onChange={(e) => {
-//                 if (e.target.value.length <= 30) {
-//                   field.onChange(e);
-//                 }
-//               }}
-//               className="mb-[30px] h-[54px] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
-//             />
-//           )}
-//         />
+  const processSocialMedia = (data: RegisterInputs) =>
+    Object.entries(data)
+      .filter(
+        ([key, value]) =>
+          SOCIAL_MEDIA_KEYS.includes(
+            key as (typeof SOCIAL_MEDIA_KEYS)[number],
+          ) && value,
+      )
+      .map(([type, value]) => ({
+        type,
+        url: socialFormatUrl(type as SocialMediaType, value),
+      }));
 
-//         <h2 className="mb-4 text-base font-bold text-blue-B50">
-//           Company/Organization
-//         </h2>
-//         <Controller
-//           name="belong"
-//           control={control}
-//           defaultValue=""
-//           rules={{
-//             required: 'Please enter your company/organization.',
-//             maxLength: {
-//               value: 30,
-//               message:
-//                 'Please enter your company/organization up to 30 characters.',
-//             },
-//           }}
-//           render={({ field }) => (
-//             <input
-//               {...field}
-//               value={field.value}
-//               onChange={(e) => {
-//                 if (e.target.value.length <= 30) {
-//                   field.onChange(e);
-//                 }
-//               }}
-//               className="mb-[30px] h-[54px] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
-//               placeholder="e.g.) Glimpse"
-//             />
-//           )}
-//         />
+  const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
+    const formData = new FormData();
 
-//         <FormProvider {...formMethods}>
-//           <SocialsLinks />
-//         </FormProvider>
+    if (data.image) {
+      formData.append('image', data.image);
+    }
 
-//         <button
-//           type="submit"
-//           disabled={!isFormValid || signupPending || eventJoinPending}
-//           className="group h-14 w-full rounded-3xl bg-yellow-primary text-sm disabled:bg-gray-B30"
-//         >
-//           {signupPending || eventJoinPending ? (
-//             <div className="flex items-center justify-center">
-//               <Spinner1 className="size-6 animate-spin text-white" />
-//             </div>
-//           ) : (
-//             <p className="text-gray-B60 group-enabled:font-bold group-enabled:text-blue-secondary">
-//               Start Networking
-//             </p>
-//           )}
-//         </button>
-//       </form>
-//       {Object.values(errors).length > 0 && (
-//         <ErrorMessage errors={errors} onClose={() => clearErrors()} />
-//       )}
-//     </main>
-//   );
-// }
+    const socialMedia = processSocialMedia(data);
 
-// export default SignupClient;
+    const { image, ...remainingData } = data;
+    const filteredData = Object.fromEntries(
+      Object.entries(remainingData).filter(
+        ([key]) =>
+          !SOCIAL_MEDIA_KEYS.includes(
+            key as (typeof SOCIAL_MEDIA_KEYS)[number],
+          ),
+      ),
+    );
+    const reqData = {
+      ...filteredData,
+      email,
+      tagIds: data.tagIds.map(({ id }) => id),
+      socialMedia,
+      method: 'EMAIL',
+      terms: [{ termId: 2, agreed: true }],
+    };
+
+    formData.append('data', JSON.stringify(reqData));
+
+    handleSignup(formData);
+  };
+
+  const onSubmitError: SubmitErrorHandler<SigninFormInputs> = (error) => {
+    const errorTitle = Object.keys(error)[0];
+
+    if (BASIC_INFO_LIST.includes(errorTitle as BasicInfoList)) {
+      setIsOpenBasicInfo(true);
+    } else if (
+      ADDITIONAL_INFO_LIST.includes(errorTitle as AdditionalInfoList)
+    ) {
+      setInOpenAdditionalInfo(true);
+    }
+  };
+
+  return (
+    <main className="flex min-h-screen w-full flex-col bg-white text-gray-B80">
+      <SignupHeader formValues={formValues} />
+      <form
+        className="flex w-full flex-grow flex-col justify-between px-[26px] pb-[50px] pt-[30px]"
+        onSubmit={handleSubmit(onSubmit, onSubmitError)}
+      >
+        <div>
+          <h1 className="mb-1 text-xl font-bold text-blue-B50">
+            Welcome to Glimpse!
+          </h1>
+          <p className="text-xs font-light">
+            Complete your profile now,
+            <br />
+            enjoy hassle-free event registration later!
+          </p>
+
+          <Controller
+            name="image"
+            control={control}
+            render={({ field }) => <ProfileImage onChange={field.onChange} />}
+          />
+
+          <AccordionButton
+            image={<BadgeSVG />}
+            isOpen={isOpenBasicInfo}
+            label="Basic Information"
+            watchInfo={basicInfo}
+            toggleHandler={toggleBasicInfo}
+          />
+          <BasicInformation
+            isOpenBasicInfo={isOpenBasicInfo}
+            control={control}
+            jobCategories={jobCategories}
+            setError={setError}
+          />
+
+          <AccordionButton
+            image={<InboxSVG />}
+            isOpen={isOpenAdditionalInfo}
+            label="Additional Information"
+            watchInfo={additionalInfo}
+            toggleHandler={toggleAdditionalInfo}
+          />
+          <AdditionalInformation
+            control={control}
+            isOpenAdditionalInfo={isOpenAdditionalInfo}
+          />
+        </div>
+
+        <Button
+          type="submit"
+          disabled={!isRequiredFieldsValid || signupPending}
+          isPending={signupPending}
+        >
+          Start Networking
+        </Button>
+      </form>
+      {Object.values(errors).length > 0 && (
+        <div className="fixed bottom-14 left-1/2 -translate-x-1/2 transform">
+          <Message errors={errors} onClose={() => clearErrors()} isErrors />
+        </div>
+      )}
+    </main>
+  );
+}
+
+export default SignupClient;

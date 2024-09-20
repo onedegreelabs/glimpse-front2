@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 interface JobCategoryProps {
   jobCategories: JobCategorie[];
-  onChange: (jobCategory: { id: number } | null) => void;
+  onChange: (jobCategory: number) => void;
 }
 
 function JobCategory({ jobCategories, onChange }: JobCategoryProps) {
@@ -21,7 +21,7 @@ function JobCategory({ jobCategories, onChange }: JobCategoryProps) {
 
   const handleJobCategoryChange = (jobCategory: JobCategorie) => {
     setSelectedJobCategory(jobCategory);
-    onChange({ id: jobCategory.id });
+    onChange(jobCategory.id);
     setIsOpen(false);
   };
 
@@ -30,7 +30,7 @@ function JobCategory({ jobCategories, onChange }: JobCategoryProps) {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className={`${selectedJobCategory ? 'text-black' : 'text-gray-B80/55'} relative mb-[30px] h-[54px] w-full rounded-2xl border border-solid border-gray-B40 text-sm font-medium`}
+        className={`${selectedJobCategory ? 'text-black' : 'text-gray-B80/55'} relative h-[54px] w-full rounded-2xl border border-solid border-gray-B40 text-sm font-medium`}
       >
         {selectedJobCategory
           ? selectedJobCategory.engName

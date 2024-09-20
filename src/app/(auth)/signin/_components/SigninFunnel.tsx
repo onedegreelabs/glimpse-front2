@@ -24,7 +24,6 @@ function SigninFunnel({ eventId }: { eventId: string }) {
 
   const handleNextStep = () => {
     setCurrentStep((step) => step + 1);
-    console.log('test');
   };
 
   const handleMessage = ({

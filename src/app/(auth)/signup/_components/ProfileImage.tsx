@@ -1,6 +1,6 @@
 'use client';
 
-import { CrossSVG, PlusSVG } from '@/icons/index';
+import { CrossSVG, PersonSVG, PlusSVG } from '@/icons/index';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -39,11 +39,11 @@ function ProfileImage({
   };
 
   return (
-    <div className="mb-[30px] flex justify-center">
+    <div className="my-7 flex justify-center">
       <label
         htmlFor="image-upload"
         aria-label="input-profile-image"
-        className="relative flex size-20 cursor-pointer items-center justify-center rounded-full bg-gray-B27"
+        className="relative flex size-[100px] cursor-pointer items-center justify-center rounded-full border border-solid border-gray-B50 bg-white"
       >
         {profileImage ? (
           <>
@@ -53,7 +53,7 @@ function ProfileImage({
               aria-label="delete-image"
               className="absolute -right-3 -top-3"
             >
-              <CrossSVG className="size-6" />
+              <CrossSVG className="size-6 fill-blue-B50" />
             </button>
             <Image
               src={profileImage}
@@ -62,17 +62,18 @@ function ProfileImage({
               sizes="80px"
               className="rounded-full"
             />
-            <button
-              type="button"
-              className="absolute -right-3 bottom-0 rounded-full bg-blue-B50 px-3 py-1.5 text-xs font-medium text-yellow-primary"
-              onClick={handleEditClick}
-            >
-              Edit
-            </button>
           </>
         ) : (
-          <PlusSVG />
+          <PersonSVG className="h-12 w-[46.31px]" />
         )}
+        <button
+          type="button"
+          className="absolute -right-2 bottom-3 flex size-8 items-center justify-center rounded-full bg-blue-B50 p-2 text-xs font-medium text-yellow-primary"
+          onClick={handleEditClick}
+          aria-label="edit-profile-image"
+        >
+          <PlusSVG className="size-5 fill-white" />
+        </button>
         <input
           id="image-upload"
           type="file"

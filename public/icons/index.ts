@@ -61,3 +61,9 @@ export { default as WebSVG } from './link/web.svg';
 export { default as TelegramSVG } from './link/telegram.svg';
 
 export { default as CrossSVG } from './cross.svg';
+
+export { default as PersonSVG } from './person.svg';
+
+export { default as BadgeSVG } from './badge.svg';
+
+export { default as InboxSVG } from './inbox.svg';
