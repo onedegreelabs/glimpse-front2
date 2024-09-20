@@ -9,7 +9,6 @@ function EmailAccessForm({ eventId }: { eventId: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    Cookies.remove('eventId');
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = 'auto';

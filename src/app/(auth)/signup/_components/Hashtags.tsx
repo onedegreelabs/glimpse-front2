@@ -74,7 +74,7 @@ function Hashtags({ tagList, updateTagList }: HashtagsProps) {
             if (tagList.length >= 10) {
               return 'You can only add up to 10 tags.';
             }
-            if (tag.length > 0 && !/^[a-zA-Z0-9_가-힣]+$/.test(tag)) {
+            if (!/^[a-zA-Z0-9_가-힣]+$/.test(tag)) {
               return 'Tags can only include letters, numbers, or underscores.';
             }
             if (tag.length > 20) {

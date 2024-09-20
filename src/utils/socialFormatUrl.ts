@@ -18,7 +18,7 @@ function socialFormatUrl(platform: SocialMediaType, userInput: string) {
       baseUrl = 'https://github.com/';
       break;
     default:
-      return '지원하지 않는 플랫폼입니다.';
+      return userInput;
   }
 
   const match = userInput.match(pattern);

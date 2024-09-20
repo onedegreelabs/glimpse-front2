@@ -15,6 +15,8 @@ import Message from '@/components/Message';
 import { useState } from 'react';
 import Button from '@/components/Button';
 import socialFormatUrl from '@/utils/socialFormatUrl';
+import { captureException } from '@sentry/nextjs';
+import Cookies from 'js-cookie';
 import SignupHeader from './SignupHeader';
 import BasicInformation from './BasicInformation';
 import ProfileImage from './ProfileImage';
@@ -54,13 +56,15 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
   const formValues = watch();
   const name = watch('name');
   const jobTitle = watch('jobTitle');
-  const jobCategory = watch('jobCategory');
+  const jobCategory = watch('jobCategoryId');
 
   const isFormValid = !!(name && jobTitle && jobCategory);
 
   const { mutate: handleSignup, isPending: signupPending } = useMutation({
     mutationFn: (data: FormData) => register(data),
     onSuccess: () => {
+      Cookies.remove('auth_token');
+      Cookies.remove('eventId');
       router.push(`/${eventId}/all`);
       router.refresh();
     },
@@ -68,20 +72,17 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
       const fetchError = error as FetchError;
 
       if (fetchError && fetchError.errorCode === 'G01002') {
-        setError('jobCategory', {
+        setError('jobCategoryId', {
           type: 'manual',
           message: 'This user already exists.',
         });
       }
 
-      // handleMessage({
-      //   message: 'An unknown error occurred. Please contact support.',
-      // });
-      // captureException(error);
-
-      // eslint-disable-next-line no-console
-      console.error(error);
-      throw error;
+      setError('jobCategoryId', {
+        type: 'manual',
+        message: 'An unknown error occurred. Please contact support.',
+      });
+      captureException(error);
     },
   });
 

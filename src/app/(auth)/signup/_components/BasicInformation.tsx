@@ -88,7 +88,7 @@ function BasicInformation({
 
       <Title title="Job category" required>
         <Controller
-          name="jobCategory"
+          name="jobCategoryId"
           control={control}
           defaultValue={null}
           rules={{ required: 'Please select a job category.' }}

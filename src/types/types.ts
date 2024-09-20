@@ -95,10 +95,6 @@ export interface JobCategorie {
   engName: string;
 }
 
-interface JobCategory {
-  id: number;
-}
-
 export interface SocialMedia {
   type: string;
   url: string;
@@ -123,13 +119,13 @@ export interface RegisterInputs
   OTHERS: string;
   OTHERS2: string;
   OTHERS3: string;
-  jobCategory: JobCategory | null;
+  jobCategoryId: number | null;
   tagIds: Tag[];
 }
 
 export interface RegisterFormDataDto
   extends Omit<BaseRegisterInputs, 'jobCategory'> {
-  jobCategory: JobCategory;
+  jobCategory: number;
 }
 
 export interface SigninFormInputs {
