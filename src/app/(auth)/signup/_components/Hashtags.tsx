@@ -1,4 +1,8 @@
-import { CrossSVG } from '@/icons/index';
+import { CrossSVG, RefreshSVG } from '@/icons/index';
+import { createTag } from '@/lib/apis/tagApi';
+import { Tag } from '@/types/types';
+import { captureException } from '@sentry/nextjs';
+import { useMutation } from '@tanstack/react-query';
 import {
   Controller,
   SubmitErrorHandler,
@@ -7,12 +11,7 @@ import {
 } from 'react-hook-form';
 
 interface TagInputs {
-  tag: string;
-}
-
-interface Tag {
-  id: number;
-  name: string;
+  tagName: string;
 }
 
 interface HashtagsProps {
@@ -26,26 +25,38 @@ function Hashtags({ tagList }: HashtagsProps) {
     formState: { errors },
   } = useForm<TagInputs>();
 
-  const onSubmit: SubmitHandler<TagInputs> = ({ tag }) => {
-    console.log('tag', tag);
-  };
+  const { mutate: handleCreateTag, isPending } = useMutation({
+    mutationFn: (tagName: string) => createTag(tagName),
+    onSuccess: (tag) => {
+      console.log(tag);
+    },
+    onError: (error) => {
+      // handleMessage({
+      //   message: 'An unknown error occurred. Please contact support.',
+      // });
+      captureException(error);
+    },
+  });
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(event.key);
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      handleSubmit(onSubmit)();
-    }
+  const onSubmit: SubmitHandler<TagInputs> = ({ tagName }) => {
+    handleCreateTag(tagName);
   };
 
   const onSubmitError: SubmitErrorHandler<TagInputs> = () => {
     console.log(errors);
   };
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleSubmit(onSubmit)();
+    }
+  };
+
   return (
     <div className="relative flex flex-col">
       <Controller
-        name="tag"
+        name="tagName"
         control={control}
         defaultValue=""
         rules={{
@@ -57,7 +68,7 @@ function Hashtags({ tagList }: HashtagsProps) {
               return 'You can only add up to 10 tags.';
             }
             if (!/^[a-zA-Z0-9_가-힣]+$/.test(tag)) {
-              return 'Tags can only include letters (English and Korean), numbers, or underscores.';
+              return 'Tags can only include letters, numbers, or underscores.';
             }
             if (tag.length > 20) {
               return 'Please enter your brief intro up to 20 characters.';
@@ -73,6 +84,7 @@ function Hashtags({ tagList }: HashtagsProps) {
           <input
             {...field}
             type="text"
+            disabled={isPending}
             placeholder="Enter hashtags that best describe you"
             className={`${tagList.length > 0 ? 'mb-3' : ''} h-[54px] w-full rounded-2xl border border-solid px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium`}
             onKeyDown={handleKeyPress}
@@ -82,10 +94,16 @@ function Hashtags({ tagList }: HashtagsProps) {
 
       <button
         onClick={handleSubmit(onSubmit, onSubmitError)}
-        className="absolute right-3 top-[17px] text-sm font-bold text-blue-B50"
+        disabled={isPending}
+        className="absolute right-3 top-[17px] flex items-center gap-1 text-sm font-bold text-blue-B50 disabled:text-gray-B65"
         type="button"
       >
-        + Add
+        {isPending ? (
+          <RefreshSVG className="size-3 animate-spin fill-gray-B65" />
+        ) : (
+          '+ '
+        )}
+        Add
       </button>
 
       {tagList.length > 0 && (

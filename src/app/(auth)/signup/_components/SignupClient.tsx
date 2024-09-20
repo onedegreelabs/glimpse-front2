@@ -68,6 +68,11 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
         });
       }
 
+      // handleMessage({
+      //   message: 'An unknown error occurred. Please contact support.',
+      // });
+      // captureException(error);
+
       // eslint-disable-next-line no-console
       console.error(error);
       throw error;

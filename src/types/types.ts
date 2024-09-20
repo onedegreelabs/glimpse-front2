@@ -143,3 +143,8 @@ export interface LoginDto {
   email: string;
   code: string;
 }
+
+export interface Tag {
+  id: number;
+  name: string;
+}
