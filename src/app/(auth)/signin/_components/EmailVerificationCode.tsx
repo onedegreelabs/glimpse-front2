@@ -82,7 +82,6 @@ function EmailVerificationCode({
     mutationFn: ({ email, code }: LoginDto) => login({ email, code }),
     onSuccess: () => {
       router.push(`/${eventId}/all`);
-      Cookies.remove('eventId');
     },
     onError: (error) => {
       const fetchError = error as FetchError;
@@ -104,8 +103,6 @@ function EmailVerificationCode({
           handleMessage({
             message: 'An unknown error occurred. Please contact support.',
           });
-          // eslint-disable-next-line no-console
-          console.error(error);
           captureException(error);
       }
     },
