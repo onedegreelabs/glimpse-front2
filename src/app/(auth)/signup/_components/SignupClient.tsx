@@ -20,7 +20,7 @@ import { register } from '@/lib/apis/authApi';
 import { useRouter } from 'next/navigation';
 import { SOCIAL_MEDIA_KEYS } from '@/constant/constant';
 import Message from '@/components/Message';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '@/components/Button';
 import socialFormatUrl from '@/utils/socialFormatUrl';
 import { captureException } from '@sentry/nextjs';
@@ -47,6 +47,36 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
     watch,
     setError,
   } = formMethods;
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      const confirmationMessage =
+        'Do you want to leave this site?\nChanges and progress you made will not be saved.';
+
+      event.preventDefault();
+      // eslint-disable-next-line no-param-reassign
+      event.returnValue = confirmationMessage;
+    };
+
+    const handlePopState = () => {
+      const confirmationMessage =
+        'Do you want to leave this site?\nChanges and progress you made will not be saved.';
+      // eslint-disable-next-line no-alert
+      if (window.confirm(confirmationMessage)) {
+        window.history.back();
+      } else {
+        window.history.pushState(null, '', window.location.href);
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
 
   const router = useRouter();
 
