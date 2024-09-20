@@ -182,3 +182,9 @@ export interface EventRegisterInputs {
   intro: string;
   tagIds: Tag[];
 }
+
+export interface EventRegisterDto {
+  eventId: string;
+  intro: string;
+  tagIds: number[];
+}

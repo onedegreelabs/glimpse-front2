@@ -3,8 +3,13 @@
 import Hashtags from '@/app/(auth)/signup/_components/Hashtags';
 import Button from '@/components/Button';
 import Title from '@/components/Title';
-import { register } from '@/lib/apis/authApi';
-import { EventRegisterInputs, FetchError, Tag } from '@/types/types';
+import { eventRegister } from '@/lib/apis/eventsApi';
+import {
+  EventRegisterDto,
+  EventRegisterInputs,
+  FetchError,
+  Tag,
+} from '@/types/types';
 import { captureException } from '@sentry/nextjs';
 import { useMutation } from '@tanstack/react-query';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -12,13 +17,14 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 interface RegisterClientProps {
   intro: string;
   tags: Tag[];
+  eventId: string;
 }
 
-function RegisterClient({ intro, tags }: RegisterClientProps) {
+function RegisterClient({ intro, tags, eventId }: RegisterClientProps) {
   const { handleSubmit, control, setError } = useForm<EventRegisterInputs>();
 
   const { mutate: handleRegister, isPending } = useMutation({
-    mutationFn: (data: any) => register(data),
+    mutationFn: (data: EventRegisterDto) => eventRegister(data),
     onSuccess: () => {},
     onError: (error) => {
       const fetchError = error as FetchError;
@@ -34,8 +40,13 @@ function RegisterClient({ intro, tags }: RegisterClientProps) {
   });
 
   const onSubmit: SubmitHandler<EventRegisterInputs> = async (data) => {
-    handleRegister(data);
-    console.log(data);
+    const reqData = {
+      ...data,
+      eventId,
+      tagIds: data.tagIds.map(({ id }) => id),
+    };
+
+    handleRegister(reqData);
   };
 
   return (

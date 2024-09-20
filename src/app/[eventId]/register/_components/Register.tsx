@@ -5,7 +5,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import RegisterClient from './RegisterClient';
 
-async function Register({ accessToken }: { accessToken: string }) {
+interface RegisterProps {
+  accessToken: string;
+  eventId: string;
+}
+
+async function Register({ accessToken, eventId }: RegisterProps) {
   const userInfo = await getUserInfo(accessToken);
   const {
     name,
@@ -58,7 +63,7 @@ async function Register({ accessToken }: { accessToken: string }) {
           </ul>
         </dl>
       </div>
-      <RegisterClient intro={intro ?? ''} tags={tags ?? []} />
+      <RegisterClient intro={intro ?? ''} tags={tags ?? []} eventId={eventId} />
     </section>
   );
 }
