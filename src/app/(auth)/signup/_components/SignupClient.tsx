@@ -54,11 +54,25 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
   };
 
   const formValues = watch();
-  const name = watch('name');
-  const jobTitle = watch('jobTitle');
-  const jobCategory = watch('jobCategoryId');
+  const isRequired = watch(['name', 'jobTitle', 'jobCategoryId']);
+  const basicInfo = watch([
+    'name',
+    'intro',
+    'jobTitle',
+    'jobCategoryId',
+    'belong',
+  ]);
 
-  const isFormValid = !!(name && jobTitle && jobCategory);
+  const additionalInfo = watch([
+    'tagIds',
+    'GITHUB',
+    'INSTAGRAM',
+    'LINKEDIN',
+    'WEBSITE',
+    'OTHERS',
+  ]);
+
+  const isRequiredFieldsValid = isRequired.every((value) => value);
 
   const { mutate: handleSignup, isPending: signupPending } = useMutation({
     mutationFn: (data: FormData) => register(data),
@@ -157,7 +171,7 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
           <AccordionButton
             isOpen={isOpenBasicInfo}
             label="Basic Information"
-            state="COMPLETED"
+            watchInfo={basicInfo}
             toggleHandler={toggleBasicInfo}
           />
           {isOpenBasicInfo && (
@@ -171,7 +185,7 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
           <AccordionButton
             isOpen={isOpenAdditionalInfo}
             label="Additional Information"
-            state="PROGRESS"
+            watchInfo={additionalInfo}
             toggleHandler={toggleAdditionalInfo}
           />
           {isOpenAdditionalInfo && <AdditionalInformation control={control} />}
@@ -179,7 +193,7 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
 
         <Button
           type="submit"
-          disabled={!isFormValid || signupPending}
+          disabled={!isRequiredFieldsValid || signupPending}
           isPending={signupPending}
         >
           Start Networking

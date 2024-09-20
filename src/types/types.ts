@@ -117,8 +117,6 @@ export interface RegisterInputs
   GITHUB: string;
   TELEGRAM: string;
   OTHERS: string;
-  OTHERS2: string;
-  OTHERS3: string;
   jobCategoryId: number | null;
   tagIds: Tag[];
 }
