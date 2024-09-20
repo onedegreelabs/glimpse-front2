@@ -59,7 +59,7 @@ function AdditionalInformation({ control }: AdditionalInformationProps) {
           control={control}
           defaultValue={[]}
           render={({ field }) => (
-            <Hashtags tagList={field.value} addTagList={field.onChange} />
+            <Hashtags tagList={field.value} updateTagList={field.onChange} />
           )}
         />
       </Title>

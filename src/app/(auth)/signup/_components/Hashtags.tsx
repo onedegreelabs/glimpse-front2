@@ -12,10 +12,10 @@ interface TagInputs {
 
 interface HashtagsProps {
   tagList: Tag[];
-  addTagList: (tags: Tag[]) => void;
+  updateTagList: (tags: Tag[]) => void;
 }
 
-function Hashtags({ tagList, addTagList }: HashtagsProps) {
+function Hashtags({ tagList, updateTagList }: HashtagsProps) {
   const {
     control,
     handleSubmit,
@@ -28,7 +28,7 @@ function Hashtags({ tagList, addTagList }: HashtagsProps) {
   const { mutate: handleCreateTag, isPending } = useMutation({
     mutationFn: (tagName: string) => createTag(tagName),
     onSuccess: (tag) => {
-      addTagList([...tagList, tag]);
+      updateTagList([...tagList, tag]);
       setValue('tagName', '');
     },
     onError: (error) => {
@@ -48,6 +48,11 @@ function Hashtags({ tagList, addTagList }: HashtagsProps) {
       event.preventDefault();
       handleSubmit(onSubmit)();
     }
+  };
+
+  const handleRemoveTag = (removeId: number) => {
+    const newTagList = tagList.filter(({ id }) => id !== removeId);
+    updateTagList(newTagList);
   };
 
   return (
@@ -111,7 +116,12 @@ function Hashtags({ tagList, addTagList }: HashtagsProps) {
               className="flex items-center gap-[6px] rounded-3xl bg-blue-B50 px-3 py-[10px] text-white"
             >
               {name}
-              <button type="button" aria-label="delete-tag" className="ml-2">
+              <button
+                onClick={() => handleRemoveTag(id)}
+                type="button"
+                aria-label="delete-tag"
+                className="ml-2"
+              >
                 <CrossSVG className="size-4 fill-white" />
               </button>
             </li>
