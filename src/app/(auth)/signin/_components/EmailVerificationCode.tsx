@@ -16,6 +16,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { captureException } from '@sentry/nextjs';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
+import Cookies from 'js-cookie';
 import EmailVerificationCodeButton from './EmailVerificationCodeButton';
 
 interface EmailVerificationCodeProps {
@@ -81,6 +82,7 @@ function EmailVerificationCode({
   const { mutate: handleLogin, isPending: loginPending } = useMutation({
     mutationFn: ({ email, code }: LoginDto) => login({ email, code }),
     onSuccess: () => {
+      Cookies.remove('eventId');
       router.push(`/${eventId}/all`);
     },
     onError: (error) => {

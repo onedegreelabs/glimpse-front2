@@ -29,7 +29,9 @@ export default async function page({
 
   return (
     <>
-      {!userInfo && <EmailAccessForm eventId={eventId} />}
+      {(!userInfo || !participantsInfo) && (
+        <EmailAccessForm eventId={eventId} />
+      )}
       <div className="px-6">
         <SearchParticipants
           search={searchParams.search ?? ''}
