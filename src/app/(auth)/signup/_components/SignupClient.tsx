@@ -1,6 +1,11 @@
 'use client';
 
-import { FetchError, JobCategorie, RegisterInputs } from '@/types/types';
+import {
+  FetchError,
+  JobCategorie,
+  RegisterInputs,
+  SocialMediaType,
+} from '@/types/types';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { register } from '@/lib/apis/authApi';
@@ -9,6 +14,7 @@ import { SOCIAL_MEDIA_KEYS } from '@/constant/constant';
 import Message from '@/components/Message';
 import { useState } from 'react';
 import Button from '@/components/Button';
+import socialFormatUrl from '@/utils/socialFormatUrl';
 import SignupHeader from './SignupHeader';
 import BasicInformation from './BasicInformation';
 import ProfileImage from './ProfileImage';
@@ -79,9 +85,6 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
     },
   });
 
-  const normalizeUrl = (url: string) =>
-    /^(http|https):\/\//i.test(url) ? url : `https://${url}`;
-
   const processSocialMedia = (data: RegisterInputs) =>
     Object.entries(data)
       .filter(
@@ -90,17 +93,9 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
             key as (typeof SOCIAL_MEDIA_KEYS)[number],
           ) && value,
       )
-      .map(([key, value]) => ({
-        type: [
-          'WEBSITE',
-          'GITHUB',
-          'LINKEDIN',
-          'INSTAGRAM',
-          'TELEGRAM',
-        ].includes(key)
-          ? key
-          : 'OTHERS',
-        url: normalizeUrl(value),
+      .map(([type, value]) => ({
+        type,
+        url: socialFormatUrl(type as SocialMediaType, value),
       }));
 
   const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
@@ -124,6 +119,7 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
     const reqData = {
       ...filteredData,
       email,
+      tagIds: data.tagIds.map(({ id }) => id),
       socialMedia,
       method: 'EMAIL',
       terms: [{ termId: 2, agreed: true }],
