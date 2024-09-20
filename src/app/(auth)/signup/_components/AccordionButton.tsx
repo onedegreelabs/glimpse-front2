@@ -1,4 +1,4 @@
-import { ArrowSVG2, BadgeSVG, CheckSVG } from '@/icons/index';
+import { ArrowSVG2, CheckSVG } from '@/icons/index';
 import { debounce } from 'lodash';
 import { useEffect, useRef } from 'react';
 
@@ -24,6 +24,7 @@ const getInfoState = <T extends unknown>(fields: T[]): AccordionButtonState => {
 };
 
 interface AccordionButtonProps<T> {
+  image: React.JSX.Element;
   isOpen: boolean;
   label: string;
   toggleHandler: () => void;
@@ -31,6 +32,7 @@ interface AccordionButtonProps<T> {
 }
 
 function AccordionButton<T>({
+  image,
   isOpen,
   label,
   toggleHandler,
@@ -76,7 +78,7 @@ function AccordionButton<T>({
         ) : (
           <div className="flex size-[30px] items-center justify-center rounded-full bg-basic-B20">
             {infoState === 'EMPTY' ? (
-              <BadgeSVG />
+              image
             ) : (
               <div className="flex items-center justify-center space-x-[3px]">
                 <div className="size-[3px] animate-bounce rounded-full bg-gray-B85 [animation-delay:-0.3s]" />

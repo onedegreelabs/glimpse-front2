@@ -25,6 +25,7 @@ import Button from '@/components/Button';
 import socialFormatUrl from '@/utils/socialFormatUrl';
 import { captureException } from '@sentry/nextjs';
 import Cookies from 'js-cookie';
+import { BadgeSVG, InboxSVG } from '@/icons/index';
 import SignupHeader from './SignupHeader';
 import BasicInformation from './BasicInformation';
 import ProfileImage from './ProfileImage';
@@ -58,23 +59,10 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
       event.returnValue = confirmationMessage;
     };
 
-    const handlePopState = () => {
-      const confirmationMessage =
-        'Do you want to leave this site?\nChanges and progress you made will not be saved.';
-      // eslint-disable-next-line no-alert
-      if (window.confirm(confirmationMessage)) {
-        window.history.back();
-      } else {
-        window.history.pushState(null, '', window.location.href);
-      }
-    };
-
     window.addEventListener('beforeunload', handleBeforeUnload);
-    window.addEventListener('popstate', handlePopState);
 
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
-      window.removeEventListener('popstate', handlePopState);
     };
   }, []);
 
@@ -223,6 +211,7 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
           />
 
           <AccordionButton
+            image={<BadgeSVG />}
             isOpen={isOpenBasicInfo}
             label="Basic Information"
             watchInfo={basicInfo}
@@ -236,6 +225,7 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
           />
 
           <AccordionButton
+            image={<InboxSVG />}
             isOpen={isOpenAdditionalInfo}
             label="Additional Information"
             watchInfo={additionalInfo}
