@@ -3,17 +3,16 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
-import { TokenInfo } from '@/types/types';
 import { CommentUserSVG } from '@/icons/index';
 
 interface RegistrationBlurOverlayProps {
   eventId: string;
-  userInfo: TokenInfo | null;
+  isLogin: boolean;
 }
 
 function RegistrationBlurOverlay({
   eventId,
-  userInfo,
+  isLogin,
 }: RegistrationBlurOverlayProps) {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -23,7 +22,7 @@ function RegistrationBlurOverlay({
   }, []);
 
   const handleRegisterClick = () => {
-    if (userInfo) return;
+    if (isLogin) return;
     Cookies.set('eventId', eventId);
   };
 
@@ -32,7 +31,7 @@ function RegistrationBlurOverlay({
       <div className="mt-16 flex size-full w-[256px] flex-col items-center justify-center gap-[22px]">
         <CommentUserSVG />
         <p className="mb-[12px] text-center font-semibold text-white">
-          {userInfo ? (
+          {isLogin ? (
             <>
               Register your participant card
               <br />
@@ -47,11 +46,11 @@ function RegistrationBlurOverlay({
           )}
         </p>
         <Link
-          href={userInfo ? `/${eventId}/register` : '/signin'}
+          href={isLogin ? `/${eventId}/register` : '/signin'}
           onClick={handleRegisterClick}
           className="flex h-[54px] w-full items-center justify-center rounded-2xl bg-yellow-primary text-sm font-bold text-blue-secondary"
         >
-          {userInfo ? 'Register for event' : 'Sign up/Sign in'}
+          {isLogin ? 'Register for event' : 'Sign up/Sign in'}
         </Link>
       </div>
     </article>

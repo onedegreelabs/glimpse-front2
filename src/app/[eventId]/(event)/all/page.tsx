@@ -30,7 +30,7 @@ export default async function page({
   return (
     <>
       {(!userInfo || !participantsInfo) && (
-        <EmailAccessForm eventId={eventId} userInfo={userInfo} />
+        <EmailAccessForm eventId={eventId} isLogin={!!userInfo} />
       )}
       <div className="px-6">
         <SearchParticipants
