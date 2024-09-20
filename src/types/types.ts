@@ -174,4 +174,11 @@ export interface UserInfo {
   jobCategory: JobCategorie;
   jobTitle: string;
   belong: string | null;
+  intro: string;
+  tags: Tag[];
+}
+
+export interface EventRegisterInputs {
+  intro: string;
+  tagIds: Tag[];
 }

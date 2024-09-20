@@ -3,14 +3,23 @@ import { PersonSVG } from '@/icons/index';
 import { getUserInfo } from '@/lib/apis/server/userApi';
 import Image from 'next/image';
 import Link from 'next/link';
+import RegisterClient from './RegisterClient';
 
 async function Register({ accessToken }: { accessToken: string }) {
   const userInfo = await getUserInfo(accessToken);
-  const { name, profileImageUrl, belong, jobCategory, jobTitle, socialMedia } =
-    userInfo;
+  const {
+    name,
+    profileImageUrl,
+    belong,
+    jobCategory,
+    jobTitle,
+    socialMedia,
+    intro,
+    tags,
+  } = userInfo;
 
   return (
-    <section className="flex flex-col px-5 pb-11 pt-5">
+    <section className="flex flex-col gap-6 px-5 pb-11 pt-5">
       <div className="grid w-full grid-cols-[auto_1fr] space-x-4 rounded-3xl bg-gray-B20 pb-[26px] pl-5 pr-7 pt-7">
         <div
           className={`relative flex size-[100px] items-center justify-center self-center overflow-hidden rounded-full ${profileImageUrl ? '' : 'bg-white'}`}
@@ -49,6 +58,7 @@ async function Register({ accessToken }: { accessToken: string }) {
           </ul>
         </dl>
       </div>
+      <RegisterClient intro={intro ?? ''} tags={tags ?? []} />
     </section>
   );
 }

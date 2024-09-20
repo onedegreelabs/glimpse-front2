@@ -19,9 +19,6 @@ export default async function page({
     <main className="background-mask relative flex min-h-screen w-full flex-col bg-white text-gray-B80">
       <RegisterHeader eventId={eventId} />
       <Register accessToken={accessToken} />
-      <section className="h-screen" />
-      <section className="h-screen" />
-      <section className="h-screen" />
     </main>
   );
 }

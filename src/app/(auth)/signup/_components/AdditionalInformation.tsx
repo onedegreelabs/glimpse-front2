@@ -3,8 +3,8 @@ import React from 'react';
 import { Control, Controller } from 'react-hook-form';
 import { GithubSVG, InstagramSVG, LinkedinSVG, WebSVG } from '@/icons/index';
 import { URL_REGEX } from '@/constant/constant';
+import Title from '@/components/Title';
 import URLMark from './URLMark';
-import Title from './Title';
 import Hashtags from './Hashtags';
 
 interface AdditionalInformationProps {
