@@ -3,7 +3,7 @@ import { getParticipantsInfo } from '@/lib/apis/server/eventsApi';
 import { PARTICIPANTS_TAKE } from '@/constant/constant';
 import { SadFaceSVG } from '@/icons/index';
 import ParticipantCard from '@/components/ParticipantCard/ParticipantCard';
-import getUserInfo from '@/utils/auth/getUserInfo';
+import getTokenInfo from '@/utils/auth/getTokenInfo';
 import SearchParticipants from './_components/SearchParticipants';
 import Participants from '../_components/participants/Participants';
 import EmailAccessForm from '../_components/RegistrationBlurOverlay';
@@ -15,7 +15,7 @@ export default async function page({
   params: { eventId: string };
   searchParams: { search?: string };
 }) {
-  const userInfo = await getUserInfo();
+  const userInfo = await getTokenInfo();
   let participantsInfo: ParticipantsResponseDto | null = null;
 
   if (userInfo) {

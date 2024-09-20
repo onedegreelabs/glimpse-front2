@@ -4,7 +4,7 @@ import { TokenInfo } from '@/types/types';
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
 
-export default async function getUserInfo(): Promise<TokenInfo | null> {
+export default async function getTokenInfo(): Promise<TokenInfo | null> {
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
