@@ -16,7 +16,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { captureException } from '@sentry/nextjs';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
-import Cookies from 'js-cookie';
 import EmailVerificationCodeButton from './EmailVerificationCodeButton';
 
 interface EmailVerificationCodeProps {
@@ -89,7 +88,6 @@ function EmailVerificationCode({
 
       switch (fetchError.errorCode) {
         case 'G01001':
-          Cookies.set('email', currentEmail);
           router.push('/signup');
           break;
         case 'G01014':
