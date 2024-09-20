@@ -4,18 +4,20 @@ import JobCategory from './JobCategory';
 import Title from './Title';
 
 interface BasicInformationProps {
+  isOpenBasicInfo: boolean;
   control: Control<RegisterInputs, any>;
   jobCategories: JobCategorie[];
   setError: UseFormSetError<RegisterInputs>;
 }
 
 function BasicInformation({
+  isOpenBasicInfo,
   control,
   jobCategories,
   setError,
 }: BasicInformationProps) {
   return (
-    <ul className="flex flex-col gap-6">
+    <ul className={`flex flex-col gap-6 ${isOpenBasicInfo ? '' : 'hidden'}`}>
       <Title name="name" title="Name" required>
         <Controller
           name="name"

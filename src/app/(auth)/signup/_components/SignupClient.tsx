@@ -1,12 +1,20 @@
 'use client';
 
 import {
+  AdditionalInfoList,
+  BasicInfoList,
   FetchError,
   JobCategorie,
   RegisterInputs,
+  SigninFormInputs,
   SocialMediaType,
 } from '@/types/types';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import {
+  Controller,
+  SubmitErrorHandler,
+  SubmitHandler,
+  useForm,
+} from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { register } from '@/lib/apis/authApi';
 import { useRouter } from 'next/navigation';
@@ -55,22 +63,26 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
 
   const formValues = watch();
   const isRequired = watch(['name', 'jobTitle', 'jobCategoryId']);
-  const basicInfo = watch([
+
+  const BASIC_INFO_LIST: Array<BasicInfoList> = [
     'name',
     'intro',
     'jobTitle',
     'jobCategoryId',
     'belong',
-  ]);
+  ];
 
-  const additionalInfo = watch([
+  const ADDITIONAL_INFO_LIST: Array<AdditionalInfoList> = [
     'tagIds',
     'GITHUB',
     'INSTAGRAM',
     'LINKEDIN',
     'WEBSITE',
     'OTHERS',
-  ]);
+  ];
+
+  const basicInfo = watch(BASIC_INFO_LIST);
+  const additionalInfo = watch(ADDITIONAL_INFO_LIST);
 
   const isRequiredFieldsValid = isRequired.every((value) => value);
 
@@ -145,12 +157,24 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
     handleSignup(formData);
   };
 
+  const onSubmitError: SubmitErrorHandler<SigninFormInputs> = (error) => {
+    const errorTitle = Object.keys(error)[0];
+
+    if (BASIC_INFO_LIST.includes(errorTitle as BasicInfoList)) {
+      setIsOpenBasicInfo(true);
+    } else if (
+      ADDITIONAL_INFO_LIST.includes(errorTitle as AdditionalInfoList)
+    ) {
+      setInOpenAdditionalInfo(true);
+    }
+  };
+
   return (
     <main className="flex min-h-screen w-full flex-col bg-white text-gray-B80">
       <SignupHeader formValues={formValues} />
       <form
         className="flex w-full flex-grow flex-col justify-between px-[26px] pb-[50px] pt-[30px]"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit, onSubmitError)}
       >
         <div>
           <h1 className="mb-1 text-xl font-bold text-blue-B50">
@@ -174,13 +198,12 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
             watchInfo={basicInfo}
             toggleHandler={toggleBasicInfo}
           />
-          {isOpenBasicInfo && (
-            <BasicInformation
-              control={control}
-              jobCategories={jobCategories}
-              setError={setError}
-            />
-          )}
+          <BasicInformation
+            isOpenBasicInfo={isOpenBasicInfo}
+            control={control}
+            jobCategories={jobCategories}
+            setError={setError}
+          />
 
           <AccordionButton
             isOpen={isOpenAdditionalInfo}
@@ -188,7 +211,10 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
             watchInfo={additionalInfo}
             toggleHandler={toggleAdditionalInfo}
           />
-          {isOpenAdditionalInfo && <AdditionalInformation control={control} />}
+          <AdditionalInformation
+            control={control}
+            isOpenAdditionalInfo={isOpenAdditionalInfo}
+          />
         </div>
 
         <Button

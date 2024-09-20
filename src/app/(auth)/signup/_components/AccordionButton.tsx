@@ -1,5 +1,5 @@
 import { ArrowSVG2, BadgeSVG, CheckSVG } from '@/icons/index';
-import debounce from '@/utils/debounce';
+import { debounce } from 'lodash';
 import { useEffect, useRef } from 'react';
 
 type AccordionButtonState = 'PROGRESS' | 'COMPLETED' | 'EMPTY';
@@ -50,8 +50,13 @@ function AccordionButton<T>({
     if (!autoClose.current && infoState === 'COMPLETED' && isOpen) {
       debouncedToggleHandler();
     } else if (infoState !== 'COMPLETED') {
+      debouncedToggleHandler.cancel();
       autoClose.current = false;
     }
+
+    return () => {
+      debouncedToggleHandler.cancel();
+    };
   }, [debouncedToggleHandler, infoState, isOpen, toggleHandler]);
 
   return (

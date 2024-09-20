@@ -8,10 +8,14 @@ import Title from './Title';
 import Hashtags from './Hashtags';
 
 interface AdditionalInformationProps {
+  isOpenAdditionalInfo: boolean;
   control: Control<RegisterInputs, any>;
 }
 
-function AdditionalInformation({ control }: AdditionalInformationProps) {
+function AdditionalInformation({
+  control,
+  isOpenAdditionalInfo,
+}: AdditionalInformationProps) {
   const SOCIAL_LIST = [
     {
       svg: <WebSVG className="size-6" />,
@@ -46,7 +50,9 @@ function AdditionalInformation({ control }: AdditionalInformationProps) {
   ];
 
   return (
-    <ul className="mb-14 flex flex-col gap-6">
+    <ul
+      className={`mb-14 flex flex-col gap-6 ${isOpenAdditionalInfo ? '' : 'hidden'}`}
+    >
       <Title title="Tags" required={false}>
         <Controller
           name="tagIds"

@@ -149,3 +149,18 @@ export interface AuthToken {
   iat: number;
   exp: number;
 }
+
+export type BasicInfoList =
+  | 'name'
+  | 'intro'
+  | 'jobTitle'
+  | 'jobCategoryId'
+  | 'belong';
+
+export type AdditionalInfoList =
+  | 'tagIds'
+  | 'GITHUB'
+  | 'INSTAGRAM'
+  | 'LINKEDIN'
+  | 'WEBSITE'
+  | 'OTHERS';
