@@ -6,7 +6,7 @@ import ParticipantCard from '@/components/ParticipantCard/ParticipantCard';
 import getUserInfo from '@/utils/auth/getUserInfo';
 import SearchParticipants from './_components/SearchParticipants';
 import Participants from '../_components/participants/Participants';
-import EmailAccessForm from '../_components/EmailAccessForm';
+import EmailAccessForm from '../_components/RegistrationBlurOverlay';
 
 export default async function page({
   params: { eventId },
@@ -30,7 +30,7 @@ export default async function page({
   return (
     <>
       {(!userInfo || !participantsInfo) && (
-        <EmailAccessForm eventId={eventId} />
+        <EmailAccessForm eventId={eventId} userInfo={userInfo} />
       )}
       <div className="px-6">
         <SearchParticipants

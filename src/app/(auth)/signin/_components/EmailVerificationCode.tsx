@@ -84,6 +84,7 @@ function EmailVerificationCode({
     onSuccess: () => {
       Cookies.remove('eventId');
       router.push(`/${eventId}/all`);
+      router.refresh();
     },
     onError: (error) => {
       const fetchError = error as FetchError;

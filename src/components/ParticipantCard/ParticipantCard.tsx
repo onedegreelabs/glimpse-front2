@@ -2,8 +2,8 @@ import { CommentSVG, DefaultProfileSVG } from '@/icons/index';
 import { CuratedParticipantDto } from '@/types/types';
 import Image from 'next/image';
 import Link from 'next/link';
-import SocialContainer from '../../app/[eventId]/_components/participants/SocialContainer';
-import WishlistButton from '../../app/[eventId]/_components/participants/WishlistButton';
+import SocialContainer from '../../app/[eventId]/(event)/_components/participants/SocialContainer';
+import WishlistButton from '../../app/[eventId]/(event)/_components/participants/WishlistButton';
 import IntroText from './IntroText';
 
 type ParticipantCardProps = {
