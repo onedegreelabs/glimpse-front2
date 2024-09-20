@@ -24,11 +24,11 @@ async function EventDetails({
         </h1>
         <div className="flex gap-4 text-xs">
           <div className="flex items-center gap-1">
-            <LocationSVG aria-label="Location" />{' '}
+            <LocationSVG className="fill-black" aria-label="Location" />{' '}
             {locationType === 'OFFLINE' ? location : locationType}
           </div>
           <time className="flex items-center gap-1">
-            <DateSVG aria-label="Date" />
+            <DateSVG className="fill-black" aria-label="Date" />
             {startAt}
           </time>
         </div>
