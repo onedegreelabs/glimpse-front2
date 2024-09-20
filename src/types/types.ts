@@ -170,7 +170,7 @@ export interface UserInfo {
   email: string;
   name: string;
   profileImageUrl: string | null;
-  socialMedia: SocialMedia[];
+  socialMedia: SocialMediaDto[];
   jobCategory: JobCategorie;
   jobTitle: string;
   belong: string | null;

@@ -1,27 +1,12 @@
 'use client';
 
-import {
-  LinkSVG,
-  FacebookSVG,
-  GoogleSVG,
-  InstagramSVG,
-  LineSVG,
-  LinkedinSVG,
-  PinterestSVG,
-  SNSSVG,
-  SkypeSVG,
-  TwitterSVG,
-  YoutubeSVG,
-  GithubSVG,
-  TelegramSVG,
-  WebSVG,
-} from '@/icons/index';
+import { LinkSVG, SNSSVG } from '@/icons/index';
 import { useClickAway } from '@uidotdev/usehooks';
 import { useState } from 'react';
 
 import Link from 'next/link';
 import { EventParticipantProfileCardDto, SocialMediaDto } from '@/types/types';
-import URLMark from '@/app/(auth)/signup/_components/URLMark';
+import GetSocialIcon from '@/components/GetSocialIcon';
 
 interface SocialContainerProps {
   participantRole: EventParticipantProfileCardDto['role'];
@@ -42,22 +27,6 @@ function SocialContainer({
   const handleOpenModal = () => {
     setIsOpen((perv) => !perv);
   };
-
-  const SOCIAL_SVG = {
-    GITHUB: <GithubSVG className="size-[20px]" />,
-    FACEBOOK: <FacebookSVG className="size-[20px]" />,
-    GOOGLE: <GoogleSVG />,
-    INSTAGRAM: <InstagramSVG className="size-[20px]" />,
-    LINE: <LineSVG />,
-    LINKEDIN: <LinkedinSVG className="size-[20px]" />,
-    PINTEREST: <PinterestSVG className="size-[20px]" />,
-    SKYPE: <SkypeSVG />,
-    TWITTER: <TwitterSVG />,
-    YOUTUBE: <YoutubeSVG />,
-    TELEGRAM: <TelegramSVG className="size-[20px]" />,
-    OTHERS: <URLMark bgSize="size-[20px]" svgSize="size-[10px]" />,
-    WEBSITE: <WebSVG className="size-[20px]" />,
-  } as { [key: string]: React.ReactNode };
 
   return (
     <div className="relative" ref={ref}>
@@ -81,7 +50,7 @@ function SocialContainer({
           {socialList.map(({ id, type, url }) => (
             <li key={id}>
               <Link href={url} target="_blank">
-                {SOCIAL_SVG[type]}
+                {GetSocialIcon(type, 'size-[20px]', 'size-[10px]')}
               </Link>
             </li>
           ))}

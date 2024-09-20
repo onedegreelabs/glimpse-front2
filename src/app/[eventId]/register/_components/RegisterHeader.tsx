@@ -2,12 +2,12 @@ import { ArrowSVG2, DateSVG, LocationSVG } from '@/icons/index';
 import { getEventInfo } from '@/lib/apis/server/eventsApi';
 import Link from 'next/link';
 
-async function Header({ eventId }: { eventId: string }) {
+async function RegisterHeader({ eventId }: { eventId: string }) {
   const { title, startAt, location, locationType } =
     await getEventInfo(eventId);
 
   return (
-    <header className="flex w-full flex-col">
+    <header className="sticky top-0 z-header flex w-full max-w-sm flex-col bg-white drop-shadow-[0_12px_20px_rgba(0,0,0,0.04)]">
       <div className="relative mt-1 flex w-full items-center justify-center py-3">
         <Link
           href={`/${eventId}/all`}
@@ -36,4 +36,4 @@ async function Header({ eventId }: { eventId: string }) {
   );
 }
 
-export default Header;
+export default RegisterHeader;
