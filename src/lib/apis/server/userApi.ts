@@ -22,6 +22,7 @@ export const getJobCategories = async (): Promise<JobCategorie[]> => {
 
 export const getUserInfo = async (accessToken: string): Promise<UserInfo> => {
   const response = await fetch(`${END_POINT}/users/me`, {
+    cache: 'no-store',
     headers: {
       Cookie: `accessToken=${accessToken}`,
     },

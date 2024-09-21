@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
+import getTokenInfo from '@/utils/auth/getTokenInfo';
 import UserFormHeader from './_components/UserFormHeader';
 import UserForm from './_components/UserForm';
 
@@ -8,10 +9,11 @@ export default async function page({
 }: {
   params: { eventId: string; mode: string };
 }) {
-  if (mode !== 'register' && mode !== 'edit') {
+  const userInfo = await getTokenInfo();
+
+  if ((mode !== 'register' && mode !== 'edit') || !userInfo) {
     notFound();
   }
-
   const isRegister = mode === 'register';
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
@@ -27,6 +29,7 @@ export default async function page({
         accessToken={accessToken}
         eventId={eventId}
         isRegister={isRegister}
+        userId={userInfo.userId}
       />
     </main>
   );

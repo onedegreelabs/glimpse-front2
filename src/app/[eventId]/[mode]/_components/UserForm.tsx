@@ -3,15 +3,21 @@ import { PersonSVG } from '@/icons/index';
 import { getUserInfo } from '@/lib/apis/server/userApi';
 import Image from 'next/image';
 import Link from 'next/link';
-import RegisterClient from './UserFormClient';
+import UserFormClient from './UserFormClient';
 
 interface RegisterProps {
   accessToken: string;
   eventId: string;
   isRegister: boolean;
+  userId: number;
 }
 
-async function UserForm({ accessToken, eventId, isRegister }: RegisterProps) {
+async function UserForm({
+  accessToken,
+  eventId,
+  isRegister,
+  userId,
+}: RegisterProps) {
   const userInfo = await getUserInfo(accessToken);
   const {
     name,
@@ -64,11 +70,12 @@ async function UserForm({ accessToken, eventId, isRegister }: RegisterProps) {
           </ul>
         </dl>
       </div>
-      <RegisterClient
+      <UserFormClient
         isRegister={isRegister}
         intro={intro ?? ''}
         tags={tags ?? []}
         eventId={eventId}
+        userId={userId}
       />
     </section>
   );
