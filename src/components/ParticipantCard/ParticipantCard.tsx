@@ -28,6 +28,7 @@ function ParticipantCard({
     user,
     isWishlisted,
     krComment,
+    tags,
     enComment = 'Park I-cheol is an entrepreneur in the AI.',
     intro = 'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...',
   } = info ?? {};
@@ -95,12 +96,14 @@ function ParticipantCard({
           <p className="mb-[10px] line-clamp-2 break-words text-sm font-light">
             {intro}
           </p>
-          <div className="flex items-center gap-[6px] text-xs text-yellow-primary">
-            <div className="flex size-3 items-center justify-center rounded-full bg-yellow-primary">
-              <TagSVG />
+          {tags && tags.length > 0 && (
+            <div className="flex items-center gap-[6px] break-all text-xs text-yellow-primary">
+              <div className="flex size-3 flex-shrink-0 items-center justify-center rounded-full bg-yellow-primary">
+                <TagSVG />
+              </div>
+              {tags.map(({ name: tagName }) => tagName).join(', ')}
             </div>
-            dasdada
-          </div>
+          )}
           <div className="absolute right-2 top-2">
             {userId !== user?.id && (
               <WishlistButton id={user?.id} isWishlisted={isWishlisted} />

@@ -14,6 +14,7 @@ function ParticipantDetailModal({
   user,
   tags,
   isWishlisted,
+  intro,
   closeDetailView,
 }: ParticipantDetailModalProps) {
   const {
@@ -58,25 +59,7 @@ function ParticipantDetailModal({
             ))}
           </ul>
           <div className="max-h-[200px] overflow-auto px-6">
-            <p className="mb-5 text-xs text-black">
-              The sky was painted in shades of orange and pink as the sun began
-              to set over the horizon. Birds flew in graceful patterns, their
-              silhouettes cutting across the vivid backdrop. A gentle breeze
-              carried the scent of blooming flowers, filling the air with a
-              refreshing fragrance. People gathered along the shoreline,
-              watching as the day slowly faded into night. Children laughed,
-              their carefree joy blending with the sound of waves crashing
-              softly against the shore. It was a perfect evening, a moment of
-              calm in a busy world. The sky was painted in shades of orange and
-              pink as the sun began to set over the horizon. Birds flew in
-              graceful patterns, their silhouettes cutting across the vivid
-              backdrop. A gentle breeze carried the scent of blooming flowers,
-              filling the air with a refreshing fragrance. People gathered along
-              the shoreline, watching as the day slowly faded into night.
-              Children laughed, their carefree joy blending with the sound of
-              waves crashing softly against the shore. It was a perfect evening,
-              a moment of calm in a busy world.
-            </p>
+            <p className="mb-5 break-all text-xs text-black">{intro}</p>
             <ul className="flex flex-wrap gap-[10px]">
               {tags.map(({ id, name: tagName }) => (
                 <li
