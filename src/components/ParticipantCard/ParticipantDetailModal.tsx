@@ -19,7 +19,6 @@ function ParticipantDetailModal({
   tags,
   isWishlisted,
   intro,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   participantRole,
   closeDetailView,
 }: ParticipantDetailModalProps) {
@@ -34,7 +33,7 @@ function ParticipantDetailModal({
   } = user;
   return (
     <Modal closeHandler={closeDetailView}>
-      <article className="relative pb-8 pt-20">
+      <article className="relative pb-8 pt-[72px]">
         <div className="absolute -top-[60px] left-1/2 flex size-[120px] -translate-x-1/2 transform items-center justify-center overflow-hidden rounded-full bg-gray-B35">
           {profileImageUrl ? (
             <Image
@@ -46,7 +45,15 @@ function ParticipantDetailModal({
           ) : (
             <DefaultProfileSVG className="size-24" />
           )}
+          {participantRole === 'HOST' && (
+            <div className="absolute left-1/2 size-[120px] -translate-x-1/2 transform rounded-full border-[3px] border-solid border-yellow-primary" />
+          )}
         </div>
+        {participantRole === 'HOST' && (
+          <span className="absolute left-1/2 top-[40px] -translate-x-1/2 transform rounded-3xl bg-yellow-primary px-[10px] py-[2px] text-sm font-bold text-blue-B50">
+            HOST
+          </span>
+        )}
         <dl className="flex flex-col items-center gap-1">
           <dt className="text-lg font-bold">{name}</dt>
           <dd className="mb-1.5 flex flex-wrap gap-1 text-xs text-black/60">
