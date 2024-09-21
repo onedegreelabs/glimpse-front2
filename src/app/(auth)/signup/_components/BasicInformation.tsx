@@ -1,7 +1,7 @@
 import { JobCategorie, RegisterInputs } from '@/types/types';
 import { Control, Controller, UseFormSetError } from 'react-hook-form';
+import Title from '@/components/Title';
 import JobCategory from './JobCategory';
-import Title from './Title';
 
 interface BasicInformationProps {
   isOpenBasicInfo: boolean;

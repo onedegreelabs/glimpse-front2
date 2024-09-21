@@ -164,3 +164,27 @@ export type AdditionalInfoList =
   | 'LINKEDIN'
   | 'WEBSITE'
   | 'OTHERS';
+
+export interface UserInfo {
+  id: number;
+  email: string;
+  name: string;
+  profileImageUrl: string | null;
+  socialMedia: SocialMediaDto[];
+  jobCategory: JobCategorie;
+  jobTitle: string;
+  belong: string | null;
+  intro: string;
+  tags: Tag[];
+}
+
+export interface EventRegisterInputs {
+  intro: string;
+  tagIds: Tag[];
+}
+
+export interface EventRegisterDto {
+  eventId: string;
+  intro: string;
+  tagIds: number[];
+}

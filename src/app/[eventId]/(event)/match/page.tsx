@@ -5,7 +5,7 @@ import React from 'react';
 import ParticipantCard from '@/components/ParticipantCard/ParticipantCard';
 import MatchingComponent from './_components/MatchingComponent';
 import Curations from './_components/Curations';
-import EmailAccessForm from '../_components/EmailAccessForm';
+import EmailAccessForm from '../_components/RegistrationBlurOverlay';
 
 const page = async ({
   params: { eventId },
@@ -24,7 +24,9 @@ const page = async ({
 
   return (
     <>
-      {!accessToken && <EmailAccessForm eventId={eventId} />}
+      {(!accessToken || !curationsInfo) && (
+        <EmailAccessForm eventId={eventId} isLogin={!!accessToken} />
+      )}
       <div className="px-6 pb-28 pt-1">
         <MatchingComponent eventId={eventId} isCurated={isCurated} />
         {isCurated ? (

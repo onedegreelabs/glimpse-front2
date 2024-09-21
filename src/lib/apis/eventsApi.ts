@@ -1,4 +1,5 @@
 import {
+  EventRegisterDto,
   FetchError,
   GetParticipantsInfoParams,
   ParticipantsResponseDto,
@@ -49,14 +50,18 @@ export const postCurations = async ({ eventId }: { eventId: string }) => {
   }
 };
 
-export const eventJoin = async (eventId: string, intro: string) => {
-  const response = await fetch(`/api/events/eventJoin?eventId=${eventId}`, {
+export const eventRegister = async ({
+  eventId,
+  intro,
+  tagIds,
+}: EventRegisterDto) => {
+  const response = await fetch(`/api/events/register?eventId=${eventId}`, {
     method: 'POST',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ intro }),
+    body: JSON.stringify({ intro, tagIds }),
   });
 
   if (!response.ok) {

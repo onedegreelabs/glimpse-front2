@@ -21,6 +21,7 @@ const config: Config = {
         },
         blue: {
           secondary: '#002387',
+          B20: '#354264',
           B30: '#2C5DEA',
           B50: '#00144B',
           B70: '#08112C',
@@ -33,6 +34,7 @@ const config: Config = {
           600: '#FFD300',
         },
         gray: {
+          B20: '#F4F6FA',
           B25: '#F3F3F3',
           B27: '#F6F6F6',
           B30: '#EFEFEF',
