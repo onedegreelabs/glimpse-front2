@@ -9,7 +9,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import ParticipantDetailModal from './ParticipantDetailModal';
-import WishlistButton from '../WishlistButton';
+import WishlistButton from './WishlistButton';
+import EditButton from './EditButton';
 
 type ParticipantCardProps = {
   participantRole: 'HOST' | 'GUEST';
@@ -37,6 +38,8 @@ function ParticipantCard({
   const jobs = user?.jobCategory ?? { id: 1, engName: 'Designer' };
   const belong = user?.belong ?? 'Glimpse';
 
+  const isUserCard = user && userId === user.id;
+
   const closeDetailView = () => {
     setIsDetailView(false);
   };
@@ -59,7 +62,9 @@ function ParticipantCard({
         tabIndex={0}
         className="flex w-full flex-col items-center"
       >
-        <div className="relative flex min-h-40 w-full flex-col rounded-3xl border border-solid border-white/30 bg-white/20 py-6 pl-5 pr-4">
+        <div
+          className={`relative flex min-h-40 w-full flex-col rounded-3xl border border-solid py-6 pl-5 pr-4 ${isUserCard ? 'border-yellow-primary bg-blue-B70/50' : 'border-white/30 bg-white/20'}`}
+        >
           <dl className="mb-[14px] flex w-full gap-[14px]">
             <div className="relative flex size-12 flex-shrink-0 items-center justify-center rounded-full bg-gray-B35/40 fill-white">
               {user?.profileImageUrl ? (
@@ -105,7 +110,9 @@ function ParticipantCard({
             </div>
           )}
           <div className="absolute right-2 top-2">
-            {userId !== user?.id && (
+            {isUserCard ? (
+              <EditButton />
+            ) : (
               <WishlistButton id={user?.id} isWishlisted={isWishlisted} />
             )}
           </div>
@@ -125,7 +132,9 @@ function ParticipantCard({
       </li>
       {isDetailView && info?.id && (
         <ParticipantDetailModal
+          isUserCard={!!isUserCard}
           closeDetailView={closeDetailView}
+          participantRole={participantRole}
           {...(info as EventParticipantProfileCardDto)}
         />
       )}

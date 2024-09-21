@@ -4,17 +4,23 @@ import { CrossSVG, DefaultProfileSVG } from '@/icons/index';
 import Link from 'next/link';
 import Modal from '../Modal';
 import GetSocialIcon from '../GetSocialIcon';
-import WishlistButton from '../WishlistButton';
+import WishlistButton from './WishlistButton';
+import EditButton from './EditButton';
 
 interface ParticipantDetailModalProps extends EventParticipantProfileCardDto {
+  isUserCard: boolean;
+  participantRole: 'HOST' | 'GUEST';
   closeDetailView: () => void;
 }
 
 function ParticipantDetailModal({
+  isUserCard,
   user,
   tags,
   isWishlisted,
   intro,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  participantRole,
   closeDetailView,
 }: ParticipantDetailModalProps) {
   const {
@@ -73,11 +79,15 @@ function ParticipantDetailModal({
           </div>
         </dl>
         <div className="absolute right-4 top-4">
-          <WishlistButton
-            id={participantId}
-            isWishlisted={isWishlisted}
-            isDetail
-          />
+          {isUserCard ? (
+            <EditButton isDetail />
+          ) : (
+            <WishlistButton
+              id={participantId}
+              isWishlisted={isWishlisted}
+              isDetail
+            />
+          )}
         </div>
         <button
           type="button"
