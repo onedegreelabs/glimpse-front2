@@ -60,8 +60,8 @@ export const eventRegister = async ({
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      body: JSON.stringify({ intro, tagIds }),
     },
+    body: JSON.stringify({ intro, tagIds }),
   });
 
   if (!response.ok) {

@@ -93,7 +93,7 @@ function Hashtags({ tagList, updateTagList }: HashtagsProps) {
             type="search"
             disabled={isPending}
             placeholder="Enter hashtags that best describe you"
-            className={`${tagList.length > 0 && !errors.tagName ? 'mb-3' : ''} ${errors.tagName ? 'border-red-B10 focus:border-red-B10' : ''} h-[54px] w-full rounded-2xl border border-solid px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium`}
+            className={`${tagList.length > 0 && !errors.tagName ? 'mb-3' : ''} ${errors.tagName ? 'border-red-B10 focus:border-red-B10' : ''} h-[54px] w-full rounded-2xl border border-solid py-[22px] pl-4 pr-16 text-sm font-semibold text-black placeholder:font-medium`}
             onKeyDown={handleKeyPress}
           />
         )}

@@ -13,6 +13,7 @@ import {
 } from '@/types/types';
 import { captureException } from '@sentry/nextjs';
 import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
@@ -23,12 +24,16 @@ interface RegisterClientProps {
 }
 
 function RegisterClient({ intro, tags, eventId }: RegisterClientProps) {
+  const router = useRouter();
   const { handleSubmit, control } = useForm<EventRegisterInputs>();
   const [severError, setSeverError] = useState<string>('');
 
   const { mutate: handleRegister, isPending } = useMutation({
     mutationFn: (data: EventRegisterDto) => eventRegister(data),
-    onSuccess: () => {},
+    onSuccess: () => {
+      router.push(`${eventId}/all`);
+      router.refresh();
+    },
     onError: (error) => {
       const fetchError = error as FetchError;
 
