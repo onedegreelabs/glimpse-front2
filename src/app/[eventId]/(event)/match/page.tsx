@@ -30,12 +30,24 @@ const page = async ({
       <div className="px-6 pb-28 pt-1">
         <MatchingComponent eventId={eventId} isCurated={isCurated} />
         {isCurated ? (
-          <Curations curationsInfo={curationsInfo!} />
+          <Curations curationsInfo={curationsInfo!} eventId={eventId} />
         ) : (
           <ul className="flex flex-col gap-3">
-            <ParticipantCard participantRole="GUEST" isCuration />
-            <ParticipantCard participantRole="GUEST" isCuration />
-            <ParticipantCard participantRole="GUEST" isCuration />
+            <ParticipantCard
+              participantRole="GUEST"
+              isCuration
+              eventId={eventId}
+            />
+            <ParticipantCard
+              participantRole="GUEST"
+              isCuration
+              eventId={eventId}
+            />
+            <ParticipantCard
+              participantRole="GUEST"
+              isCuration
+              eventId={eventId}
+            />
           </ul>
         )}
       </div>

@@ -58,9 +58,9 @@ export default async function page({
           />
         ) : (
           <ul className="flex flex-col gap-3">
-            <ParticipantCard participantRole="HOST" />
-            <ParticipantCard participantRole="GUEST" />
-            <ParticipantCard participantRole="GUEST" />
+            <ParticipantCard participantRole="HOST" eventId={eventId} />
+            <ParticipantCard participantRole="GUEST" eventId={eventId} />
+            <ParticipantCard participantRole="GUEST" eventId={eventId} />
           </ul>
         )}
       </div>

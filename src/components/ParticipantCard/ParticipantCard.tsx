@@ -14,12 +14,14 @@ import EditButton from './EditButton';
 
 type ParticipantCardProps = {
   participantRole: 'HOST' | 'GUEST';
+  eventId: string;
   isCuration?: boolean;
   userId?: number;
   info?: Partial<CuratedParticipantDto>;
 };
 
 function ParticipantCard({
+  eventId,
   info,
   participantRole,
   userId,
@@ -111,7 +113,7 @@ function ParticipantCard({
           )}
           <div className="absolute right-2 top-2">
             {isUserCard ? (
-              <EditButton />
+              <EditButton eventId={eventId} />
             ) : (
               <WishlistButton id={user?.id} isWishlisted={isWishlisted} />
             )}
@@ -132,6 +134,7 @@ function ParticipantCard({
       </li>
       {isDetailView && info?.id && (
         <ParticipantDetailModal
+          eventId={eventId}
           isUserCard={!!isUserCard}
           closeDetailView={closeDetailView}
           participantRole={participantRole}

@@ -10,10 +10,12 @@ import EditButton from './EditButton';
 interface ParticipantDetailModalProps extends EventParticipantProfileCardDto {
   isUserCard: boolean;
   participantRole: 'HOST' | 'GUEST';
+  eventId: string;
   closeDetailView: () => void;
 }
 
 function ParticipantDetailModal({
+  eventId,
   isUserCard,
   user,
   tags,
@@ -87,7 +89,7 @@ function ParticipantDetailModal({
         </dl>
         <div className="absolute right-4 top-4">
           {isUserCard ? (
-            <EditButton isDetail />
+            <EditButton isDetail eventId={eventId} />
           ) : (
             <WishlistButton
               id={participantId}

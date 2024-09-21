@@ -74,6 +74,7 @@ function Participants({
     <ul className="flex flex-col gap-3">
       {participants.map((info) => (
         <ParticipantCard
+          eventId={eventId}
           key={info.id}
           info={info}
           participantRole={info.role}
