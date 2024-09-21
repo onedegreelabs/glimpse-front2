@@ -4,6 +4,7 @@ import { CrossSVG, DefaultProfileSVG } from '@/icons/index';
 import Link from 'next/link';
 import Modal from '../Modal';
 import GetSocialIcon from '../GetSocialIcon';
+import WishlistButton from '../WishlistButton';
 
 interface ParticipantDetailModalProps extends EventParticipantProfileCardDto {
   closeDetailView: () => void;
@@ -12,10 +13,18 @@ interface ParticipantDetailModalProps extends EventParticipantProfileCardDto {
 function ParticipantDetailModal({
   user,
   tags,
+  isWishlisted,
   closeDetailView,
 }: ParticipantDetailModalProps) {
-  const { profileImageUrl, name, jobCategory, belong, jobTitle, socialMedia } =
-    user;
+  const {
+    id: participantId,
+    profileImageUrl,
+    name,
+    jobCategory,
+    belong,
+    jobTitle,
+    socialMedia,
+  } = user;
   return (
     <Modal closeHandler={closeDetailView}>
       <article className="relative pb-8 pt-20">
@@ -80,6 +89,13 @@ function ParticipantDetailModal({
             </ul>
           </div>
         </dl>
+        <div className="absolute right-4 top-4">
+          <WishlistButton
+            id={participantId}
+            isWishlisted={isWishlisted}
+            isDetail
+          />
+        </div>
         <button
           type="button"
           onClick={closeDetailView}

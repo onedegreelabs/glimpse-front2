@@ -1,6 +1,5 @@
 'use client';
 
-import WishlistButton from '@/app/[eventId]/(event)/_components/participants/WishlistButton';
 import { CommentSVG, DefaultProfileSVG, TagSVG } from '@/icons/index';
 import {
   CuratedParticipantDto,
@@ -10,6 +9,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import ParticipantDetailModal from './ParticipantDetailModal';
+import WishlistButton from '../WishlistButton';
 
 type ParticipantCardProps = {
   participantRole: 'HOST' | 'GUEST';

@@ -12,21 +12,27 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // const HeartLoading = dynamic(() => import('@/components/HeartLoading'));
 
 interface WishlistButtonProps {
   id?: number;
   isWishlisted?: boolean;
+  isDetail?: boolean;
 }
 
 function WishlistButton({
   id,
   isWishlisted: initialWishlisted,
+  isDetail,
 }: WishlistButtonProps) {
   const queryClient = useQueryClient();
   const [isWishlisted, setIsWishlisted] = useState(!!initialWishlisted);
+
+  useEffect(() => {
+    setIsWishlisted(!!initialWishlisted);
+  }, [initialWishlisted]);
 
   const toggleWishlist = async (
     targetUserId: number,
@@ -109,17 +115,20 @@ function WishlistButton({
     <button
       type="submit"
       disabled={!id || isPending}
-      onClick={() => {
+      onClick={(event) => {
+        event.stopPropagation();
         mutate({ targetUserId: id!, isInWishlist: isWishlisted });
         syncWishlistParticipants();
         syncWishlistCurations();
         setIsWishlisted(!isWishlisted);
       }}
       aria-label="Add to wishlist"
-      className="flex size-10 items-center justify-center rounded-full bg-white/10"
+      className={`flex size-10 items-center justify-center rounded-full ${
+        isDetail ? 'bg-black/10' : 'bg-white/10'
+      }`}
     >
       <HeartSVG
-        className={`size-[18px] ${isWishlisted ? 'fill-yellow-primary stroke-none' : 'fill-white/25'}`}
+        className={`${isDetail ? `size-5 ${isWishlisted ? 'fill-red-B20 stroke-none' : 'fill-white'}` : `size-[18px] ${isWishlisted ? 'fill-yellow-primary stroke-none' : 'fill-white/25'}`}`}
       />
       {/* {isPending ? <HeartLoading initialState={isWishlisted} /> : } */}
     </button>
