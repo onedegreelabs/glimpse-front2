@@ -14,6 +14,7 @@ export default async function page({
   if ((mode !== 'register' && mode !== 'edit') || !userInfo) {
     notFound();
   }
+
   const isRegister = mode === 'register';
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken')?.value;

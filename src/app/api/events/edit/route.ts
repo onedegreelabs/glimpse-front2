@@ -14,14 +14,17 @@ export const PATCH = async (request: NextRequest) => {
   const accessToken = request.cookies.get('accessToken')?.value;
   const { intro, tagIds } = await request.json();
 
-  const response = await fetch(`${END_POINT}/events/${eventId}/participants`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      Cookie: `accessToken=${accessToken}`,
+  const response = await fetch(
+    `${END_POINT}/events/${eventId}/participants/me`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Cookie: `accessToken=${accessToken}`,
+      },
+      body: JSON.stringify({ intro, tagIds }),
     },
-    body: JSON.stringify({ intro, tagIds }),
-  });
+  );
 
   if (!response.ok) {
     const { message, errorCode } = await response.json();
