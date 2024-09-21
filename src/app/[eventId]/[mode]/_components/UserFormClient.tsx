@@ -4,7 +4,7 @@ import Hashtags from '@/app/(auth)/signup/_components/Hashtags';
 import Button from '@/components/Button';
 import Message from '@/components/Message';
 import Title from '@/components/Title';
-import { eventRegister } from '@/lib/apis/eventsApi';
+import { eventEdit, eventRegister } from '@/lib/apis/eventsApi';
 import {
   EventRegisterDto,
   EventRegisterInputs,
@@ -17,19 +17,33 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
-interface RegisterClientProps {
+interface UserFormClientProps {
   intro: string;
   tags: Tag[];
   eventId: string;
+  isRegister: boolean;
 }
 
-function RegisterClient({ intro, tags, eventId }: RegisterClientProps) {
+function UserFormClient({
+  intro,
+  tags,
+  eventId,
+  isRegister,
+}: UserFormClientProps) {
   const router = useRouter();
   const { handleSubmit, control } = useForm<EventRegisterInputs>();
   const [severError, setSeverError] = useState<string>('');
 
+  const userFormHandler = async (data: EventRegisterDto) => {
+    if (isRegister) {
+      await eventRegister(data);
+    } else {
+      await eventEdit(data);
+    }
+  };
+
   const { mutate: handleRegister, isPending } = useMutation({
-    mutationFn: (data: EventRegisterDto) => eventRegister(data),
+    mutationFn: (data: EventRegisterDto) => userFormHandler(data),
     onSuccess: () => {
       router.push(`/${eventId}/all`);
       router.refresh();
@@ -98,12 +112,20 @@ function RegisterClient({ intro, tags, eventId }: RegisterClientProps) {
           control={control}
           defaultValue={tags}
           render={({ field }) => (
-            <Hashtags tagList={field.value} updateTagList={field.onChange} />
+            <Hashtags
+              tagList={field.value}
+              updateTagList={field.onChange}
+              tagStyle={{
+                tagsBgColor: 'bg-gray-B20',
+                tagsTextColor: 'text-blue-B50',
+                closeColor: 'fill-blue-B50',
+              }}
+            />
           )}
         />
       </Title>
       <Button type="submit" disabled={isPending} isPending={isPending}>
-        Register
+        {isRegister ? 'Register' : 'Save'}
       </Button>
       <div className="fixed bottom-14 left-1/2 -translate-x-1/2 transform">
         <Message message={severError} onClose={() => clearErrors()} isErrors />
@@ -112,4 +134,4 @@ function RegisterClient({ intro, tags, eventId }: RegisterClientProps) {
   );
 }
 
-export default RegisterClient;
+export default UserFormClient;
