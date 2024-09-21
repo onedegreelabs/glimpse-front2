@@ -75,7 +75,7 @@ function Participants({
       {participants.map((info) => (
         <ParticipantCard
           key={info.id}
-          {...info}
+          info={info}
           participantRole={info.role}
           userId={userId}
         />

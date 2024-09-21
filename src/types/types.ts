@@ -58,6 +58,7 @@ export interface EventParticipantProfileCardDto {
   isWishlisted: boolean;
   role: 'HOST' | 'GUEST';
   intro?: string | null;
+  tags: Tag[];
   user: UserProfileDto;
 }
 

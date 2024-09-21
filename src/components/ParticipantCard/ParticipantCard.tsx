@@ -2,7 +2,10 @@
 
 import WishlistButton from '@/app/[eventId]/(event)/_components/participants/WishlistButton';
 import { CommentSVG, DefaultProfileSVG, TagSVG } from '@/icons/index';
-import { CuratedParticipantDto } from '@/types/types';
+import {
+  CuratedParticipantDto,
+  EventParticipantProfileCardDto,
+} from '@/types/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -12,18 +15,22 @@ type ParticipantCardProps = {
   participantRole: 'HOST' | 'GUEST';
   isCuration?: boolean;
   userId?: number;
-} & Partial<CuratedParticipantDto>;
+  info?: Partial<CuratedParticipantDto>;
+};
 
 function ParticipantCard({
+  info,
   participantRole,
-  user,
   userId,
-  isWishlisted,
-  krComment,
-  enComment = 'Park I-cheol is an entrepreneur in the AI.',
   isCuration = false,
-  intro = 'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...',
 }: ParticipantCardProps) {
+  const {
+    user,
+    isWishlisted,
+    krComment,
+    enComment = 'Park I-cheol is an entrepreneur in the AI.',
+    intro = 'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...',
+  } = info ?? {};
   const [isDetailView, setIsDetailView] = useState(false);
   const name = user?.name ?? 'Emma Stone';
   const jobs = user?.jobCategory ?? { id: 1, engName: 'Designer' };
@@ -68,7 +75,7 @@ function ParticipantCard({
                   />
                 </Link>
               ) : (
-                <DefaultProfileSVG />
+                <DefaultProfileSVG className="size-[30px]" />
               )}
               {participantRole === 'HOST' && (
                 <span className="absolute -bottom-2 rounded-3xl bg-yellow-primary px-[7.5px] py-[4px] text-[9px] font-bold text-blue-B50">
@@ -113,8 +120,11 @@ function ParticipantCard({
           </div>
         )}
       </li>
-      {isDetailView && (
-        <ParticipantDetailModal closeDetailView={closeDetailView} />
+      {isDetailView && info?.id && (
+        <ParticipantDetailModal
+          closeDetailView={closeDetailView}
+          {...(info as EventParticipantProfileCardDto)}
+        />
       )}
     </>
   );

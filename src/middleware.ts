@@ -14,6 +14,7 @@ const handleTokenReissuance = async (
       const isAccessTokenValid = await isValidJWT(refreshToken, 'REFRESH');
 
       if (isAccessTokenValid) {
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         return await accessTokenReissuance(refreshToken, response);
       }
     }
