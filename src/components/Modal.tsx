@@ -23,11 +23,8 @@ function Modal({
   }, []);
 
   return (
-    <div className="fixed left-1/2 top-1/2 z-event flex size-full max-w-sm -translate-x-1/2 -translate-y-1/2 transform items-center justify-center bg-black/40 px-6 text-gray-B80">
-      <div
-        ref={ref}
-        className="relative w-full overflow-hidden rounded-3xl bg-white p-6"
-      >
+    <div className="fixed left-1/2 top-1/2 z-modal flex size-full max-w-sm -translate-x-1/2 -translate-y-1/2 transform items-center justify-center bg-black/40 px-6 text-gray-B80">
+      <div ref={ref} className="relative w-full rounded-3xl bg-white">
         {children}
       </div>
     </div>

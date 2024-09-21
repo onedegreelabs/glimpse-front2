@@ -18,6 +18,7 @@ const config: Config = {
       colors: {
         red: {
           B10: '#E7001B',
+          B20: '#FF1A1A',
         },
         blue: {
           secondary: '#002387',
@@ -38,6 +39,7 @@ const config: Config = {
           B25: '#F3F3F3',
           B27: '#F6F6F6',
           B30: '#EFEFEF',
+          B32: '#EEF0F5',
           B35: '#E4E4E4',
           B40: '#DFDFDF',
           B45: '#CFCFCF',
@@ -58,6 +60,7 @@ const config: Config = {
         blur: '50',
         event: '60',
         header: '20',
+        modal: '70',
       },
       animation: {
         fadeInUp: 'fadeInUp 0.5s ease-in-out',

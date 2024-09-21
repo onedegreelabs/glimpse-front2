@@ -12,8 +12,13 @@ function Gradient() {
   const gap = 100;
 
   const isDynamicRegisterPath = /\/[^/]+\/register$/.test(pathname);
+  const isDynamicEditPath = /\/[^/]+\/edit$/.test(pathname);
 
-  if (HIDE_GRADIENT_PATHNAME.includes(pathname) || isDynamicRegisterPath)
+  if (
+    HIDE_GRADIENT_PATHNAME.includes(pathname) ||
+    isDynamicRegisterPath ||
+    isDynamicEditPath
+  )
     return null;
 
   return (

@@ -6,9 +6,10 @@ import { useQuery } from '@tanstack/react-query';
 
 interface CurationsProps {
   curationsInfo: CurationsResponseDto;
+  eventId: string;
 }
 
-function Curations({ curationsInfo }: CurationsProps) {
+function Curations({ curationsInfo, eventId }: CurationsProps) {
   const { data: curationsList } = useQuery({
     queryKey: ['curations'],
     initialData: curationsInfo.participants,
@@ -24,6 +25,7 @@ function Curations({ curationsInfo }: CurationsProps) {
           participantRole={info.role}
           {...info}
           isCuration
+          eventId={eventId}
         />
       ))}
     </ul>

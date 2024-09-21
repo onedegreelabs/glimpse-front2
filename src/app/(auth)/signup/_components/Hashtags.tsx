@@ -12,9 +12,14 @@ interface TagInputs {
 interface HashtagsProps {
   tagList: Tag[];
   updateTagList: (tags: Tag[]) => void;
+  tagStyle?: {
+    tagsBgColor: string;
+    tagsTextColor: string;
+    closeColor: string;
+  };
 }
 
-function Hashtags({ tagList, updateTagList }: HashtagsProps) {
+function Hashtags({ tagList, updateTagList, tagStyle }: HashtagsProps) {
   const {
     control,
     handleSubmit,
@@ -122,7 +127,7 @@ function Hashtags({ tagList, updateTagList }: HashtagsProps) {
           {tagList.map(({ id, name }) => (
             <li
               key={id}
-              className="flex items-center gap-[6px] rounded-3xl bg-blue-B50 px-3 py-[10px] text-white"
+              className={`${tagStyle?.tagsBgColor || 'bg-blue-B50'} ${tagStyle?.tagsTextColor || 'text-white'} flex items-center gap-[6px] rounded-3xl bg-blue-B50 px-3 py-[10px]`}
             >
               {name}
               <button
@@ -131,7 +136,9 @@ function Hashtags({ tagList, updateTagList }: HashtagsProps) {
                 aria-label="delete-tag"
                 className="ml-2"
               >
-                <CrossSVG className="size-4 fill-white" />
+                <CrossSVG
+                  className={`${tagStyle?.closeColor || 'fill-white'} size-4`}
+                />
               </button>
             </li>
           ))}

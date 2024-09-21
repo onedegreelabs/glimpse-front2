@@ -57,7 +57,10 @@ function EmailAccessForm({
 
   return (
     <>
-      <form className="flex flex-col items-center gap-[30px]">
+      <form
+        onSubmit={handleSubmit(onSubmit, onSubmitError)}
+        className="flex flex-col items-center gap-[30px]"
+      >
         <h1 className="text-xl font-bold text-blue-B50">
           Enter your email address
         </h1>

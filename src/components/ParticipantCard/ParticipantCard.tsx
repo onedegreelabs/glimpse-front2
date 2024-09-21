@@ -1,33 +1,46 @@
 'use client';
 
-import WishlistButton from '@/app/[eventId]/(event)/_components/participants/WishlistButton';
 import { CommentSVG, DefaultProfileSVG, TagSVG } from '@/icons/index';
-import { CuratedParticipantDto } from '@/types/types';
+import {
+  CuratedParticipantDto,
+  EventParticipantProfileCardDto,
+} from '@/types/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import ParticipantDetailModal from './ParticipantDetailModal';
+import WishlistButton from './WishlistButton';
+import EditButton from './EditButton';
 
 type ParticipantCardProps = {
   participantRole: 'HOST' | 'GUEST';
+  eventId: string;
   isCuration?: boolean;
   userId?: number;
-} & Partial<CuratedParticipantDto>;
+  info?: Partial<CuratedParticipantDto>;
+};
 
 function ParticipantCard({
+  eventId,
+  info,
   participantRole,
-  user,
   userId,
-  isWishlisted,
-  krComment,
-  enComment = 'Park I-cheol is an entrepreneur in the AI.',
   isCuration = false,
-  intro = 'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...',
 }: ParticipantCardProps) {
+  const {
+    user,
+    isWishlisted,
+    krComment,
+    tags,
+    enComment = 'Park I-cheol is an entrepreneur in the AI.',
+    intro = 'A kiddo who uses Bootstrap and Laravel in web development. Currently playing around with design via Figma. Currently playing around ...',
+  } = info ?? {};
   const [isDetailView, setIsDetailView] = useState(false);
   const name = user?.name ?? 'Emma Stone';
   const jobs = user?.jobCategory ?? { id: 1, engName: 'Designer' };
   const belong = user?.belong ?? 'Glimpse';
+
+  const isUserCard = user && userId === user.id;
 
   const closeDetailView = () => {
     setIsDetailView(false);
@@ -51,7 +64,9 @@ function ParticipantCard({
         tabIndex={0}
         className="flex w-full flex-col items-center"
       >
-        <div className="relative flex min-h-40 w-full flex-col rounded-3xl border border-solid border-white/30 bg-white/20 py-6 pl-5 pr-4">
+        <div
+          className={`relative flex min-h-40 w-full flex-col rounded-3xl border border-solid py-6 pl-5 pr-4 ${isUserCard ? 'border-yellow-primary bg-blue-B70/50' : 'border-white/30 bg-white/20'}`}
+        >
           <dl className="mb-[14px] flex w-full gap-[14px]">
             <div className="relative flex size-12 flex-shrink-0 items-center justify-center rounded-full bg-gray-B35/40 fill-white">
               {user?.profileImageUrl ? (
@@ -68,7 +83,7 @@ function ParticipantCard({
                   />
                 </Link>
               ) : (
-                <DefaultProfileSVG />
+                <DefaultProfileSVG className="size-[30px]" />
               )}
               {participantRole === 'HOST' && (
                 <span className="absolute -bottom-2 rounded-3xl bg-yellow-primary px-[7.5px] py-[4px] text-[9px] font-bold text-blue-B50">
@@ -88,14 +103,18 @@ function ParticipantCard({
           <p className="mb-[10px] line-clamp-2 break-words text-sm font-light">
             {intro}
           </p>
-          <div className="flex items-center gap-[6px] text-xs text-yellow-primary">
-            <div className="flex size-3 items-center justify-center rounded-full bg-yellow-primary">
-              <TagSVG />
+          {tags && tags.length > 0 && (
+            <div className="flex items-center gap-[6px] break-all text-xs text-yellow-primary">
+              <div className="flex size-3 flex-shrink-0 items-center justify-center rounded-full bg-yellow-primary">
+                <TagSVG />
+              </div>
+              {tags.map(({ name: tagName }) => tagName).join(', ')}
             </div>
-            dasdada
-          </div>
+          )}
           <div className="absolute right-2 top-2">
-            {userId !== user?.id && (
+            {isUserCard ? (
+              <EditButton eventId={eventId} />
+            ) : (
               <WishlistButton id={user?.id} isWishlisted={isWishlisted} />
             )}
           </div>
@@ -113,8 +132,14 @@ function ParticipantCard({
           </div>
         )}
       </li>
-      {isDetailView && (
-        <ParticipantDetailModal closeDetailView={closeDetailView} />
+      {isDetailView && info?.id && (
+        <ParticipantDetailModal
+          eventId={eventId}
+          isUserCard={!!isUserCard}
+          closeDetailView={closeDetailView}
+          participantRole={participantRole}
+          {...(info as EventParticipantProfileCardDto)}
+        />
       )}
     </>
   );

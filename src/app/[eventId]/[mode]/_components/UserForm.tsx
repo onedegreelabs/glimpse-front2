@@ -1,27 +1,39 @@
 import GetSocialIcon from '@/components/GetSocialIcon';
 import { PersonSVG } from '@/icons/index';
-import { getUserInfo } from '@/lib/apis/server/userApi';
+import {
+  getParticipantsUserInfo,
+  getUserInfo,
+} from '@/lib/apis/server/userApi';
 import Image from 'next/image';
 import Link from 'next/link';
-import RegisterClient from './RegisterClient';
+import { EventParticipantProfileCardDto, UserInfo } from '@/types/types';
+import UserFormClient from './UserFormClient';
 
 interface RegisterProps {
   accessToken: string;
   eventId: string;
+  isRegister: boolean;
+  userId: number;
 }
 
-async function Register({ accessToken, eventId }: RegisterProps) {
-  const userInfo = await getUserInfo(accessToken);
-  const {
-    name,
-    profileImageUrl,
-    belong,
-    jobCategory,
-    jobTitle,
-    socialMedia,
-    intro,
-    tags,
-  } = userInfo;
+async function UserForm({
+  accessToken,
+  eventId,
+  isRegister,
+  userId,
+}: RegisterProps) {
+  let userInfo: UserInfo | EventParticipantProfileCardDto;
+
+  if (isRegister) {
+    userInfo = await getUserInfo(accessToken);
+  } else {
+    userInfo = await getParticipantsUserInfo(accessToken, eventId);
+  }
+
+  const { name, profileImageUrl, jobCategory, jobTitle, belong, socialMedia } =
+    'user' in userInfo ? userInfo.user : userInfo;
+
+  const { intro, tags } = userInfo;
 
   return (
     <section className="flex flex-col gap-6 px-5 pb-11 pt-5">
@@ -42,9 +54,9 @@ async function Register({ accessToken, eventId }: RegisterProps) {
           )}
         </div>
         <dl className="flex min-w-0 max-w-full flex-col gap-1">
-          <dt className="truncate text-base font-bold text-black">{name} </dt>
+          <dt className="truncate text-base font-bold text-black">{name}</dt>
           <dd className="mb-[6px] flex flex-wrap gap-1 text-xs text-black/60">
-            <span>{jobCategory.engName}</span>
+            <span>{jobCategory?.engName}</span>
             <span className="truncate">@ {belong}</span>
           </dd>
           <dd className="mb-[6px] text-xs font-medium text-blue-B20">
@@ -63,9 +75,15 @@ async function Register({ accessToken, eventId }: RegisterProps) {
           </ul>
         </dl>
       </div>
-      <RegisterClient intro={intro ?? ''} tags={tags ?? []} eventId={eventId} />
+      <UserFormClient
+        isRegister={isRegister}
+        intro={intro ?? ''}
+        tags={tags ?? []}
+        eventId={eventId}
+        userId={userId}
+      />
     </section>
   );
 }
 
-export default Register;
+export default UserForm;

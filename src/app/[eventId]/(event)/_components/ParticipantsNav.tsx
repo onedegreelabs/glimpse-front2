@@ -18,8 +18,7 @@ function ParticipantsNav({
   const currentPathname = pathname.split('/').at(-1);
 
   return (
-    <nav className="sticky top-0 z-20 bg-background px-6 py-3">
-      <div className="mx-auto mb-6 h-1 w-[46px] rounded-md bg-white/50" />
+    <nav className="sticky top-0 z-20 bg-background px-6 pb-3 pt-10">
       <Image
         src={Logo}
         alt="Glimpse Logo"
