@@ -19,12 +19,10 @@ import { useState } from 'react';
 interface WishlistButtonProps {
   id?: number;
   isWishlisted?: boolean;
-  participantRole: EventParticipantProfileCardDto['role'];
 }
 
 function WishlistButton({
   id,
-  participantRole,
   isWishlisted: initialWishlisted,
 }: WishlistButtonProps) {
   const queryClient = useQueryClient();
@@ -118,9 +116,11 @@ function WishlistButton({
         setIsWishlisted(!isWishlisted);
       }}
       aria-label="Add to wishlist"
-      className={`flex size-8 items-center justify-center rounded-full ${isWishlisted ? 'fill-yellow-primary stroke-none' : 'fill-none stroke-white'} ${participantRole === 'HOST' ? 'bg-white/15' : 'bg-gray-B25/30'}`}
+      className="flex size-10 items-center justify-center rounded-full bg-white/10"
     >
-      <HeartSVG />
+      <HeartSVG
+        className={`size-[18px] ${isWishlisted ? 'fill-yellow-primary stroke-none' : 'fill-white/25'}`}
+      />
       {/* {isPending ? <HeartLoading initialState={isWishlisted} /> : } */}
     </button>
   );

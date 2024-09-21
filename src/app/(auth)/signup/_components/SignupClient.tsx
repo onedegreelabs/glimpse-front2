@@ -107,7 +107,6 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
   const { mutate: handleSignup, isPending: signupPending } = useMutation({
     mutationFn: (data: FormData) => register(data),
     onSuccess: () => {
-      Cookies.remove('auth_token');
       Cookies.remove('eventId');
       router.push(`/${eventId}/all`);
       router.refresh();

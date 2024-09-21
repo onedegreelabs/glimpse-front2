@@ -31,7 +31,7 @@ function RegisterClient({ intro, tags, eventId }: RegisterClientProps) {
   const { mutate: handleRegister, isPending } = useMutation({
     mutationFn: (data: EventRegisterDto) => eventRegister(data),
     onSuccess: () => {
-      router.push(`${eventId}/all`);
+      router.push(`/${eventId}/all`);
       router.refresh();
     },
     onError: (error) => {
