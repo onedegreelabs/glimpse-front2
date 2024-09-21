@@ -69,3 +69,5 @@ export { default as BadgeSVG } from './badge.svg';
 export { default as InboxSVG } from './inbox.svg';
 
 export { default as CommentUserSVG } from './commentUser.svg';
+
+export { default as TagSVG } from './tag.svg';
