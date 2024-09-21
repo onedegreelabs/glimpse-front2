@@ -56,9 +56,14 @@ export const POST = async (request: NextRequest) => {
   } else {
     return NextResponse.json({
       status: 500,
-      message: '환경 변수가 설정되지 않았습니다.',
+      message: '토큰을 찾을 수 없습니다.',
     });
   }
+
+  nextResponse.headers.append(
+    'Set-Cookie',
+    `auth_token=; Path=/; Max-Age=0; HttpOnly; SameSite=Strict`,
+  );
 
   return nextResponse;
 };

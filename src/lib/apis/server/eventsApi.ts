@@ -66,7 +66,7 @@ export const getEventInfo = async (eventId: string): Promise<EventInfo> => {
 export const getParticipantsInfo = cache(
   async (
     params: GetParticipantsInfoParams,
-  ): Promise<ParticipantsResponseDto> => {
+  ): Promise<ParticipantsResponseDto | null> => {
     const cookieStore = cookies();
     const accessToken = cookieStore.get('accessToken');
 
@@ -98,7 +98,11 @@ export const getParticipantsInfo = cache(
     } catch (error) {
       const fetchError = error as FetchError;
 
-      if (fetchError && fetchError.status === 400) {
+      if (fetchError.status === 400) {
+        if (fetchError.errorCode === 'G06001') {
+          return null;
+        }
+      } else {
         notFound();
       }
 
@@ -111,7 +115,7 @@ export const getCurationsInfo = cache(
   async (params: {
     eventId: string;
     accessToken: RequestCookie;
-  }): Promise<CurationsResponseDto> => {
+  }): Promise<CurationsResponseDto | null> => {
     try {
       const response = await fetch(
         `${END_POINT}/events/${params.eventId}/curations`,
@@ -141,7 +145,11 @@ export const getCurationsInfo = cache(
     } catch (error) {
       const fetchError = error as FetchError;
 
-      if (fetchError && fetchError.status === 400) {
+      if (fetchError.status === 404) {
+        if (fetchError.errorCode === 'G06001') {
+          return null;
+        }
+      } else {
         notFound();
       }
 

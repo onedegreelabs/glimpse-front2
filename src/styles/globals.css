@@ -2,8 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
-.background-mask {
-  mask-image: linear-gradient(to right, black 0%, black 100%);
+@layer base {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='search']::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  input[type='search']::-ms-reveal {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  input[type='search']::-webkit-search-decoration,
+  input[type='search']::-webkit-search-cancel-button,
+  input[type='search']::-webkit-search-results-button,
+  input[type='search']::-webkit-search-results-decoration {
+    display: none;
+  }
+
+  input {
+    /* @apply outline outline-gray-B40 focus:outline-blue-B50; */
+    @apply border border-solid border-gray-B40 outline-none focus:border-blue-B50;
+  }
+}
+
+@layer utilities {
+  .py-dynamic {
+    padding-top: calc(min(3rem, 2.5vh));
+    padding-bottom: calc(min(3rem, 10vh));
+  }
+
+  .background-mask {
+    mask-image: linear-gradient(to right, black 0%, black 100%);
+  }
 }
 
 @font-face {

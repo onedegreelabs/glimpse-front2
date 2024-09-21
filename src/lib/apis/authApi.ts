@@ -1,7 +1,7 @@
-import { FetchError } from '@/types/types';
+import { FetchError, LoginDto } from '@/types/types';
 
-export const login = async (email: string) => {
-  const response = await fetch(`/api/auth/login?email=${email}`);
+export const login = async ({ email, code }: LoginDto) => {
+  const response = await fetch(`/api/auth/login?email=${email}&code=${code}`);
 
   if (!response.ok) {
     const errorData = await response.json();
@@ -46,6 +46,26 @@ export const register = async (data: FormData) => {
     const errorData = await response.json();
     const error: FetchError = new Error(
       errorData.message || '회원가입 오류',
+    ) as FetchError;
+    error.status = response.status;
+    error.errorCode = errorData.errorCode || 'UNKNOWN_ERROR';
+    throw error;
+  }
+};
+
+export const sendVerificationCode = async (email: string) => {
+  const response = await fetch('/api/auth/sendVerificationCode', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+    headers: {
+      Accept: 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    const error: FetchError = new Error(
+      errorData.message || '인증 코드 전송 오류',
     ) as FetchError;
     error.status = response.status;
     error.errorCode = errorData.errorCode || 'UNKNOWN_ERROR';

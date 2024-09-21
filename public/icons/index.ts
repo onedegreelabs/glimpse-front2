@@ -28,6 +28,8 @@ export { default as CommentSVG } from './comment.svg';
 
 export { default as RefreshSVG } from './refresh.svg';
 
+export { default as ArrowSVG4 } from './arrow4.svg';
+
 export { default as FacebookSVG } from './link/facebook.svg';
 
 export { default as GoogleSVG } from './link/google.svg';
@@ -59,3 +61,15 @@ export { default as WebSVG } from './link/web.svg';
 export { default as TelegramSVG } from './link/telegram.svg';
 
 export { default as CrossSVG } from './cross.svg';
+
+export { default as PersonSVG } from './person.svg';
+
+export { default as BadgeSVG } from './badge.svg';
+
+export { default as InboxSVG } from './inbox.svg';
+
+export { default as CommentUserSVG } from './commentUser.svg';
+
+export { default as TagSVG } from './tag.svg';
+
+export { default as PencilSVG } from './pencil.svg';

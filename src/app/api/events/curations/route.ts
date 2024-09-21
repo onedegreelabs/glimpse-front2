@@ -32,18 +32,6 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
-  if (!response.ok) {
-    const { message, errorCode } = await response.json();
-    return NextResponse.json(
-      {
-        status: response.status,
-        message,
-        errorCode,
-      },
-      { status: response.status },
-    );
-  }
-
   const result = await response.json();
 
   return NextResponse.json(result);

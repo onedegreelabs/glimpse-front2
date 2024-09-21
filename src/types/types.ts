@@ -58,6 +58,7 @@ export interface EventParticipantProfileCardDto {
   isWishlisted: boolean;
   role: 'HOST' | 'GUEST';
   intro?: string | null;
+  tags: Tag[];
   user: UserProfileDto;
 }
 
@@ -95,10 +96,6 @@ export interface JobCategorie {
   engName: string;
 }
 
-interface JobCategory {
-  id: number;
-}
-
 export interface SocialMedia {
   type: string;
   url: string;
@@ -121,12 +118,74 @@ export interface RegisterInputs
   GITHUB: string;
   TELEGRAM: string;
   OTHERS: string;
-  OTHERS2: string;
-  OTHERS3: string;
-  jobCategory: JobCategory | null;
+  jobCategoryId: number | null;
+  tagIds: Tag[];
 }
 
 export interface RegisterFormDataDto
   extends Omit<BaseRegisterInputs, 'jobCategory'> {
-  jobCategory: JobCategory;
+  jobCategory: number;
+}
+
+export interface SigninFormInputs {
+  email: string;
+}
+
+export interface VerificationCode {
+  [key: string]: string;
+}
+
+export interface LoginDto {
+  email: string;
+  code: string;
+}
+
+export interface Tag {
+  id: number;
+  name: string;
+}
+
+export interface AuthToken {
+  email: string;
+  iat: number;
+  exp: number;
+}
+
+export type BasicInfoList =
+  | 'name'
+  | 'intro'
+  | 'jobTitle'
+  | 'jobCategoryId'
+  | 'belong';
+
+export type AdditionalInfoList =
+  | 'tagIds'
+  | 'GITHUB'
+  | 'INSTAGRAM'
+  | 'LINKEDIN'
+  | 'WEBSITE'
+  | 'OTHERS';
+
+export interface UserInfo {
+  id: number;
+  email: string;
+  name: string;
+  profileImageUrl: string | null;
+  socialMedia: SocialMediaDto[];
+  jobCategory: JobCategorie;
+  jobTitle: string;
+  belong: string | null;
+  intro: string;
+  tags: Tag[];
+}
+
+export interface EventRegisterInputs {
+  intro: string;
+  tagIds: Tag[];
+}
+
+export interface EventRegisterDto {
+  eventId: string;
+  intro: string;
+  tagIds: number[];
 }

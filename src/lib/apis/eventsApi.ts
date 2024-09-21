@@ -1,4 +1,5 @@
 import {
+  EventRegisterDto,
   FetchError,
   GetParticipantsInfoParams,
   ParticipantsResponseDto,
@@ -49,20 +50,49 @@ export const postCurations = async ({ eventId }: { eventId: string }) => {
   }
 };
 
-export const eventJoin = async (eventId: string, intro: string) => {
-  const response = await fetch(`/api/events/eventJoin?eventId=${eventId}`, {
+export const eventRegister = async ({
+  eventId,
+  intro,
+  tagIds,
+}: EventRegisterDto) => {
+  const response = await fetch(`/api/events/register?eventId=${eventId}`, {
     method: 'POST',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ intro }),
+    body: JSON.stringify({ intro, tagIds }),
   });
 
   if (!response.ok) {
     const errorData = await response.json();
     const error: FetchError = new Error(
       errorData.message || '이벤트 참가자 등록 오류',
+    ) as FetchError;
+    error.status = response.status;
+    error.errorCode = errorData.errorCode || 'UNKNOWN_ERROR';
+    throw error;
+  }
+};
+
+export const eventEdit = async ({
+  eventId,
+  intro,
+  tagIds,
+}: EventRegisterDto) => {
+  const response = await fetch(`/api/events/edit?eventId=${eventId}`, {
+    method: 'PATCH',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ intro, tagIds }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    const error: FetchError = new Error(
+      errorData.message || '참가자 프로필 수정 오류',
     ) as FetchError;
     error.status = response.status;
     error.errorCode = errorData.errorCode || 'UNKNOWN_ERROR';

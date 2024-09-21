@@ -11,7 +11,15 @@ function Gradient() {
   const baseHeight = 320;
   const gap = 100;
 
-  if (HIDE_GRADIENT_PATHNAME.includes(pathname)) return null;
+  const isDynamicRegisterPath = /\/[^/]+\/register$/.test(pathname);
+  const isDynamicEditPath = /\/[^/]+\/edit$/.test(pathname);
+
+  if (
+    HIDE_GRADIENT_PATHNAME.includes(pathname) ||
+    isDynamicRegisterPath ||
+    isDynamicEditPath
+  )
+    return null;
 
   return (
     <div className="fixed top-0 mx-auto h-dvh w-full max-w-sm overflow-hidden">

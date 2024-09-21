@@ -1,7 +1,9 @@
 import appendCookiesToResponse from '@/utils/auth/appendCookiesToResponse';
 import { NextRequest, NextResponse } from 'next/server';
+import { SignJWT } from 'jose';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
+const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_ACCESS_TOKEN_SECRET;
 
 export const GET = async (request: NextRequest) => {
   if (!END_POINT) {
@@ -12,17 +14,63 @@ export const GET = async (request: NextRequest) => {
   }
 
   const email = request.nextUrl.searchParams.get('email');
+  const code = request.nextUrl.searchParams.get('code');
+
+  const base64Credentials = Buffer.from(`${email}:${code}`).toString('base64');
 
   const response = await fetch(`${END_POINT}/auth/token?p=email`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Basic ${btoa(`${email}: `)}`,
+      Authorization: `Basic ${base64Credentials}`,
     },
   });
 
   if (!response.ok) {
     const { message, errorCode } = await response.json();
+
+    if (errorCode === 'G01001') {
+      if (!JWT_SECRET) {
+        return NextResponse.json({
+          status: 500,
+          message: 'JWT 비밀 키가 설정되지 않았습니다.',
+        });
+      }
+
+      try {
+        const secret = new TextEncoder().encode(JWT_SECRET);
+
+        const token = await new SignJWT({ email })
+          .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
+          .setIssuedAt()
+          .setExpirationTime('6h')
+          .sign(secret);
+
+        const nextResponse = NextResponse.json(
+          {
+            status: response.status,
+            message,
+            errorCode,
+          },
+          { status: response.status },
+        );
+
+        nextResponse.cookies.set('auth_token', token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          maxAge: 60 * 60 * 6,
+          path: '/',
+        });
+
+        return nextResponse;
+      } catch (error) {
+        return NextResponse.json({
+          status: 500,
+          message: `JWT 생성 중 오류 발생: ${error}`,
+        });
+      }
+    }
+
     return NextResponse.json(
       {
         status: response.status,
