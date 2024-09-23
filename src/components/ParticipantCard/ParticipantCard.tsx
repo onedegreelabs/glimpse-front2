@@ -16,7 +16,7 @@ type ParticipantCardProps = {
   participantRole: 'HOST' | 'GUEST';
   eventId: string;
   isCuration?: boolean;
-  userId?: number;
+  isUserCard?: boolean;
   info?: Partial<CuratedParticipantDto>;
 };
 
@@ -24,7 +24,7 @@ function ParticipantCard({
   eventId,
   info,
   participantRole,
-  userId,
+  isUserCard,
   isCuration = false,
 }: ParticipantCardProps) {
   const {
@@ -39,8 +39,6 @@ function ParticipantCard({
   const name = user?.name ?? 'Emma Stone';
   const jobs = user?.jobTitle ?? 'Designer';
   const belong = user?.belong ?? 'Glimpse';
-
-  const isUserCard = user && userId === user.id;
 
   const closeDetailView = () => {
     setIsDetailView(false);

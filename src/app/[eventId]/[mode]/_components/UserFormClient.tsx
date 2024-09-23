@@ -6,20 +6,13 @@ import Message from '@/components/Message';
 import Title from '@/components/Title';
 import { eventEdit, eventRegister } from '@/lib/apis/eventsApi';
 import {
-  CuratedParticipantDto,
-  EventParticipantProfileCardDto,
   EventRegisterDto,
   EventRegisterInputs,
   FetchError,
-  ParticipantsResponseDto,
   Tag,
 } from '@/types/types';
 import { captureException } from '@sentry/nextjs';
-import {
-  InfiniteData,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -29,7 +22,6 @@ interface UserFormClientProps {
   tags: Tag[];
   eventId: string;
   isRegister: boolean;
-  userId: number;
 }
 
 function UserFormClient({
@@ -37,73 +29,10 @@ function UserFormClient({
   tags,
   eventId,
   isRegister,
-  userId,
 }: UserFormClientProps) {
   const router = useRouter();
-  const { handleSubmit, control, getValues } = useForm<EventRegisterInputs>();
+  const { handleSubmit, control } = useForm<EventRegisterInputs>();
   const [severError, setSeverError] = useState<string>('');
-
-  const queryClient = useQueryClient();
-
-  const updateParticipantsData = <T extends EventParticipantProfileCardDto>(
-    data: T[] | InfiniteData<{ participants: T[] }>,
-  ): T[] | InfiniteData<{ participants: T[] }> | null => {
-    if (!data) return null;
-
-    let isUpdated = false;
-
-    const updateParticipant = (participant: T): T => {
-      if (participant.user.id === userId) {
-        isUpdated = true;
-        return {
-          ...participant,
-          intro: getValues('intro'),
-          tags: getValues('tagIds'),
-        };
-      }
-      return participant;
-    };
-
-    if (Array.isArray(data)) {
-      const updatedParticipants = data.map(updateParticipant);
-      return isUpdated ? updatedParticipants : null;
-    }
-    const updatedPages = data.pages.map((page) => ({
-      ...page,
-      participants: page.participants.map(updateParticipant),
-    }));
-    return isUpdated ? { ...data, pages: updatedPages } : null;
-  };
-
-  const syncEditParticipants = () => {
-    const participantsQueries = queryClient.getQueriesData<
-      InfiniteData<ParticipantsResponseDto>
-    >({
-      queryKey: ['participants'],
-    });
-
-    participantsQueries.forEach(([queryKey, value]) => {
-      if (value) {
-        const updatedData = updateParticipantsData(value);
-        if (updatedData) {
-          queryClient.setQueryData(queryKey, updatedData);
-        }
-      }
-    });
-  };
-
-  const syncEditCurations = () => {
-    const data = queryClient.getQueryData<CuratedParticipantDto[]>([
-      'curations',
-    ]);
-
-    if (!data) return;
-
-    const updatedData = updateParticipantsData(data);
-    if (updatedData) {
-      queryClient.setQueryData(['curations'], updatedData);
-    }
-  };
 
   const userFormHandler = async (data: EventRegisterDto) => {
     if (isRegister) {
@@ -116,8 +45,6 @@ function UserFormClient({
   const { mutate: handleRegister, isPending } = useMutation({
     mutationFn: (data: EventRegisterDto) => userFormHandler(data),
     onSuccess: () => {
-      syncEditParticipants();
-      syncEditCurations();
       router.push(`/${eventId}/all`);
       router.refresh();
     },

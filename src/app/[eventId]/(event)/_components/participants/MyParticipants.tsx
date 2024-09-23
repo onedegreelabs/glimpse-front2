@@ -4,14 +4,9 @@ import { getParticipantsUserInfo } from '@/lib/apis/server/userApi';
 interface MyParticipantsProps {
   eventId: string;
   accessToken: string;
-  userId: number;
 }
 
-async function MyParticipants({
-  accessToken,
-  eventId,
-  userId,
-}: MyParticipantsProps) {
+async function MyParticipants({ accessToken, eventId }: MyParticipantsProps) {
   const userInfo = await getParticipantsUserInfo(accessToken, eventId);
 
   return (
@@ -19,7 +14,7 @@ async function MyParticipants({
       eventId={eventId}
       info={{ ...userInfo }}
       participantRole={userInfo.role}
-      userId={userId}
+      isUserCard
     />
   );
 }

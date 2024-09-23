@@ -1,15 +1,25 @@
 import { ArrowSVG2, DateSVG, LocationSVG } from '@/icons/index';
 import { getEventInfo } from '@/lib/apis/server/eventsApi';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 interface UserFormHeaderProps {
   eventId: string;
   isRegister: boolean;
+  accessToken: string;
 }
 
-async function UserFormHeader({ eventId, isRegister }: UserFormHeaderProps) {
-  const { title, startAt, location, locationType } =
-    await getEventInfo(eventId);
+async function UserFormHeader({
+  eventId,
+  isRegister,
+  accessToken,
+}: UserFormHeaderProps) {
+  const { title, startAt, location, locationType, isRegistered } =
+    await getEventInfo(eventId, accessToken);
+
+  if (isRegister && isRegistered) {
+    redirect(`/${eventId}/edit`);
+  }
 
   return (
     <header

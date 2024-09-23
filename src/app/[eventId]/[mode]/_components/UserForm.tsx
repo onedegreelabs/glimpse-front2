@@ -13,15 +13,9 @@ interface RegisterProps {
   accessToken: string;
   eventId: string;
   isRegister: boolean;
-  userId: number;
 }
 
-async function UserForm({
-  accessToken,
-  eventId,
-  isRegister,
-  userId,
-}: RegisterProps) {
+async function UserForm({ accessToken, eventId, isRegister }: RegisterProps) {
   let userInfo: UserInfo | EventParticipantProfileCardDto;
 
   if (isRegister) {
@@ -80,7 +74,6 @@ async function UserForm({
         intro={intro ?? ''}
         tags={tags ?? []}
         eventId={eventId}
-        userId={userId}
       />
     </section>
   );

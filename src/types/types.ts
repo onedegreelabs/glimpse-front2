@@ -13,6 +13,7 @@ export interface EventInfo {
   locationType: 'OFFLINE' | 'ONLINE';
   location: string;
   coverImageUrl: null | URL;
+  isRegistered: boolean;
 }
 
 export interface GetParticipantsInfoParams {

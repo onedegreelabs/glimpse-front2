@@ -52,7 +52,7 @@ function ParticipantDetailModal({
           )}
         </div>
         {participantRole === 'HOST' && (
-          <span className="absolute left-1/2 top-[2.5rme] -translate-x-1/2 transform rounded-3xl bg-yellow-primary px-[0.625rem] py-0.5 text-sm font-bold text-blue-B50">
+          <span className="absolute left-1/2 top-[2.5rem] -translate-x-1/2 transform rounded-3xl bg-yellow-primary px-[0.625rem] py-0.5 text-sm font-bold text-blue-B50">
             HOST
           </span>
         )}

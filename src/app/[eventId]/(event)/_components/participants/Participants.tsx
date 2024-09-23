@@ -15,7 +15,6 @@ interface ParticipantsProps {
   initialParticipants: EventParticipantProfileCardDto[];
   totalItemCount: number;
   search?: string;
-  userId: number;
 }
 
 function Participants({
@@ -23,7 +22,6 @@ function Participants({
   totalItemCount,
   eventId,
   search,
-  userId,
 }: ParticipantsProps) {
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, error } =
     useInfiniteQuery({
@@ -78,7 +76,6 @@ function Participants({
           key={info.id}
           info={info}
           participantRole={info.role}
-          userId={userId}
         />
       ))}
       {isFetchingNextPage || error ? (
