@@ -7,6 +7,7 @@ import getTokenInfo from '@/utils/auth/getTokenInfo';
 import SearchParticipants from './_components/SearchParticipants';
 import Participants from '../_components/participants/Participants';
 import EmailAccessForm from '../_components/RegistrationBlurOverlay';
+import MyParticipants from '../_components/participants/MyParticipants';
 
 export default async function page({
   params: { eventId },
@@ -49,13 +50,23 @@ export default async function page({
           )}
 
         {participantsInfo && userInfo ? (
-          <Participants
-            userId={Number(userInfo.userId)}
-            initialParticipants={participantsInfo.participants}
-            totalItemCount={participantsInfo.totalItemCount}
-            eventId={eventId}
-            search={searchParams.search ?? ''}
-          />
+          <ul className="flex flex-col gap-3">
+            {!searchParams.search && (
+              <MyParticipants
+                accessToken={userInfo.accessToken}
+                eventId={eventId}
+                userId={userInfo.userId}
+              />
+            )}
+
+            <Participants
+              userId={Number(userInfo.userId)}
+              initialParticipants={participantsInfo.participants}
+              totalItemCount={participantsInfo.totalItemCount}
+              eventId={eventId}
+              search={searchParams.search ?? ''}
+            />
+          </ul>
         ) : (
           <ul className="flex flex-col gap-3">
             <ParticipantCard participantRole="HOST" eventId={eventId} />

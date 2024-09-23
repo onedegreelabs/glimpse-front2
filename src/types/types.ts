@@ -88,6 +88,7 @@ export interface TokenInfo {
   role: string;
   iat: number;
   exp: number;
+  accessToken: string;
 }
 
 export interface JobCategorie {

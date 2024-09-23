@@ -71,7 +71,7 @@ function Participants({
   );
 
   return (
-    <ul className="flex flex-col gap-3">
+    <>
       {participants.map((info) => (
         <ParticipantCard
           eventId={eventId}
@@ -98,7 +98,7 @@ function Participants({
           className="h-[0.063rem]"
         />
       )}
-    </ul>
+    </>
   );
 }
 
