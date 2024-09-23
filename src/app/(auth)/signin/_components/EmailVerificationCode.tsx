@@ -174,14 +174,17 @@ function EmailVerificationCode({
 
   return (
     <>
-      <form className="flex flex-col items-center gap-5">
+      <form
+        className="flex flex-col items-center gap-5"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <h1 className="text-xl font-bold text-blue-B50">
           Enter confirmation code
         </h1>
         <p className="mb-5 text-center text-sm text-gray-B60">
           Enter the 6-digit code sent to <br /> {currentEmail}
         </p>
-        <div className="relative mb-6 flex w-full justify-center gap-[5px]">
+        <div className="relative mb-6 flex w-full justify-center gap-[0.313rem]">
           {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
           {Array.from({ length: 6 }, (_, index) => (
             <Controller
@@ -204,7 +207,7 @@ function EmailVerificationCode({
                 const borderColorClass = isInvalidCode
                   ? 'border-red-B10 text-red-B10 focus:border-red-B10'
                   : 'border-blue-B50';
-                const inputClassName = `h-[54px] w-1/6 max-w-[46px] rounded-xl text-center text-sm ${
+                const inputClassName = `h-[3.375rem] w-1/6 max-w-[2.875rem] rounded-xl text-center text-sm ${
                   isCodeEntered ? borderColorClass : ''
                 }`;
 

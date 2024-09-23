@@ -1,6 +1,6 @@
 import Button from '@/components/Button';
 import { sendVerificationCode } from '@/lib/apis/authApi';
-import { SigninFormInputs } from '@/types/types';
+import { FetchError, SigninFormInputs } from '@/types/types';
 import { captureException } from '@sentry/nextjs';
 import { useMutation } from '@tanstack/react-query';
 import {
@@ -38,10 +38,21 @@ function EmailAccessForm({
       handleNextStep();
     },
     onError: (error) => {
-      handleMessage({
-        message: 'An unknown error occurred. Please contact support.',
-      });
-      captureException(error);
+      const fetchError = error as FetchError;
+
+      if (
+        fetchError.errorCode === 'G01017' ||
+        fetchError.errorCode === 'G01018'
+      ) {
+        handleMessage({
+          message: `You've reached the resend limit. Please try again an hour later.`,
+        });
+      } else {
+        handleMessage({
+          message: 'An unknown error occurred. Please contact support.',
+        });
+        captureException(error);
+      }
     },
   });
 
@@ -59,7 +70,7 @@ function EmailAccessForm({
     <>
       <form
         onSubmit={handleSubmit(onSubmit, onSubmitError)}
-        className="flex flex-col items-center gap-[30px]"
+        className="flex flex-col items-center gap-[1.875rem]"
       >
         <h1 className="text-xl font-bold text-blue-B50">
           Enter your email address
@@ -80,7 +91,7 @@ function EmailAccessForm({
               {...field}
               type="email"
               placeholder="e.g. addresses12@gmail.com"
-              className="mb-4 h-[54px] w-full rounded-2xl px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
+              className="mb-4 h-[3.375rem] w-full rounded-2xl px-4 py-[1.375rem] text-sm font-semibold text-black placeholder:font-medium"
             />
           )}
         />

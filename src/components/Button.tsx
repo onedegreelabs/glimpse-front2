@@ -21,7 +21,7 @@ function Button({
       type={type}
       disabled={disabled}
       onClick={onClick}
-      className="group h-[54px] w-full rounded-2xl bg-yellow-primary disabled:bg-gray-B30"
+      className="group h-[3.375rem] w-full rounded-2xl bg-yellow-primary disabled:bg-gray-B30"
     >
       {isPending ? (
         <div className="flex items-center justify-center">

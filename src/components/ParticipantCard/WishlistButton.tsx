@@ -128,7 +128,7 @@ function WishlistButton({
       }`}
     >
       <HeartSVG
-        className={`${isDetail ? `size-5 ${isWishlisted ? 'fill-red-B20 stroke-none' : 'fill-white'}` : `size-[18px] ${isWishlisted ? 'fill-yellow-primary stroke-none' : 'fill-white/25'}`}`}
+        className={`${isDetail ? `size-5 ${isWishlisted ? 'fill-red-B20 stroke-none' : 'fill-white'}` : `size-[1.125rem] ${isWishlisted ? 'fill-yellow-primary stroke-none' : 'fill-white/25'}`}`}
       />
       {/* {isPending ? <HeartLoading initialState={isWishlisted} /> : } */}
     </button>

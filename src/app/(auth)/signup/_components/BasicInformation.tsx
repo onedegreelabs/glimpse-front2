@@ -49,7 +49,7 @@ function BasicInformation({
                 }
               }}
               maxLength={70}
-              className="h-[54px] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
+              className="h-[3.375rem] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[1.375rem] text-sm font-semibold text-black placeholder:font-medium"
             />
           )}
         />
@@ -139,7 +139,7 @@ function BasicInformation({
                   });
                 }
               }}
-              className="h-[54px] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
+              className="h-[3.375rem] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[1.375rem] text-sm font-semibold text-black placeholder:font-medium"
             />
           )}
         />
@@ -167,7 +167,7 @@ function BasicInformation({
                   field.onChange(e);
                 }
               }}
-              className="mb-[30px] h-[54px] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
+              className="mb-[1.875rem] h-[3.375rem] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[1.375rem] text-sm font-semibold text-black placeholder:font-medium"
               placeholder="e.g.) Glimpse"
             />
           )}

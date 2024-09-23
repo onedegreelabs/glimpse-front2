@@ -37,9 +37,9 @@ async function UserForm({
 
   return (
     <section className="flex flex-col gap-6 px-5 pb-11 pt-5">
-      <div className="grid w-full grid-cols-[auto_1fr] space-x-4 rounded-3xl bg-gray-B20 pb-[26px] pl-5 pr-7 pt-7">
+      <div className="grid w-full grid-cols-[auto_1fr] space-x-4 rounded-3xl bg-gray-B20 pb-[1.625rem] pl-5 pr-7 pt-7">
         <div
-          className={`relative flex size-[100px] items-center justify-center self-center overflow-hidden rounded-full ${profileImageUrl ? '' : 'bg-white'}`}
+          className={`relative flex size-[6.25rem] items-center justify-center self-center overflow-hidden rounded-full ${profileImageUrl ? '' : 'bg-white'}`}
         >
           {profileImageUrl ? (
             <Image
@@ -50,25 +50,25 @@ async function UserForm({
               sizes="100px"
             />
           ) : (
-            <PersonSVG className="h-12 w-[46.31px]" />
+            <PersonSVG className="h-12 w-[2.894rem]" />
           )}
         </div>
         <dl className="flex min-w-0 max-w-full flex-col gap-1">
           <dt className="truncate text-base font-bold text-black">{name}</dt>
-          <dd className="mb-[6px] flex flex-wrap gap-1 text-xs text-black/60">
+          <dd className="mb-[0.375rem] flex flex-wrap gap-1 text-xs text-black/60">
             <span>{jobCategory?.engName}</span>
             <span className="truncate">@ {belong}</span>
           </dd>
-          <dd className="mb-[6px] text-xs font-medium text-blue-B20">
+          <dd className="mb-[0.375rem] text-xs font-medium text-blue-B20">
             <span className="inline-block max-w-44 truncate rounded-3xl bg-white px-3 py-2">
               {jobTitle}
             </span>
           </dd>
-          <ul className="flex w-full gap-[6px]">
+          <ul className="flex w-full gap-[0.375rem]">
             {socialMedia.map(({ id, type, url }) => (
               <li key={id} className="size-6">
                 <Link href={url} target="_blank">
-                  {GetSocialIcon(type, 'size-6', 'size-[14px]')}
+                  {GetSocialIcon(type, 'size-6', 'size-[0.875rem]')}
                 </Link>
               </li>
             ))}

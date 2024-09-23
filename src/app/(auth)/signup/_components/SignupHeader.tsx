@@ -39,7 +39,7 @@ function SignupHeader({ formValues }: { formValues: RegisterInputs }) {
   const progressWidth = (totalFilledCount / totalFieldsCount) * 100;
 
   return (
-    <header className="sticky top-0 z-header mt-[6px] bg-white px-1 pt-[10px]">
+    <header className="sticky top-0 z-header mt-[0.375rem] bg-white px-1 pt-[0.625rem]">
       <button
         onClick={() => router.back()}
         type="button"

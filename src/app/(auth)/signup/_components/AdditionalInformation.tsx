@@ -65,7 +65,7 @@ function AdditionalInformation({
       </Title>
       <Title title="Socials/Links" required={false}>
         <p className="-mt-1 text-sm font-light">Please add the desired link.</p>
-        <div className="flex flex-col gap-[10px]">
+        <div className="flex flex-col gap-[0.625rem]">
           {SOCIAL_LIST.map(({ svg, id, placeholder }) => (
             <Controller
               key={id}
@@ -89,13 +89,13 @@ function AdditionalInformation({
               render={({ field }) => (
                 <label
                   htmlFor={id}
-                  className="flex w-full min-w-fit items-center gap-[14px] overflow-auto"
+                  className="flex w-full min-w-fit items-center gap-[0.875rem] overflow-auto"
                 >
                   {svg}
                   <input
                     {...field}
                     id={id}
-                    className="h-[54px] w-full flex-grow rounded-2xl border border-solid border-gray-B40 px-4 text-sm font-semibold text-black placeholder:font-medium"
+                    className="h-[3.375rem] w-full flex-grow rounded-2xl border border-solid border-gray-B40 px-4 text-sm font-semibold text-black placeholder:font-medium"
                     placeholder={placeholder}
                   />
                 </label>

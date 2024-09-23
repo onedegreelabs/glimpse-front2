@@ -63,7 +63,7 @@ function SigninFunnel({ eventId }: { eventId: string }) {
           <ArrowSVG4 className="size-6 fill-black" />
         </button>
       </header>
-      <section className="py-dynamic relative flex h-full flex-grow flex-col justify-between px-[26px]">
+      <section className="py-dynamic relative flex h-full flex-grow flex-col justify-between px-[1.625rem]">
         <FormProvider {...formMethod}>
           {STEP_COMPONENTS[currentStep]}
         </FormProvider>

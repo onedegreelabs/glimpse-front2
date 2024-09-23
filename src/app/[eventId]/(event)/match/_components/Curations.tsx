@@ -23,7 +23,7 @@ function Curations({ curationsInfo, eventId }: CurationsProps) {
         <ParticipantCard
           key={info.id}
           participantRole={info.role}
-          {...info}
+          info={info}
           isCuration
           eventId={eventId}
         />

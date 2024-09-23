@@ -50,7 +50,7 @@ function SocialContainer({
           {socialList.map(({ id, type, url }) => (
             <li key={id}>
               <Link href={url} target="_blank">
-                {GetSocialIcon(type, 'size-[20px]', 'size-[10px]')}
+                {GetSocialIcon(type, 'size-[1.25rem]', 'size-[0.625rem]')}
               </Link>
             </li>
           ))}

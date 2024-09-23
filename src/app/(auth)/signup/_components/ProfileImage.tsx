@@ -43,7 +43,7 @@ function ProfileImage({
       <label
         htmlFor="image-upload"
         aria-label="input-profile-image"
-        className="relative flex size-[100px] cursor-pointer items-center justify-center rounded-full border border-solid border-gray-B50 bg-white"
+        className="relative flex size-[6.25rem] cursor-pointer items-center justify-center rounded-full border border-solid border-gray-B50 bg-white"
       >
         {profileImage ? (
           <>
@@ -64,7 +64,7 @@ function ProfileImage({
             />
           </>
         ) : (
-          <PersonSVG className="h-12 w-[46.31px]" />
+          <PersonSVG className="h-12 w-[2.894rem]" />
         )}
         <button
           type="button"

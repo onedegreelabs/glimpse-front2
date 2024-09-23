@@ -71,7 +71,7 @@ function Participants({
   );
 
   return (
-    <ul className="flex flex-col gap-3">
+    <>
       {participants.map((info) => (
         <ParticipantCard
           eventId={eventId}
@@ -95,10 +95,10 @@ function Participants({
           }}
           threshold={0}
           triggerOnce
-          className="h-[1px]"
+          className="h-[0.063rem]"
         />
       )}
-    </ul>
+    </>
   );
 }
 

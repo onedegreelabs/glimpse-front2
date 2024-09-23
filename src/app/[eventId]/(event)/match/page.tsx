@@ -20,7 +20,7 @@ const page = async ({
     curationsInfo = await getCurationsInfo({ eventId, accessToken });
   }
 
-  const isCurated = !!curationsInfo && curationsInfo.totalAttempts !== 0;
+  const isCurated = curationsInfo && curationsInfo.totalAttempts !== 0;
 
   return (
     <>
@@ -28,7 +28,7 @@ const page = async ({
         <EmailAccessForm eventId={eventId} isLogin={!!accessToken} />
       )}
       <div className="px-6 pb-28 pt-1">
-        <MatchingComponent eventId={eventId} isCurated={isCurated} />
+        <MatchingComponent eventId={eventId} isCurated={!!isCurated} />
         {isCurated ? (
           <Curations curationsInfo={curationsInfo!} eventId={eventId} />
         ) : (
