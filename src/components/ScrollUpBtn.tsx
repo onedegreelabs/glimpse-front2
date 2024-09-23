@@ -32,15 +32,15 @@ function ScrollUpBtn() {
   }, []);
 
   return (
-    <div className="relative ml-auto mr-14 size-[1px]">
+    <div className="relative ml-auto mr-14 size-[0.063rem]">
       {isVisible && (
         <button
           type="button"
-          className={`${currentPathname === 'match' ? 'mb-[90px]' : 'mb-4'} fixed bottom-0 z-10 flex size-[46px] items-center justify-center rounded-full bg-yellow-primary`}
+          className={`${currentPathname === 'match' ? 'mb-[5.625rem]' : 'mb-4'} fixed bottom-0 z-10 flex size-[2.875rem] items-center justify-center rounded-full bg-yellow-primary`}
           aria-label="scroll-up-button"
           onClick={handleScrollUp}
         >
-          <ArrowSVG className="size-[16.5px] -rotate-90 transform" />
+          <ArrowSVG className="size-[1.031rem] -rotate-90 transform" />
         </button>
       )}
     </div>

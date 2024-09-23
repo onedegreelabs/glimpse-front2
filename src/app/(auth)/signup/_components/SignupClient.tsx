@@ -190,7 +190,7 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
     <main className="flex min-h-screen w-full flex-col bg-white text-gray-B80">
       <SignupHeader formValues={formValues} />
       <form
-        className="flex w-full flex-grow flex-col justify-between px-[26px] pb-[50px] pt-[30px]"
+        className="flex w-full flex-grow flex-col justify-between px-[1.625rem] pb-[3.125rem] pt-[1.875rem]"
         onSubmit={handleSubmit(onSubmit, onSubmitError)}
       >
         <div>

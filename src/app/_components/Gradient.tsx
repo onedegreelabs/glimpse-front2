@@ -31,36 +31,36 @@ function Gradient() {
             {index % 2 === 0 ? (
               <>
                 <div
-                  className="absolute h-[315px] w-[303px] bg-gradient-radial from-[#756FD5] blur-xl"
+                  className="absolute h-[19.688rem] w-[18.938rem] bg-gradient-radial from-[#756FD5] blur-xl"
                   style={{ transform: `translate(170px, ${translateY}px)` }}
                 />
                 <div
-                  className="absolute h-[225px] w-[225px] bg-gradient-radial from-[#2C5EEB] blur-2xl"
+                  className="absolute size-[14.063rem] bg-gradient-radial from-[#2C5EEB] blur-2xl"
                   style={{
                     transform: `translate(102px, ${translateY + 212}px)`,
                   }}
                 />
                 <div
-                  className="absolute h-[288px] w-[288px] bg-gradient-radial from-[#002387] blur-2xl"
+                  className="absolute size-[18rem] bg-gradient-radial from-[#002387] blur-2xl"
                   style={{ transform: `translate(-24px, ${translateY}px)` }}
                 />
               </>
             ) : (
               <>
                 <div
-                  className="absolute h-[315px] w-[303px] bg-gradient-radial from-[#756FD5] blur-xl"
+                  className="absolute h-[19.688rem] w-[18.938rem] bg-gradient-radial from-[#756FD5] blur-xl"
                   style={{
                     transform: `translate(-32px, ${translateY + 100}px)`,
                   }}
                 />
                 <div
-                  className="absolute h-[288px] w-[288px] bg-gradient-radial from-[#002387] blur-2xl"
+                  className="absolute size-[18rem] bg-gradient-radial from-[#002387] blur-2xl"
                   style={{
                     transform: `translate(100px, ${translateY}px)`,
                   }}
                 />
                 <div
-                  className="absolute h-[225px] w-[225px] bg-gradient-radial from-[#2C5EEB] blur-2xl"
+                  className="absolute size-[14.063rem] bg-gradient-radial from-[#2C5EEB] blur-2xl"
                   style={{
                     transform: `translate(120px, ${translateY + 300}px)`,
                   }}

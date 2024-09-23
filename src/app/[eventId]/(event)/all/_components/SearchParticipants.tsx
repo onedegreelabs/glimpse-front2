@@ -32,7 +32,7 @@ function SearchParticipants({
         id="searchParticipants"
         type="search"
         value={searchValue}
-        className="peer h-12 w-full rounded-2xl py-4 pl-[42px] pr-4 font-medium text-black outline-none placeholder:text-sm placeholder:text-gray-B70 search-cancel:hidden"
+        className="peer h-12 w-full rounded-2xl py-4 pl-[2.625rem] pr-4 font-medium text-black outline-none placeholder:text-sm placeholder:text-gray-B70 search-cancel:hidden"
         placeholder="Search anything in profile"
         onChange={changeHandler}
         aria-label="Search participants"

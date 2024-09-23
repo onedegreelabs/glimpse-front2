@@ -56,17 +56,17 @@ function EmailVerificationButton({
   }, [isSendVerificationSuccess]);
 
   return (
-    <div className="flex flex-col items-center gap-[18px]">
+    <div className="flex flex-col items-center gap-[1.125rem]">
       <button
         type="submit"
         disabled={isResendButtonDisabled}
         onClick={
           resendTimer === 0 ? onSendVerificationCode : displayResendLimitMessage
         }
-        className={`group flex items-center gap-[3px] text-sm disabled:text-gray-B60 ${resendTimer === 0 ? 'text-blue-B50' : 'text-gray-B60'}`}
+        className={`group flex items-center gap-[0.188rem] text-sm disabled:text-gray-B60 ${resendTimer === 0 ? 'text-blue-B50' : 'text-gray-B60'}`}
       >
         <RefreshSVG
-          className={`size-[10px] group-disabled:fill-gray-B60 ${resendTimer === 0 ? 'fill-blue-B50 stroke-blue-B50' : 'fill-gray-B60 stroke-gray-B60'} ${isResendButtonDisabled && 'animate-spin'}`}
+          className={`size-[0.625rem] group-disabled:fill-gray-B60 ${resendTimer === 0 ? 'fill-blue-B50 stroke-blue-B50' : 'fill-gray-B60 stroke-gray-B60'} ${isResendButtonDisabled && 'animate-spin'}`}
         />{' '}
         Resend code
         {resendTimer !== 0 && <span>{resendTimer}s</span>}
@@ -79,7 +79,7 @@ function EmailVerificationButton({
       >
         {verificationCodeTimer > 0 ? formatTime(verificationCodeTimer) : 'Next'}
         {verificationCodeTimer === 0 && (
-          <div className="absolute bottom-12 left-1/2 w-11/12 max-w-sm -translate-x-1/2 transform rounded-md bg-red-B10 px-[10px] py-3 text-xs text-white">
+          <div className="absolute bottom-12 left-1/2 w-11/12 max-w-sm -translate-x-1/2 transform rounded-md bg-red-B10 px-[0.625rem] py-3 text-xs text-white">
             Input time has expired. Please resend the verification code.
           </div>
         )}

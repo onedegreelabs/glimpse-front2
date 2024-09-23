@@ -40,7 +40,7 @@ export default async function page({
         {searchParams.search &&
           participantsInfo &&
           participantsInfo.totalItemCount !== 0 && (
-            <div className="my-[18px] flex gap-1 text-base font-medium">
+            <div className="my-[1.125rem] flex gap-1 text-base font-medium">
               <p className="text-yellow-primary">
                 {participantsInfo.totalItemCount}
               </p>
@@ -66,7 +66,7 @@ export default async function page({
       </div>
 
       {participantsInfo && participantsInfo.totalItemCount === 0 && (
-        <div className="absolute left-1/2 top-1/2 my-auto flex -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center gap-[18px]">
+        <div className="absolute left-1/2 top-1/2 my-auto flex -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center gap-[1.125rem]">
           <SadFaceSVG />
           <p className="text-white/60">No matching results.</p>
         </div>

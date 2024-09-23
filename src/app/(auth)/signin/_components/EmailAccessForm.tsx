@@ -59,7 +59,7 @@ function EmailAccessForm({
     <>
       <form
         onSubmit={handleSubmit(onSubmit, onSubmitError)}
-        className="flex flex-col items-center gap-[30px]"
+        className="flex flex-col items-center gap-[1.875rem]"
       >
         <h1 className="text-xl font-bold text-blue-B50">
           Enter your email address
@@ -80,7 +80,7 @@ function EmailAccessForm({
               {...field}
               type="email"
               placeholder="e.g. addresses12@gmail.com"
-              className="mb-4 h-[54px] w-full rounded-2xl px-4 py-[22px] text-sm font-semibold text-black placeholder:font-medium"
+              className="mb-4 h-[3.375rem] w-full rounded-2xl px-4 py-[1.375rem] text-sm font-semibold text-black placeholder:font-medium"
             />
           )}
         />

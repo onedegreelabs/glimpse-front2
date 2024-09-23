@@ -19,7 +19,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="absolute left-1/2 top-1/2 z-20 flex w-full -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center gap-[18px] text-white/60">
+    <div className="absolute left-1/2 top-1/2 z-20 flex w-full -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center gap-[1.125rem] text-white/60">
       <SadFaceSVG />
       <p className="text-base font-bold">
         An error occurred while loading the page.
@@ -28,7 +28,7 @@ export default function Error({
         <button
           type="button"
           onClick={() => router.back()}
-          className="w-56 rounded-[10px] bg-yellow-primary py-[22px] text-center text-blue-secondary"
+          className="w-56 rounded-[0.625rem] bg-yellow-primary py-[1.375rem] text-center text-blue-secondary"
         >
           Go Back
         </button>
@@ -36,7 +36,7 @@ export default function Error({
         <button
           type="button"
           onClick={() => reset()}
-          className="w-56 rounded-[10px] bg-gray-B30/20 py-[22px] text-center text-white/40"
+          className="w-56 rounded-[0.625rem] bg-gray-B30/20 py-[1.375rem] text-center text-white/40"
         >
           Retry
         </button>

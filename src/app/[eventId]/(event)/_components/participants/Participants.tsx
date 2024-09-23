@@ -95,7 +95,7 @@ function Participants({
           }}
           threshold={0}
           triggerOnce
-          className="h-[1px]"
+          className="h-[0.063rem]"
         />
       )}
     </ul>

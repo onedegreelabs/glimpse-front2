@@ -98,7 +98,7 @@ function Hashtags({ tagList, updateTagList, tagStyle }: HashtagsProps) {
             type="search"
             disabled={isPending}
             placeholder="Enter hashtags that best describe you"
-            className={`${tagList.length > 0 && !errors.tagName ? 'mb-3' : ''} ${errors.tagName ? 'border-red-B10 focus:border-red-B10' : ''} h-[54px] w-full rounded-2xl border border-solid py-[22px] pl-4 pr-16 text-sm font-semibold text-black placeholder:font-medium`}
+            className={`${tagList.length > 0 && !errors.tagName ? 'mb-3' : ''} ${errors.tagName ? 'border-red-B10 focus:border-red-B10' : ''} h-[3.375rem] w-full rounded-2xl border border-solid py-[1.375rem] pl-4 pr-16 text-sm font-semibold text-black placeholder:font-medium`}
             onKeyDown={handleKeyPress}
           />
         )}
@@ -111,7 +111,7 @@ function Hashtags({ tagList, updateTagList, tagStyle }: HashtagsProps) {
       <button
         onClick={handleSubmit(onSubmit)}
         disabled={isPending || !currentTag || !!errors.tagName}
-        className="absolute right-3 top-[17px] flex items-center gap-1 text-sm font-bold text-blue-B50 disabled:text-gray-B65"
+        className="absolute right-3 top-[1.063rem] flex items-center gap-1 text-sm font-bold text-blue-B50 disabled:text-gray-B65"
         type="submit"
       >
         {isPending ? (
@@ -123,11 +123,11 @@ function Hashtags({ tagList, updateTagList, tagStyle }: HashtagsProps) {
       </button>
 
       {tagList.length > 0 && (
-        <ul className="mb-4 flex flex-wrap gap-[6px] px-2 text-sm">
+        <ul className="mb-4 flex flex-wrap gap-[0.375rem] px-2 text-sm">
           {tagList.map(({ id, name }) => (
             <li
               key={id}
-              className={`${tagStyle?.tagsBgColor || 'bg-blue-B50'} ${tagStyle?.tagsTextColor || 'text-white'} flex items-center gap-[6px] rounded-3xl bg-blue-B50 px-3 py-[10px]`}
+              className={`${tagStyle?.tagsBgColor || 'bg-blue-B50'} ${tagStyle?.tagsTextColor || 'text-white'} flex items-center gap-[0.375rem] rounded-3xl bg-blue-B50 px-3 py-[0.625rem]`}
             >
               {name}
               <button

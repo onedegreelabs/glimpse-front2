@@ -28,7 +28,7 @@ function TermsModal({ closeHandler }: { closeHandler: () => void }) {
       <button
         type="button"
         onClick={closeHandler}
-        className="mt-4 flex h-[46px] w-full items-center justify-center rounded-lg bg-yellow-600 font-bold text-blue-secondary"
+        className="mt-4 flex h-[2.875rem] w-full items-center justify-center rounded-lg bg-yellow-600 font-bold text-blue-secondary"
       >
         Got it
       </button>
