@@ -34,11 +34,13 @@ import AdditionalInformation from './AdditionalInformation';
 
 interface SignupClientProps {
   email?: string;
-  eventId: string;
+  eventId?: string;
   jobCategories: JobCategorie[];
 }
 
 function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
+  const isEditing = !email;
+
   const formMethods = useForm<RegisterInputs>({
     mode: 'onChange',
   });
@@ -183,20 +185,24 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
 
   return (
     <main className="flex min-h-screen w-full flex-col bg-white text-gray-B80">
-      <SignupHeader formValues={formValues} />
+      <SignupHeader formValues={formValues} isEditing={isEditing} />
       <form
         className="flex w-full flex-grow flex-col justify-between px-[1.625rem] pb-[3.125rem] pt-[1.875rem]"
         onSubmit={handleSubmit(onSubmit, onSubmitError)}
       >
         <div>
-          <h1 className="mb-1 text-xl font-bold text-blue-B50">
-            Welcome to Glimpse!
-          </h1>
-          <p className="text-xs font-light">
-            Complete your profile now,
-            <br />
-            enjoy hassle-free event registration later!
-          </p>
+          {!isEditing && (
+            <>
+              <h1 className="mb-1 text-xl font-bold text-blue-B50">
+                Welcome to Glimpse!
+              </h1>
+              <p className="text-xs font-light">
+                Complete your profile now,
+                <br />
+                enjoy hassle-free event registration later!
+              </p>
+            </>
+          )}
 
           <Controller
             name="image"

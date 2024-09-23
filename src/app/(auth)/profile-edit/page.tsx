@@ -8,14 +8,13 @@ const REDIRECT_URL = '/8d6fdb11-f7cf-4771-a172-71d6da10d72c/all'; // 추후 수�
 
 export default async function page() {
   const cookieStore = cookies();
-  const eventId = cookieStore.get('eventId')?.value;
   const accessToken = cookieStore.get('accessToken')?.value;
 
-  if (!eventId || !accessToken) {
+  if (!accessToken) {
     return redirect(REDIRECT_URL);
   }
 
   const jobCategories = await getJobCategories();
 
-  return <SignupClient jobCategories={jobCategories} eventId={eventId!} />;
+  return <SignupClient jobCategories={jobCategories} />;
 }
