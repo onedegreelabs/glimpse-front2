@@ -76,6 +76,9 @@ const config: Config = {
           '50%': { transform: 'translateY(-70%)' },
         },
       },
+      fontFamily: {
+        custom: ['CustomFont', 'sans-serif'],
+      },
     },
   },
   plugins: [

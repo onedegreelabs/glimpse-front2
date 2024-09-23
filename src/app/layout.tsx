@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       {/* <Notification accessToken={accessToken?.value} /> */}
-      <body className="relative mx-auto max-w-sm font-[CustomFont]">
+      <body className="relative mx-auto max-w-sm font-custom">
         <Gradient />
         <ReactQueryProviders>
           <div className="min-h-screen bg-background">
