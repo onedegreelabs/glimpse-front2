@@ -35,7 +35,6 @@ function EmailAccessForm({
   const { mutate: handleSendVerificationCode, isPending } = useMutation({
     mutationFn: (email: string) => sendVerificationCode(email),
     onSuccess: () => {
-      console.log('???');
       handleNextStep();
     },
     onError: (error) => {
