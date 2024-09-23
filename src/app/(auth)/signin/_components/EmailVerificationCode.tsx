@@ -174,7 +174,10 @@ function EmailVerificationCode({
 
   return (
     <>
-      <form className="flex flex-col items-center gap-5">
+      <form
+        className="flex flex-col items-center gap-5"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <h1 className="text-xl font-bold text-blue-B50">
           Enter confirmation code
         </h1>
