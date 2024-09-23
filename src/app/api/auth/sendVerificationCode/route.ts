@@ -26,7 +26,6 @@ export const POST = async (request: NextRequest) => {
 
   if (!response.ok) {
     const { message, errorCode } = await response.json();
-    console.log(message, errorCode);
     return NextResponse.json(
       {
         status: response.status,

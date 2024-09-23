@@ -1,4 +1,4 @@
-import URLMark from '@/app/(auth)/signup/_components/URLMark';
+import URLMark from '@/app/(auth)/_components/URLMark';
 import {
   FacebookSVG,
   GoogleSVG,

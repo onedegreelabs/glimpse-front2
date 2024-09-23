@@ -1,6 +1,6 @@
 import { RegisterInputs, SocialMediaType } from '@/types/types';
 import React from 'react';
-import { Control, Controller } from 'react-hook-form';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { GithubSVG, InstagramSVG, LinkedinSVG, WebSVG } from '@/icons/index';
 import { URL_REGEX } from '@/constant/constant';
 import Title from '@/components/Title';
@@ -10,11 +10,13 @@ import Hashtags from './Hashtags';
 interface AdditionalInformationProps {
   isOpenAdditionalInfo: boolean;
   control: Control<RegisterInputs, any>;
+  errors: FieldErrors<RegisterInputs>;
 }
 
 function AdditionalInformation({
   control,
   isOpenAdditionalInfo,
+  errors,
 }: AdditionalInformationProps) {
   const SOCIAL_LIST = [
     {
@@ -64,8 +66,10 @@ function AdditionalInformation({
         />
       </Title>
       <Title title="Socials/Links" required={false}>
-        <p className="-mt-1 text-sm font-light">Please add the desired link.</p>
-        <div className="flex flex-col gap-[0.625rem]">
+        <p className="-mt-1 mb-4 text-sm font-light">
+          Please add the desired link.
+        </p>
+        <div className="flex flex-col">
           {SOCIAL_LIST.map(({ svg, id, placeholder }) => (
             <Controller
               key={id}
@@ -87,18 +91,25 @@ function AdditionalInformation({
                 },
               }}
               render={({ field }) => (
-                <label
-                  htmlFor={id}
-                  className="flex w-full min-w-fit items-center gap-[0.875rem] overflow-auto"
-                >
-                  {svg}
-                  <input
-                    {...field}
-                    id={id}
-                    className="h-[3.375rem] w-full flex-grow rounded-2xl border border-solid border-gray-B40 px-4 text-sm font-semibold text-black placeholder:font-medium"
-                    placeholder={placeholder}
-                  />
-                </label>
+                <>
+                  <label
+                    htmlFor={id}
+                    className="flex w-full min-w-fit items-center gap-[0.875rem] overflow-auto"
+                  >
+                    {svg}
+                    <input
+                      {...field}
+                      id={id}
+                      className={`${errors[id as SocialMediaType] ? 'border-red-B30' : 'mb-[0.625rem] border-gray-B40'} h-[3.375rem] w-full flex-grow rounded-2xl border border-solid px-4 text-sm font-semibold text-black placeholder:font-medium`}
+                      placeholder={placeholder}
+                    />
+                  </label>
+                  {errors[id as SocialMediaType]?.message && (
+                    <p className="mb-[0.625rem] mt-2 text-xs text-red-B30">
+                      {errors[id as SocialMediaType]!.message}
+                    </p>
+                  )}
+                </>
               )}
             />
           ))}

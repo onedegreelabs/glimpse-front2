@@ -6,6 +6,7 @@ import {
   DEFAULT_RESEND_TIME,
   DEFAULT_VERIFICATION_CODE_TIME,
 } from '@/constant/constant';
+import { toast } from 'react-toastify';
 
 interface EmailVerificationButtonProps {
   isResendButtonDisabled: boolean;
@@ -49,6 +50,14 @@ function EmailVerificationButton({
   }, [verificationCodeTimer, resendTimer]);
 
   useEffect(() => {
+    if (verificationCodeTimer === 0) {
+      toast.error(
+        'Input time has expired. Please resend the verification code.',
+      );
+    }
+  }, [verificationCodeTimer]);
+
+  useEffect(() => {
     if (isSendVerificationSuccess) {
       setVerificationCodeTimer(DEFAULT_VERIFICATION_CODE_TIME);
       setResendTimer(DEFAULT_RESEND_TIME);
@@ -77,12 +86,9 @@ function EmailVerificationButton({
         disabled={isVerificationButtonDisabled || verificationCodeTimer === 0}
         isPending={isVerifyingCode}
       >
-        {verificationCodeTimer > 0 ? formatTime(verificationCodeTimer) : 'Next'}
-        {verificationCodeTimer === 0 && (
-          <div className="absolute bottom-12 left-1/2 w-11/12 max-w-sm -translate-x-1/2 transform rounded-md bg-red-B10 px-[0.625rem] py-3 text-xs text-white">
-            Input time has expired. Please resend the verification code.
-          </div>
-        )}
+        {verificationCodeTimer >= 0
+          ? formatTime(verificationCodeTimer)
+          : 'Next'}
       </Button>
     </div>
   );

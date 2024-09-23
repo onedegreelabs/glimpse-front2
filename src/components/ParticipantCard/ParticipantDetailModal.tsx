@@ -43,6 +43,7 @@ function ParticipantDetailModal({
               alt={`${name} profile`}
               fill
               sizes="48px"
+              className="rounded-full object-cover object-center"
             />
           ) : (
             <DefaultProfileSVG className="size-24" />
@@ -52,13 +53,13 @@ function ParticipantDetailModal({
           )}
         </div>
         {participantRole === 'HOST' && (
-          <span className="absolute left-1/2 top-[2.5rme] -translate-x-1/2 transform rounded-3xl bg-yellow-primary px-[0.625rem] py-0.5 text-sm font-bold text-blue-B50">
+          <span className="absolute left-1/2 top-[2.5rem] -translate-x-1/2 transform rounded-3xl bg-yellow-primary px-[0.625rem] py-0.5 text-sm font-bold text-blue-B50">
             HOST
           </span>
         )}
-        <dl className="flex flex-col items-center gap-1">
-          <dt className="text-lg font-bold">{name}</dt>
-          <dd className="mb-1.5 flex flex-wrap gap-1 text-xs text-black/60">
+        <dl className="flex flex-col items-center gap-1 px-6">
+          <dt className="break-all text-lg font-bold">{name}</dt>
+          <dd className="mb-1.5 flex flex-wrap justify-center gap-1 text-xs text-black/60">
             <span>{jobTitle}</span> <span>@ {belong}</span>
           </dd>
           <dd className="mb-3 rounded-3xl border border-solid border-gray-B50 px-3 py-[0.625rem] text-xs text-black">

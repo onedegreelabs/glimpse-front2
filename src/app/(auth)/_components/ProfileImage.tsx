@@ -23,6 +23,9 @@ function ProfileImage({
       };
       reader.readAsDataURL(file);
     }
+
+    const inputElement = event.target as HTMLInputElement;
+    inputElement.value = '';
   };
 
   const deleteImageHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -60,7 +63,7 @@ function ProfileImage({
               alt="profile"
               fill
               sizes="80px"
-              className="rounded-full"
+              className="rounded-full object-cover object-center"
             />
           </>
         ) : (

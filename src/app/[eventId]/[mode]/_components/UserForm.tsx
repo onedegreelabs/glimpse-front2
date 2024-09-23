@@ -13,15 +13,9 @@ interface RegisterProps {
   accessToken: string;
   eventId: string;
   isRegister: boolean;
-  userId: number;
 }
 
-async function UserForm({
-  accessToken,
-  eventId,
-  isRegister,
-  userId,
-}: RegisterProps) {
+async function UserForm({ accessToken, eventId, isRegister }: RegisterProps) {
   let userInfo: UserInfo | EventParticipantProfileCardDto;
 
   if (isRegister) {
@@ -48,6 +42,7 @@ async function UserForm({
               alt={`${name} profile`}
               fill
               sizes="100px"
+              className="rounded-full object-cover object-center"
             />
           ) : (
             <PersonSVG className="h-12 w-[2.894rem]" />
@@ -80,7 +75,6 @@ async function UserForm({
         intro={intro ?? ''}
         tags={tags ?? []}
         eventId={eventId}
-        userId={userId}
       />
     </section>
   );

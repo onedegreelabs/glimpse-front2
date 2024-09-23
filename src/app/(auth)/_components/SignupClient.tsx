@@ -19,13 +19,13 @@ import { useMutation } from '@tanstack/react-query';
 import { register } from '@/lib/apis/authApi';
 import { useRouter } from 'next/navigation';
 import { SOCIAL_MEDIA_KEYS } from '@/constant/constant';
-import Message from '@/components/Message';
 import { useEffect, useState } from 'react';
 import Button from '@/components/Button';
 import socialFormatUrl from '@/utils/socialFormatUrl';
 import { captureException } from '@sentry/nextjs';
 import Cookies from 'js-cookie';
 import { BadgeSVG, InboxSVG } from '@/icons/index';
+import { toast } from 'react-toastify';
 import SignupHeader from './SignupHeader';
 import BasicInformation from './BasicInformation';
 import ProfileImage from './ProfileImage';
@@ -33,17 +33,18 @@ import AccordionButton from './AccordionButton';
 import AdditionalInformation from './AdditionalInformation';
 
 interface SignupClientProps {
-  email: string;
+  email?: string;
   eventId: string;
   jobCategories: JobCategorie[];
 }
 
 function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
-  const formMethods = useForm<RegisterInputs>();
+  const formMethods = useForm<RegisterInputs>({
+    mode: 'onChange',
+  });
   const {
     handleSubmit,
     control,
-    clearErrors,
     formState: { errors },
     watch,
     setError,
@@ -115,16 +116,10 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
       const fetchError = error as FetchError;
 
       if (fetchError && fetchError.errorCode === 'G01002') {
-        setError('jobCategoryId', {
-          type: 'manual',
-          message: 'This user already exists.',
-        });
+        toast.error('This user already exists.');
       }
 
-      setError('jobCategoryId', {
-        type: 'manual',
-        message: 'An unknown error occurred. Please contact support.',
-      });
+      toast.error('An unknown error occurred. Please contact support.');
       captureException(error);
     },
   });
@@ -221,6 +216,7 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
             control={control}
             jobCategories={jobCategories}
             setError={setError}
+            errors={errors}
           />
 
           <AccordionButton
@@ -233,6 +229,7 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
           <AdditionalInformation
             control={control}
             isOpenAdditionalInfo={isOpenAdditionalInfo}
+            errors={errors}
           />
         </div>
 
@@ -244,11 +241,6 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
           Start Networking
         </Button>
       </form>
-      {Object.values(errors).length > 0 && (
-        <div className="fixed bottom-14 left-1/2 -translate-x-1/2 transform">
-          <Message errors={errors} onClose={() => clearErrors()} isErrors />
-        </div>
-      )}
     </main>
   );
 }

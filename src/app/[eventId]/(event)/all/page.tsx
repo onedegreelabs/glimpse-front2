@@ -3,7 +3,7 @@ import { getParticipantsInfo } from '@/lib/apis/server/eventsApi';
 import { PARTICIPANTS_TAKE } from '@/constant/constant';
 import { SadFaceSVG } from '@/icons/index';
 import ParticipantCard from '@/components/ParticipantCard/ParticipantCard';
-import getTokenInfo from '@/utils/auth/getTokenInfo';
+import { cookies } from 'next/headers';
 import SearchParticipants from './_components/SearchParticipants';
 import Participants from '../_components/participants/Participants';
 import EmailAccessForm from '../_components/RegistrationBlurOverlay';
@@ -16,10 +16,11 @@ export default async function page({
   params: { eventId: string };
   searchParams: { search?: string };
 }) {
-  const userInfo = await getTokenInfo();
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
   let participantsInfo: ParticipantsResponseDto | null = null;
 
-  if (userInfo) {
+  if (accessToken) {
     participantsInfo = await getParticipantsInfo({
       eventId,
       take: PARTICIPANTS_TAKE,
@@ -30,8 +31,8 @@ export default async function page({
 
   return (
     <>
-      {(!userInfo || !participantsInfo) && (
-        <EmailAccessForm eventId={eventId} isLogin={!!userInfo} />
+      {(!accessToken || !participantsInfo) && (
+        <EmailAccessForm eventId={eventId} isLogin={!!accessToken} />
       )}
       <div className="px-6">
         <SearchParticipants
@@ -49,18 +50,13 @@ export default async function page({
             </div>
           )}
 
-        {participantsInfo && userInfo ? (
+        {participantsInfo && accessToken ? (
           <ul className="flex flex-col gap-3">
             {!searchParams.search && (
-              <MyParticipants
-                accessToken={userInfo.accessToken}
-                eventId={eventId}
-                userId={userInfo.userId}
-              />
+              <MyParticipants accessToken={accessToken} eventId={eventId} />
             )}
 
             <Participants
-              userId={Number(userInfo.userId)}
               initialParticipants={participantsInfo.participants}
               totalItemCount={participantsInfo.totalItemCount}
               eventId={eventId}
