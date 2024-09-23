@@ -17,7 +17,7 @@ import {
   useForm,
 } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { register } from '@/lib/apis/authApi';
+import { register, userEdit } from '@/lib/apis/authApi';
 import { useRouter } from 'next/navigation';
 import { SOCIAL_MEDIA_KEYS } from '@/constant/constant';
 import { useEffect, useState } from 'react';
@@ -34,9 +34,9 @@ import AccordionButton from './AccordionButton';
 import AdditionalInformation from './AdditionalInformation';
 
 interface SignupClientProps {
-  email?: string;
-  eventId?: string;
+  eventId: string;
   jobCategories: JobCategorie[];
+  email?: string;
   initalUserInfo?: InitalUserInfo;
 }
 
@@ -51,7 +51,7 @@ function SignupClient({
   const formMethods = useForm<RegisterInputs>({
     mode: 'onChange',
     defaultValues: {
-      image: initalUserInfo?.initalImageFile,
+      image: null,
       name: initalUserInfo?.name ?? '',
       intro: initalUserInfo?.intro ?? '',
       jobCategoryId: initalUserInfo?.jobCategory.id,
@@ -147,6 +147,19 @@ function SignupClient({
     },
   });
 
+  const { mutate: handleUserEdit, isPending: userEditPending } = useMutation({
+    mutationFn: (data: FormData) => userEdit(data),
+    onSuccess: () => {
+      Cookies.remove('eventId');
+      router.push(`/${eventId}/edit`);
+      router.refresh();
+    },
+    onError: (error) => {
+      toast.error('An unknown error occurred. Please contact support.');
+      captureException(error);
+    },
+  });
+
   const processSocialMedia = (data: RegisterInputs) =>
     Object.entries(data)
       .filter(
@@ -178,18 +191,31 @@ function SignupClient({
           ),
       ),
     );
-    const reqData = {
-      ...filteredData,
-      email,
-      tagIds: data.tagIds.map(({ id }) => id),
-      socialMedia,
-      method: 'EMAIL',
-      terms: [{ termId: 2, agreed: true }],
-    };
 
-    formData.append('data', JSON.stringify(reqData));
+    if (initalUserInfo) {
+      const reqData = {
+        ...filteredData,
+        tagIds: data.tagIds.map(({ id }) => id),
+        socialMedia,
+      };
 
-    handleSignup(formData);
+      formData.append('data', JSON.stringify(reqData));
+
+      handleUserEdit(formData);
+    } else {
+      const reqData = {
+        ...filteredData,
+        email,
+        tagIds: data.tagIds.map(({ id }) => id),
+        socialMedia,
+        method: 'EMAIL',
+        terms: [{ termId: 2, agreed: true }],
+      };
+
+      formData.append('data', JSON.stringify(reqData));
+
+      handleSignup(formData);
+    }
   };
 
   const onSubmitError: SubmitErrorHandler<SigninFormInputs> = (error) => {
@@ -268,8 +294,8 @@ function SignupClient({
 
         <Button
           type="submit"
-          disabled={!isRequiredFieldsValid || signupPending}
-          isPending={signupPending}
+          disabled={!isRequiredFieldsValid || signupPending || userEditPending}
+          isPending={signupPending || userEditPending}
         >
           Start Networking
         </Button>

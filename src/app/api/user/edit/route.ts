@@ -10,17 +10,15 @@ export const PATCH = async (request: NextRequest) => {
     });
   }
 
-  const eventId = request.nextUrl.searchParams.get('eventId');
   const accessToken = request.cookies.get('accessToken')?.value;
-  const { intro, tagIds } = await request.json();
+  const formData = await request.formData();
 
-  const response = await fetch(`${END_POINT}/events/${eventId}/participants`, {
+  const response = await fetch(`${END_POINT}/users`, {
     method: 'PATCH',
     headers: {
-      'Content-Type': 'application/json',
       Cookie: `accessToken=${accessToken}`,
     },
-    body: JSON.stringify({ intro, tagIds }),
+    body: formData,
   });
 
   if (!response.ok) {
