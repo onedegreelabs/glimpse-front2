@@ -19,6 +19,7 @@ const config: Config = {
         red: {
           B10: '#E7001B',
           B20: '#FF1A1A',
+          B30: '#FF1B36',
         },
         blue: {
           secondary: '#002387',

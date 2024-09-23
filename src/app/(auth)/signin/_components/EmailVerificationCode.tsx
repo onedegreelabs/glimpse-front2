@@ -17,23 +17,14 @@ import { captureException } from '@sentry/nextjs';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 import EmailVerificationCodeButton from './EmailVerificationCodeButton';
 
 interface EmailVerificationCodeProps {
   eventId: string;
-  handleMessage: ({
-    message,
-    isErrors,
-  }: {
-    message: string;
-    isErrors?: boolean;
-  }) => void;
 }
 
-function EmailVerificationCode({
-  handleMessage,
-  eventId,
-}: EmailVerificationCodeProps) {
+function EmailVerificationCode({ eventId }: EmailVerificationCodeProps) {
   const router = useRouter();
 
   const { getValues } = useFormContext<SigninFormInputs>();
@@ -53,11 +44,9 @@ function EmailVerificationCode({
     onSuccess: () => {
       reset();
       setIsInvalidCode(false);
-      handleMessage({
-        message:
-          'A new verification code has been sent. Please check your inbox.',
-        isErrors: false,
-      });
+      toast.info(
+        'A new verification code has been sent. Please check your inbox.',
+      );
     },
     onError: (error) => {
       const fetchError = error as FetchError;
@@ -66,13 +55,11 @@ function EmailVerificationCode({
         fetchError.errorCode === 'G01017' ||
         fetchError.errorCode === 'G01018'
       ) {
-        handleMessage({
-          message: `You've reached the resend limit. Please try again an hour later.`,
-        });
+        toast.error(
+          `You've reached the resend limit. Please try again an hour later.`,
+        );
       } else {
-        handleMessage({
-          message: 'An unknown error occurred. Please contact support.',
-        });
+        toast.error('An unknown error occurred. Please contact support.');
         captureException(error);
       }
     },
@@ -98,14 +85,12 @@ function EmailVerificationCode({
           break;
         case 'G01015':
         case 'G01016':
-          handleMessage({
-            message: `You've reached the resend limit for email verification requests. Please try again an hour later.`,
-          });
+          toast.error(
+            `You've reached the resend limit for email verification requests. Please try again an hour later.`,
+          );
           break;
         default:
-          handleMessage({
-            message: 'An unknown error occurred. Please contact support.',
-          });
+          toast.error('An unknown error occurred. Please contact support.');
           captureException(error);
       }
     },
@@ -166,10 +151,7 @@ function EmailVerificationCode({
   };
 
   const displayResendLimitMessage = () => {
-    handleMessage({
-      message: 'You can resend the code only once per minute.',
-      isErrors: false,
-    });
+    toast.info('You can resend the code only once per minute.');
   };
 
   return (

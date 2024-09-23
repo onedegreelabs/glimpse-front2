@@ -1,5 +1,10 @@
 import { JobCategorie, RegisterInputs } from '@/types/types';
-import { Control, Controller, UseFormSetError } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  UseFormSetError,
+} from 'react-hook-form';
 import Title from '@/components/Title';
 import JobCategory from './JobCategory';
 
@@ -8,6 +13,7 @@ interface BasicInformationProps {
   control: Control<RegisterInputs, any>;
   jobCategories: JobCategorie[];
   setError: UseFormSetError<RegisterInputs>;
+  errors: FieldErrors<RegisterInputs>;
 }
 
 function BasicInformation({
@@ -15,6 +21,7 @@ function BasicInformation({
   control,
   jobCategories,
   setError,
+  errors,
 }: BasicInformationProps) {
   return (
     <ul className={`flex flex-col gap-6 ${isOpenBasicInfo ? '' : 'hidden'}`}>
@@ -46,13 +53,21 @@ function BasicInformation({
               onChange={(e) => {
                 if (e.target.value.length <= 70) {
                   field.onChange(e);
+                } else {
+                  setError('name', {
+                    type: 'maxLength',
+                    message:
+                      'Please enter your name between 1 and 70 characters.',
+                  });
                 }
               }}
-              maxLength={70}
-              className="h-[3.375rem] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[1.375rem] text-sm font-semibold text-black placeholder:font-medium"
+              className={`${errors.name ? 'border-red-B30' : 'border-gray-B40'} h-[3.375rem] w-full rounded-2xl border border-solid px-4 py-[1.375rem] text-sm font-semibold text-black placeholder:font-medium`}
             />
           )}
         />
+        {errors.name && (
+          <p className="mt-2 text-xs text-red-B30">{errors.name.message}</p>
+        )}
       </Title>
 
       <Title name="intro" title="About" required={false}>
@@ -67,7 +82,9 @@ function BasicInformation({
             },
           }}
           render={({ field }) => (
-            <div className="relative h-64 w-full rounded-2xl border border-solid border-gray-B40 pb-8 pt-4 has-[:focus]:border-2 has-[:focus]:border-black">
+            <div
+              className={`${errors.intro ? 'border-red-B30' : 'border-gray-B40'} relative h-64 w-full rounded-2xl border border-solid pb-8 pt-4 has-[:focus]:border-2 has-[:focus]:border-black`}
+            >
               <textarea
                 {...field}
                 id="intro"
@@ -76,6 +93,11 @@ function BasicInformation({
                 onChange={(e) => {
                   if (e.target.value.length <= 500) {
                     field.onChange(e);
+                  } else {
+                    setError('intro', {
+                      type: 'maxLength',
+                      message: 'Please enter your bio up to 500 characters.',
+                    });
                   }
                 }}
                 className="size-full resize-none px-4 text-sm font-semibold outline-none placeholder:font-medium"
@@ -86,6 +108,9 @@ function BasicInformation({
             </div>
           )}
         />
+        {errors.intro && (
+          <p className="mt-2 text-xs text-red-B30">{errors.intro.message}</p>
+        )}
       </Title>
 
       <Title title="Job category" required>
@@ -101,6 +126,11 @@ function BasicInformation({
             />
           )}
         />
+        {errors.jobCategoryId && (
+          <p className="mt-2 text-xs text-red-B30">
+            {errors.jobCategoryId.message}
+          </p>
+        )}
       </Title>
 
       <Title name="jobTitle" title="Job title" required>
@@ -127,16 +157,19 @@ function BasicInformation({
                   field.onChange(e);
                 } else {
                   setError('jobTitle', {
-                    type: 'manual',
+                    type: 'maxLength',
                     message:
                       'Please enter your job title between 1 and 30 characters.',
                   });
                 }
               }}
-              className="h-[3.375rem] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[1.375rem] text-sm font-semibold text-black placeholder:font-medium"
+              className={`${errors.jobTitle ? 'border-red-B30' : 'border-gray-B40'} h-[3.375rem] w-full rounded-2xl border border-solid px-4 py-[1.375rem] text-sm font-semibold text-black placeholder:font-medium`}
             />
           )}
         />
+        {errors.jobTitle && (
+          <p className="mt-2 text-xs text-red-B30">{errors.jobTitle.message}</p>
+        )}
       </Title>
 
       <Title name="belong" title="Company/Organization" required={false}>
@@ -159,13 +192,23 @@ function BasicInformation({
               onChange={(e) => {
                 if (e.target.value.length <= 30) {
                   field.onChange(e);
+                } else {
+                  setError('belong', {
+                    type: 'maxLength',
+                    message:
+                      'Please enter your company/organization up to 30 characters.',
+                  });
                 }
               }}
-              className="mb-[1.875rem] h-[3.375rem] w-full rounded-2xl border border-solid border-gray-B40 px-4 py-[1.375rem] text-sm font-semibold text-black placeholder:font-medium"
+              className={`${errors.belong ? 'border-red-B30' : 'border-gray-B40'} h-[3.375rem] w-full rounded-2xl border border-solid px-4 py-[1.375rem] text-sm font-semibold text-black placeholder:font-medium`}
               placeholder="e.g.) Glimpse"
             />
           )}
         />
+        {errors.belong && (
+          <p className="mt-2 text-xs text-red-B30">{errors.belong.message}</p>
+        )}
+        <div className="mb-[1.875rem]" />
       </Title>
     </ul>
   );

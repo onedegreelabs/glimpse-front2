@@ -9,22 +9,13 @@ import {
   SubmitHandler,
   useFormContext,
 } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 interface EmailAccessFormProps {
   handleNextStep: () => void;
-  handleMessage: ({
-    message,
-    isErrors,
-  }: {
-    message: string;
-    isErrors?: boolean;
-  }) => void;
 }
 
-function EmailAccessForm({
-  handleNextStep,
-  handleMessage,
-}: EmailAccessFormProps) {
+function EmailAccessForm({ handleNextStep }: EmailAccessFormProps) {
   const {
     control,
     watch,
@@ -44,13 +35,11 @@ function EmailAccessForm({
         fetchError.errorCode === 'G01017' ||
         fetchError.errorCode === 'G01018'
       ) {
-        handleMessage({
-          message: `You've reached the resend limit. Please try again an hour later.`,
-        });
+        toast.error(
+          "You've reached the resend limit. Please try again an hour later.",
+        );
       } else {
-        handleMessage({
-          message: 'An unknown error occurred. Please contact support.',
-        });
+        toast.error('An unknown error occurred. Please contact support.');
         captureException(error);
       }
     },
@@ -62,7 +51,7 @@ function EmailAccessForm({
 
   const onSubmitError: SubmitErrorHandler<SigninFormInputs> = () => {
     if (errors.email) {
-      handleMessage({ message: errors.email.message ?? '' });
+      toast.error(errors.email.message ?? '');
     }
   };
 

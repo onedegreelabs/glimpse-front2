@@ -7,10 +7,10 @@ interface LabelProps {
 
 function Title({ name, title, required, children }: LabelProps) {
   return (
-    <ul className="flex flex-col gap-4">
+    <li className="flex flex-col">
       <label
         htmlFor={name}
-        className="inline-block text-base font-bold text-blue-B50"
+        className="mb-4 inline-block text-base font-bold text-blue-B50"
       >
         <span
           className={
@@ -23,7 +23,7 @@ function Title({ name, title, required, children }: LabelProps) {
         </span>
       </label>
       {children}
-    </ul>
+    </li>
   );
 }
 

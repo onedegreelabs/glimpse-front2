@@ -2,7 +2,6 @@
 
 import Hashtags from '@/app/(auth)/signup/_components/Hashtags';
 import Button from '@/components/Button';
-import Message from '@/components/Message';
 import Title from '@/components/Title';
 import { eventEdit, eventRegister } from '@/lib/apis/eventsApi';
 import {
@@ -14,8 +13,8 @@ import {
 import { captureException } from '@sentry/nextjs';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 interface UserFormClientProps {
   intro: string;
@@ -31,8 +30,12 @@ function UserFormClient({
   isRegister,
 }: UserFormClientProps) {
   const router = useRouter();
-  const { handleSubmit, control } = useForm<EventRegisterInputs>();
-  const [severError, setSeverError] = useState<string>('');
+  const {
+    handleSubmit,
+    control,
+    setError,
+    formState: { errors },
+  } = useForm<EventRegisterInputs>();
 
   const userFormHandler = async (data: EventRegisterDto) => {
     if (isRegister) {
@@ -52,15 +55,11 @@ function UserFormClient({
       const fetchError = error as FetchError;
 
       if (fetchError.status !== 401) {
-        setSeverError('An unknown error occurred. Please contact support.');
+        toast.error('An unknown error occurred. Please contact support.');
         captureException(error);
       }
     },
   });
-
-  const clearErrors = () => {
-    setSeverError('');
-  };
 
   const onSubmit: SubmitHandler<EventRegisterInputs> = async (data) => {
     const reqData = {
@@ -86,7 +85,9 @@ function UserFormClient({
             },
           }}
           render={({ field }) => (
-            <div className="relative h-64 w-full rounded-2xl border border-solid border-gray-B40 pb-8 pt-4 has-[:focus]:border-2 has-[:focus]:border-black">
+            <div
+              className={`${errors.intro ? 'border-red-B30' : 'border-gray-B40'} relative h-64 w-full rounded-2xl border border-solid pb-8 pt-4 has-[:focus]:border-2 has-[:focus]:border-black`}
+            >
               <textarea
                 {...field}
                 id="intro"
@@ -95,6 +96,11 @@ function UserFormClient({
                 onChange={(e) => {
                   if (e.target.value.length <= 500) {
                     field.onChange(e);
+                  } else {
+                    setError('intro', {
+                      type: 'maxLength',
+                      message: 'Please enter your bio up to 500 characters.',
+                    });
                   }
                 }}
                 className="size-full resize-none px-4 text-sm font-semibold outline-none placeholder:font-medium"
@@ -105,7 +111,11 @@ function UserFormClient({
             </div>
           )}
         />
+        {errors.intro && (
+          <p className="mt-2 text-xs text-red-B30">{errors.intro.message}</p>
+        )}
       </Title>
+
       <Title title="Tags" required={false}>
         <Controller
           name="tagIds"
@@ -127,9 +137,6 @@ function UserFormClient({
       <Button type="submit" disabled={isPending} isPending={isPending}>
         {isRegister ? 'Register' : 'Save'}
       </Button>
-      <div className="fixed bottom-14 left-1/2 -translate-x-1/2 transform">
-        <Message message={severError} onClose={() => clearErrors()} isErrors />
-      </div>
     </form>
   );
 }

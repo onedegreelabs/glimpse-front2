@@ -42,7 +42,7 @@ export default function RootLayout({
               theme="colored"
               closeButton={false}
               hideProgressBar
-              limit={3}
+              limit={1}
             />
           </div>
         </ReactQueryProviders>
