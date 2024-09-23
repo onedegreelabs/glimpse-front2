@@ -78,6 +78,7 @@ function ParticipantCard({
                     alt={`${name} profile`}
                     fill
                     sizes="48px"
+                    className="rounded-full object-cover object-center"
                   />
                 </Link>
               ) : (

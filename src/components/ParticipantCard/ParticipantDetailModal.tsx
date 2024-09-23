@@ -43,6 +43,7 @@ function ParticipantDetailModal({
               alt={`${name} profile`}
               fill
               sizes="48px"
+              className="rounded-full object-cover object-center"
             />
           ) : (
             <DefaultProfileSVG className="size-24" />

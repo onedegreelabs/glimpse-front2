@@ -60,7 +60,7 @@ function ProfileImage({
               alt="profile"
               fill
               sizes="80px"
-              className="rounded-full"
+              className="rounded-full object-cover object-center"
             />
           </>
         ) : (

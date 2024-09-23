@@ -42,6 +42,7 @@ async function UserForm({ accessToken, eventId, isRegister }: RegisterProps) {
               alt={`${name} profile`}
               fill
               sizes="100px"
+              className="rounded-full object-cover object-center"
             />
           ) : (
             <PersonSVG className="h-12 w-[2.894rem]" />

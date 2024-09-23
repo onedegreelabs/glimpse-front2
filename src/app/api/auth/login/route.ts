@@ -43,7 +43,7 @@ export const GET = async (request: NextRequest) => {
         const token = await new SignJWT({ email })
           .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
           .setIssuedAt()
-          .setExpirationTime('6h')
+          .setExpirationTime('1h')
           .sign(secret);
 
         const nextResponse = NextResponse.json(
@@ -58,7 +58,7 @@ export const GET = async (request: NextRequest) => {
         nextResponse.cookies.set('auth_token', token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
-          maxAge: 60 * 60 * 6,
+          maxAge: 60 * 60,
           path: '/',
         });
 
