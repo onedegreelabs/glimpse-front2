@@ -191,3 +191,8 @@ export interface EventRegisterDto {
   intro: string;
   tagIds: number[];
 }
+
+export interface InitalUserInfo extends UserInfo {
+  initalImageFile?: File;
+  socialMediaObject: Record<SocialMediaType, string>;
+}

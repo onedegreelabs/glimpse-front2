@@ -4,6 +4,7 @@ import {
   AdditionalInfoList,
   BasicInfoList,
   FetchError,
+  InitalUserInfo,
   JobCategorie,
   RegisterInputs,
   SigninFormInputs,
@@ -36,13 +37,33 @@ interface SignupClientProps {
   email?: string;
   eventId?: string;
   jobCategories: JobCategorie[];
+  initalUserInfo?: InitalUserInfo;
 }
 
-function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
+function SignupClient({
+  email,
+  jobCategories,
+  eventId,
+  initalUserInfo,
+}: SignupClientProps) {
   const isEditing = !email;
 
   const formMethods = useForm<RegisterInputs>({
     mode: 'onChange',
+    defaultValues: {
+      image: initalUserInfo?.initalImageFile,
+      name: initalUserInfo?.name ?? '',
+      intro: initalUserInfo?.intro ?? '',
+      jobCategoryId: initalUserInfo?.jobCategory.id,
+      jobTitle: initalUserInfo?.jobTitle ?? '',
+      belong: initalUserInfo?.belong ?? '',
+      tagIds: initalUserInfo?.tags ?? [],
+      INSTAGRAM: initalUserInfo?.socialMediaObject.INSTAGRAM ?? '',
+      WEBSITE: initalUserInfo?.socialMediaObject.WEBSITE ?? '',
+      LINKEDIN: initalUserInfo?.socialMediaObject.LINKEDIN ?? '',
+      GITHUB: initalUserInfo?.socialMediaObject.GITHUB ?? '',
+      OTHERS: initalUserInfo?.socialMediaObject.OTHERS ?? '',
+    },
   });
   const {
     handleSubmit,
@@ -207,7 +228,12 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
           <Controller
             name="image"
             control={control}
-            render={({ field }) => <ProfileImage onChange={field.onChange} />}
+            render={({ field }) => (
+              <ProfileImage
+                initalImage={initalUserInfo?.profileImageUrl ?? ''}
+                onChange={field.onChange}
+              />
+            )}
           />
 
           <AccordionButton
@@ -218,6 +244,7 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
             toggleHandler={toggleBasicInfo}
           />
           <BasicInformation
+            initalUserInfo={initalUserInfo}
             isOpenBasicInfo={isOpenBasicInfo}
             control={control}
             jobCategories={jobCategories}

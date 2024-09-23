@@ -59,7 +59,6 @@ function AdditionalInformation({
         <Controller
           name="tagIds"
           control={control}
-          defaultValue={[]}
           render={({ field }) => (
             <Hashtags tagList={field.value} updateTagList={field.onChange} />
           )}
@@ -75,7 +74,6 @@ function AdditionalInformation({
               key={id}
               name={id as SocialMediaType}
               control={control}
-              defaultValue=""
               rules={{
                 validate: (value) => {
                   if (
