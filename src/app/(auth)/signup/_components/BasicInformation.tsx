@@ -115,12 +115,6 @@ function BasicInformation({
               message:
                 'Please enter your job title between 1 and 30 characters.',
             },
-            validate: {
-              validCharacters: (value) => {
-                const isValid = /^[a-zA-Z가-힣\s]*$/.test(value);
-                return isValid || 'Special characters are not supported.';
-              },
-            },
           }}
           render={({ field }) => (
             <input
