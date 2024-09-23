@@ -33,7 +33,7 @@ import AccordionButton from './AccordionButton';
 import AdditionalInformation from './AdditionalInformation';
 
 interface SignupClientProps {
-  email: string;
+  email?: string;
   eventId: string;
   jobCategories: JobCategorie[];
 }

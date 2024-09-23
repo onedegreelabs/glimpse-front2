@@ -1,6 +1,6 @@
 'use client';
 
-import Hashtags from '@/app/(auth)/signup/_components/Hashtags';
+import Hashtags from '@/app/(auth)/_components/Hashtags';
 import Button from '@/components/Button';
 import Title from '@/components/Title';
 import { eventEdit, eventRegister } from '@/lib/apis/eventsApi';
