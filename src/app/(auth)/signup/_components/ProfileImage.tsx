@@ -23,6 +23,9 @@ function ProfileImage({
       };
       reader.readAsDataURL(file);
     }
+
+    const inputElement = event.target as HTMLInputElement;
+    inputElement.value = '';
   };
 
   const deleteImageHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
