@@ -37,7 +37,7 @@ function ParticipantCard({
   } = info ?? {};
   const [isDetailView, setIsDetailView] = useState(false);
   const name = user?.name ?? 'Emma Stone';
-  const jobs = user?.jobCategory ?? { id: 1, engName: 'Designer' };
+  const jobs = user?.jobTitle ?? 'Designer';
   const belong = user?.belong ?? 'Glimpse';
 
   const isUserCard = user && userId === user.id;
@@ -96,7 +96,8 @@ function ParticipantCard({
                 {name}
               </dt>
               <dd className="flex flex-wrap text-xs text-white/60">
-                <span>{jobs.engName}</span> <span>@ {belong}</span>
+                <span>{jobs}&nbsp;</span>
+                <span>@ {belong}</span>
               </dd>
             </div>
           </dl>
