@@ -40,7 +40,7 @@ function BasicInformation({
             },
             validate: {
               validCharacters: (value) => {
-                const isValid = /^[a-zA-Z가-힣\s]*$/.test(value);
+                const isValid = /^[a-zA-Z가-힣0-9\s]*$/.test(value);
                 return isValid || 'Special characters are not supported.';
               },
             },
