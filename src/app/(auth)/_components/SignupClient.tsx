@@ -4,6 +4,7 @@ import {
   AdditionalInfoList,
   BasicInfoList,
   FetchError,
+  InitalUserInfo,
   JobCategorie,
   RegisterInputs,
   SigninFormInputs,
@@ -16,7 +17,7 @@ import {
   useForm,
 } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { register } from '@/lib/apis/authApi';
+import { register, userEdit } from '@/lib/apis/authApi';
 import { useRouter } from 'next/navigation';
 import { SOCIAL_MEDIA_KEYS } from '@/constant/constant';
 import { useEffect, useState } from 'react';
@@ -33,14 +34,36 @@ import AccordionButton from './AccordionButton';
 import AdditionalInformation from './AdditionalInformation';
 
 interface SignupClientProps {
-  email?: string;
   eventId: string;
   jobCategories: JobCategorie[];
+  email?: string;
+  initalUserInfo?: InitalUserInfo;
 }
 
-function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
+function SignupClient({
+  email,
+  jobCategories,
+  eventId,
+  initalUserInfo,
+}: SignupClientProps) {
+  const isEditing = !email;
+
   const formMethods = useForm<RegisterInputs>({
     mode: 'onChange',
+    defaultValues: {
+      image: null,
+      name: initalUserInfo?.name ?? '',
+      intro: initalUserInfo?.intro ?? '',
+      jobCategoryId: initalUserInfo?.jobCategory.id,
+      jobTitle: initalUserInfo?.jobTitle ?? '',
+      belong: initalUserInfo?.belong ?? '',
+      tagIds: initalUserInfo?.tags ?? [],
+      INSTAGRAM: initalUserInfo?.socialMediaObject.INSTAGRAM ?? '',
+      WEBSITE: initalUserInfo?.socialMediaObject.WEBSITE ?? '',
+      LINKEDIN: initalUserInfo?.socialMediaObject.LINKEDIN ?? '',
+      GITHUB: initalUserInfo?.socialMediaObject.GITHUB ?? '',
+      OTHERS: initalUserInfo?.socialMediaObject.OTHERS ?? '',
+    },
   });
   const {
     handleSubmit,
@@ -124,6 +147,19 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
     },
   });
 
+  const { mutate: handleUserEdit, isPending: userEditPending } = useMutation({
+    mutationFn: (data: FormData) => userEdit(data),
+    onSuccess: () => {
+      Cookies.remove('eventId');
+      router.push(`/${eventId}/edit`);
+      router.refresh();
+    },
+    onError: (error) => {
+      toast.error('An unknown error occurred. Please contact support.');
+      captureException(error);
+    },
+  });
+
   const processSocialMedia = (data: RegisterInputs) =>
     Object.entries(data)
       .filter(
@@ -155,18 +191,31 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
           ),
       ),
     );
-    const reqData = {
-      ...filteredData,
-      email,
-      tagIds: data.tagIds.map(({ id }) => id),
-      socialMedia,
-      method: 'EMAIL',
-      terms: [{ termId: 2, agreed: true }],
-    };
 
-    formData.append('data', JSON.stringify(reqData));
+    if (initalUserInfo) {
+      const reqData = {
+        ...filteredData,
+        tagIds: data.tagIds.map(({ id }) => id),
+        socialMedia,
+      };
 
-    handleSignup(formData);
+      formData.append('data', JSON.stringify(reqData));
+
+      handleUserEdit(formData);
+    } else {
+      const reqData = {
+        ...filteredData,
+        email,
+        tagIds: data.tagIds.map(({ id }) => id),
+        socialMedia,
+        method: 'EMAIL',
+        terms: [{ termId: 2, agreed: true }],
+      };
+
+      formData.append('data', JSON.stringify(reqData));
+
+      handleSignup(formData);
+    }
   };
 
   const onSubmitError: SubmitErrorHandler<SigninFormInputs> = (error) => {
@@ -183,25 +232,34 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
 
   return (
     <main className="flex min-h-screen w-full flex-col bg-white text-gray-B80">
-      <SignupHeader formValues={formValues} />
+      <SignupHeader formValues={formValues} isEditing={isEditing} />
       <form
         className="flex w-full flex-grow flex-col justify-between px-[1.625rem] pb-[3.125rem] pt-[1.875rem]"
         onSubmit={handleSubmit(onSubmit, onSubmitError)}
       >
         <div>
-          <h1 className="mb-1 text-xl font-bold text-blue-B50">
-            Welcome to Glimpse!
-          </h1>
-          <p className="text-xs font-light">
-            Complete your profile now,
-            <br />
-            enjoy hassle-free event registration later!
-          </p>
+          {!isEditing && (
+            <>
+              <h1 className="mb-1 text-xl font-bold text-blue-B50">
+                Welcome to Glimpse!
+              </h1>
+              <p className="text-xs font-light">
+                Complete your profile now,
+                <br />
+                enjoy hassle-free event registration later!
+              </p>
+            </>
+          )}
 
           <Controller
             name="image"
             control={control}
-            render={({ field }) => <ProfileImage onChange={field.onChange} />}
+            render={({ field }) => (
+              <ProfileImage
+                initalImage={initalUserInfo?.profileImageUrl ?? ''}
+                onChange={field.onChange}
+              />
+            )}
           />
 
           <AccordionButton
@@ -212,6 +270,7 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
             toggleHandler={toggleBasicInfo}
           />
           <BasicInformation
+            initalUserInfo={initalUserInfo}
             isOpenBasicInfo={isOpenBasicInfo}
             control={control}
             jobCategories={jobCategories}
@@ -235,8 +294,8 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
 
         <Button
           type="submit"
-          disabled={!isRequiredFieldsValid || signupPending}
-          isPending={signupPending}
+          disabled={!isRequiredFieldsValid || signupPending || userEditPending}
+          isPending={signupPending || userEditPending}
         >
           Start Networking
         </Button>

@@ -5,11 +5,13 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 function ProfileImage({
+  initalImage,
   onChange,
 }: {
+  initalImage: string;
   onChange: (image: File | null) => void;
 }) {
-  const [profileImage, setProfileImage] = useState('');
+  const [profileImage, setProfileImage] = useState(initalImage);
 
   const uploadImageHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

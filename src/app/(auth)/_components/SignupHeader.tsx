@@ -2,7 +2,12 @@ import { ArrowSVG2 } from '@/icons/index';
 import { RegisterInputs } from '@/types/types';
 import { useRouter } from 'next/navigation';
 
-function SignupHeader({ formValues }: { formValues: RegisterInputs }) {
+interface SignupHeaderProps {
+  formValues: RegisterInputs;
+  isEditing: boolean;
+}
+
+function SignupHeader({ formValues, isEditing }: SignupHeaderProps) {
   const router = useRouter();
 
   const socialMediaFields = [
@@ -40,14 +45,21 @@ function SignupHeader({ formValues }: { formValues: RegisterInputs }) {
 
   return (
     <header className="sticky top-0 z-header mt-[0.375rem] bg-white px-1 pt-[0.625rem]">
-      <button
-        onClick={() => router.back()}
-        type="button"
-        aria-label="back-router"
-        className="mb-4 px-1 py-1"
-      >
-        <ArrowSVG2 className="size-4 rotate-180 transform stroke-black stroke-2" />
-      </button>
+      <div className="flex">
+        <button
+          onClick={() => router.back()}
+          type="button"
+          aria-label="back-router"
+          className="mb-4 px-1 py-1"
+        >
+          <ArrowSVG2 className="size-4 rotate-180 transform stroke-black stroke-2" />
+        </button>
+        {isEditing && (
+          <h1 className="flex-grow pr-6 pt-1 text-center text-sm font-bold text-black">
+            Edit user profile
+          </h1>
+        )}
+      </div>
       <div className="relative h-1 w-full bg-gray-B25">
         <span
           className="absolute top-0 h-1 max-w-full bg-blue-B50"

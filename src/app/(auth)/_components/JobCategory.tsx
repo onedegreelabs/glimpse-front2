@@ -8,12 +8,18 @@ import { useState } from 'react';
 interface JobCategoryProps {
   jobCategories: JobCategorie[];
   onChange: (jobCategory: number) => void;
+  initalValue?: JobCategorie;
 }
 
-function JobCategory({ jobCategories, onChange }: JobCategoryProps) {
+function JobCategory({
+  jobCategories,
+  onChange,
+  initalValue,
+}: JobCategoryProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedJobCategory, setSelectedJobCategory] =
-    useState<JobCategorie | null>(null);
+  const [selectedJobCategory, setSelectedJobCategory] = useState<
+    JobCategorie | undefined
+  >(initalValue);
 
   const handleCloseModal = () => {
     setIsOpen(false);

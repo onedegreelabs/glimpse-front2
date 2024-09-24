@@ -1,4 +1,4 @@
-import { JobCategorie, RegisterInputs } from '@/types/types';
+import { InitalUserInfo, JobCategorie, RegisterInputs } from '@/types/types';
 import {
   Control,
   Controller,
@@ -6,9 +6,11 @@ import {
   UseFormSetError,
 } from 'react-hook-form';
 import Title from '@/components/Title';
+import Tooltip from '@/components/Tooltip';
 import JobCategory from './JobCategory';
 
 interface BasicInformationProps {
+  initalUserInfo?: InitalUserInfo;
   isOpenBasicInfo: boolean;
   control: Control<RegisterInputs, any>;
   jobCategories: JobCategorie[];
@@ -22,6 +24,7 @@ function BasicInformation({
   jobCategories,
   setError,
   errors,
+  initalUserInfo,
 }: BasicInformationProps) {
   return (
     <ul className={`flex flex-col gap-6 ${isOpenBasicInfo ? '' : 'hidden'}`}>
@@ -29,7 +32,6 @@ function BasicInformation({
         <Controller
           name="name"
           control={control}
-          defaultValue=""
           rules={{
             required: 'Please enter your name.',
             maxLength: {
@@ -70,11 +72,25 @@ function BasicInformation({
         )}
       </Title>
 
-      <Title name="intro" title="About" required={false}>
+      <Title
+        name="intro"
+        title="About"
+        required={false}
+        tooltip={
+          <Tooltip>
+            <div className="text-nowrap rounded-2xl bg-white px-[1.625rem] pb-[1.563rem] pt-7 text-sm font-medium drop-shadow-[0_4px_14px_rgba(0,0,0,0.25)]">
+              <p className="text-center">
+                Changes made here will NOT <br /> be reflected to participant
+                cards <br />
+                that are already existing.
+              </p>
+            </div>
+          </Tooltip>
+        }
+      >
         <Controller
           name="intro"
           control={control}
-          defaultValue=""
           rules={{
             maxLength: {
               value: 500,
@@ -117,12 +133,12 @@ function BasicInformation({
         <Controller
           name="jobCategoryId"
           control={control}
-          defaultValue={null}
           rules={{ required: 'Please select a job category.' }}
           render={({ field }) => (
             <JobCategory
               jobCategories={jobCategories}
               onChange={field.onChange}
+              initalValue={initalUserInfo?.jobCategory}
             />
           )}
         />
@@ -137,7 +153,6 @@ function BasicInformation({
         <Controller
           name="jobTitle"
           control={control}
-          defaultValue=""
           rules={{
             required: 'Please enter your job title.',
             maxLength: {
@@ -176,7 +191,6 @@ function BasicInformation({
         <Controller
           name="belong"
           control={control}
-          defaultValue=""
           rules={{
             maxLength: {
               value: 30,
