@@ -80,8 +80,8 @@ function UserFormClient({
           defaultValue={intro}
           rules={{
             maxLength: {
-              value: 500,
-              message: 'Please enter your bio up to 500 characters.',
+              value: 2000,
+              message: 'Please enter your bio up to 2000 characters.',
             },
           }}
           render={({ field }) => (
@@ -94,19 +94,19 @@ function UserFormClient({
                 placeholder="Brief intro"
                 value={field.value}
                 onChange={(e) => {
-                  if (e.target.value.length <= 500) {
+                  if (e.target.value.length <= 2000) {
                     field.onChange(e);
                   } else {
                     setError('intro', {
                       type: 'maxLength',
-                      message: 'Please enter your bio up to 500 characters.',
+                      message: 'Please enter your bio up to 2000 characters.',
                     });
                   }
                 }}
                 className="size-full resize-none px-4 text-sm font-semibold outline-none placeholder:font-medium"
               />
               <div className="px-4 text-right text-xs font-light text-gray-B45">
-                {field.value.length}/500
+                {field.value.length}/2000
               </div>
             </div>
           )}
