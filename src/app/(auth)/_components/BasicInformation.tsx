@@ -77,15 +77,17 @@ function BasicInformation({
         title="About"
         required={false}
         tooltip={
-          <Tooltip>
-            <div className="text-nowrap rounded-2xl bg-white px-[1.625rem] pb-[1.563rem] pt-7 text-sm font-medium drop-shadow-[0_4px_14px_rgba(0,0,0,0.25)]">
-              <p className="text-center">
-                Changes made here will NOT <br /> be reflected to participant
-                cards <br />
-                that are already existing.
-              </p>
-            </div>
-          </Tooltip>
+          initalUserInfo && (
+            <Tooltip>
+              <div className="text-nowrap rounded-2xl bg-white px-[1.625rem] pb-[1.563rem] pt-7 text-sm font-medium drop-shadow-[0_4px_14px_rgba(0,0,0,0.25)]">
+                <p className="text-center">
+                  Changes made here will NOT <br /> be reflected to participant
+                  cards <br />
+                  that are already existing.
+                </p>
+              </div>
+            </Tooltip>
+          )
         }
       >
         <Controller

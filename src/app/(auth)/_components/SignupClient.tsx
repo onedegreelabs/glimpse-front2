@@ -286,6 +286,7 @@ function SignupClient({
             toggleHandler={toggleAdditionalInfo}
           />
           <AdditionalInformation
+            initalUserInfo={initalUserInfo}
             control={control}
             isOpenAdditionalInfo={isOpenAdditionalInfo}
             errors={errors}
