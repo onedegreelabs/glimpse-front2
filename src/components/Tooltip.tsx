@@ -1,6 +1,6 @@
 'use client';
 
-import { QuestionSVG } from '@/icons/index';
+import { CrossSVG, QuestionSVG } from '@/icons/index';
 import { useClickAway } from '@uidotdev/usehooks';
 import { useState } from 'react';
 
@@ -36,7 +36,17 @@ function Tooltip({
         <QuestionSVG />
       </button>
       {isOpen && (
-        <div className={`absolute ${tooltipClassName}`}>{children}</div>
+        <div className={`absolute ${tooltipClassName}`}>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="absolute right-2 top-2 z-10"
+            type="button"
+            aria-label="close-tooltip"
+          >
+            <CrossSVG className="size-4 fill-black" />
+          </button>
+          {children}
+        </div>
       )}
     </div>
   );

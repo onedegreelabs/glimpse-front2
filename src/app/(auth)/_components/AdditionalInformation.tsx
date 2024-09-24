@@ -4,6 +4,7 @@ import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { GithubSVG, InstagramSVG, LinkedinSVG, WebSVG } from '@/icons/index';
 import { URL_REGEX } from '@/constant/constant';
 import Title from '@/components/Title';
+import Tooltip from '@/components/Tooltip';
 import URLMark from './URLMark';
 import Hashtags from './Hashtags';
 
@@ -55,7 +56,21 @@ function AdditionalInformation({
     <ul
       className={`mb-14 flex flex-col gap-6 ${isOpenAdditionalInfo ? '' : 'hidden'}`}
     >
-      <Title title="Tags" required={false}>
+      <Title
+        title="Tags"
+        required={false}
+        tooltip={
+          <Tooltip>
+            <div className="text-nowrap rounded-2xl bg-white px-[1.625rem] pb-[1.563rem] pt-7 text-sm font-medium drop-shadow-[0_4px_14px_rgba(0,0,0,0.25)]">
+              <p className="text-center">
+                Changes made here will NOT <br /> be reflected to participant
+                cards <br />
+                that are already existing.
+              </p>
+            </div>
+          </Tooltip>
+        }
+      >
         <Controller
           name="tagIds"
           control={control}
