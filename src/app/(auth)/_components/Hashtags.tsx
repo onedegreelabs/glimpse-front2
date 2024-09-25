@@ -27,7 +27,7 @@ function Hashtags({ tagList, updateTagList, tagStyle }: HashtagsProps) {
     setValue,
     setError,
     watch,
-  } = useForm<TagInputs>();
+  } = useForm<TagInputs>({ mode: 'onChange' });
 
   const currentTag = watch('tagName');
 
@@ -73,6 +73,8 @@ function Hashtags({ tagList, updateTagList, tagStyle }: HashtagsProps) {
         defaultValue=""
         rules={{
           validate: (tag) => {
+            if (tag.length === 0) return true;
+
             if (tag.length > 20) {
               return 'Please enter your brief intro up to 20 characters.';
             }

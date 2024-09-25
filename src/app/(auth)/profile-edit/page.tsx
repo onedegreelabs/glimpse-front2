@@ -5,13 +5,13 @@ import { redirect } from 'next/navigation';
 import { SocialMediaType } from '@/types/types';
 import SignupClient from '../_components/SignupClient';
 
-const REDIRECT_URL = '/8d6fdb11-f7cf-4771-a172-71d6da10d72c/all'; // 추후 수정
+const REDIRECT_URL = '/02974b24-bcb5-4f43-882b-5e653c6da75e/all'; // 추후 수정
 
 export default async function page() {
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
   const eventId =
-    cookieStore.get('eventId')?.value ?? '8d6fdb11-f7cf-4771-a172-71d6da10d72c';
+    cookieStore.get('eventId')?.value ?? '02974b24-bcb5-4f43-882b-5e653c6da75e';
 
   if (!accessToken) {
     return redirect(REDIRECT_URL);

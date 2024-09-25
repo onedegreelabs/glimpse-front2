@@ -7,7 +7,7 @@ const page = async () => {
   const eventId = cookieStore.get('eventId')?.value;
 
   if (!eventId) {
-    redirect('/8d6fdb11-f7cf-4771-a172-71d6da10d72c/all'); // 추후 수정
+    redirect('/02974b24-bcb5-4f43-882b-5e653c6da75e/all'); // 추후 수정
   }
 
   return (
