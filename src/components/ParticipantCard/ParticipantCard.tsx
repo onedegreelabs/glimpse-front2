@@ -6,7 +6,6 @@ import {
   EventParticipantProfileCardDto,
 } from '@/types/types';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useState } from 'react';
 import ParticipantDetailModal from './ParticipantDetailModal';
 import WishlistButton from './WishlistButton';
@@ -68,19 +67,13 @@ function ParticipantCard({
           <dl className="mb-[0.875rem] flex w-full gap-[0.875rem]">
             <div className="relative flex size-12 flex-shrink-0 items-center justify-center rounded-full bg-gray-B35/40 fill-white">
               {user?.profileImageUrl ? (
-                <Link
-                  href={`/image?src=${user.profileImageUrl}`}
-                  className="absolute left-0 top-0 size-full overflow-hidden rounded-full"
-                  scroll={false}
-                >
-                  <Image
-                    src={user.profileImageUrl}
-                    alt={`${name} profile`}
-                    fill
-                    sizes="48px"
-                    className="rounded-full object-cover object-center"
-                  />
-                </Link>
+                <Image
+                  src={user.profileImageUrl}
+                  alt={`${name} profile`}
+                  fill
+                  sizes="48px"
+                  className="rounded-full object-cover object-center"
+                />
               ) : (
                 <DefaultProfileSVG className="size-[1.875rem]" />
               )}

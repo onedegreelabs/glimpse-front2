@@ -7,9 +7,11 @@ import { useState } from 'react';
 function ProfileImage({
   initalImage,
   onChange,
+  flagImageAsDeleted,
 }: {
   initalImage: string;
   onChange: (image: File | null) => void;
+  flagImageAsDeleted: () => void;
 }) {
   const [profileImage, setProfileImage] = useState(initalImage);
 
@@ -34,6 +36,7 @@ function ProfileImage({
     event.preventDefault();
     setProfileImage('');
     onChange(null);
+    flagImageAsDeleted();
   };
 
   const handleEditClick = () => {

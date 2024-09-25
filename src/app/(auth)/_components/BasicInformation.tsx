@@ -40,7 +40,7 @@ function BasicInformation({
             },
             validate: {
               validCharacters: (value) => {
-                const isValid = /^[a-zA-Z가-힣\s]*$/.test(value);
+                const isValid = /^[a-zA-Z가-힣0-9\s]*$/.test(value);
                 return isValid || 'Special characters are not supported.';
               },
             },
@@ -77,15 +77,17 @@ function BasicInformation({
         title="About"
         required={false}
         tooltip={
-          <Tooltip>
-            <div className="text-nowrap rounded-2xl bg-white px-[1.625rem] pb-[1.563rem] pt-7 text-sm font-medium drop-shadow-[0_4px_14px_rgba(0,0,0,0.25)]">
-              <p className="text-center">
-                Changes made here will NOT <br /> be reflected to participant
-                cards <br />
-                that are already existing.
-              </p>
-            </div>
-          </Tooltip>
+          initalUserInfo && (
+            <Tooltip>
+              <div className="text-nowrap rounded-2xl bg-white px-[1.625rem] pb-[1.563rem] pt-7 text-sm font-medium drop-shadow-[0_4px_14px_rgba(0,0,0,0.25)]">
+                <p className="text-center">
+                  Changes made here will NOT <br /> be reflected to participant
+                  cards <br />
+                  that are already existing.
+                </p>
+              </div>
+            </Tooltip>
+          )
         }
       >
         <Controller
@@ -93,8 +95,8 @@ function BasicInformation({
           control={control}
           rules={{
             maxLength: {
-              value: 500,
-              message: 'Please enter your bio up to 500 characters.',
+              value: 2000,
+              message: 'Please enter your bio up to 2000 characters.',
             },
           }}
           render={({ field }) => (
@@ -107,19 +109,19 @@ function BasicInformation({
                 placeholder="Brief intro"
                 value={field.value}
                 onChange={(e) => {
-                  if (e.target.value.length <= 500) {
+                  if (e.target.value.length <= 2000) {
                     field.onChange(e);
                   } else {
                     setError('intro', {
                       type: 'maxLength',
-                      message: 'Please enter your bio up to 500 characters.',
+                      message: 'Please enter your bio up to 2000 characters.',
                     });
                   }
                 }}
                 className="size-full resize-none px-4 text-sm font-semibold outline-none placeholder:font-medium"
               />
               <div className="px-4 text-right text-xs font-light text-gray-B45">
-                {field.value.length}/500
+                {field.value.length}/2000
               </div>
             </div>
           )}

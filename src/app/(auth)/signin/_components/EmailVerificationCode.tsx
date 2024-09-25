@@ -15,7 +15,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { captureException } from '@sentry/nextjs';
 import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import EmailVerificationCodeButton from './EmailVerificationCodeButton';
@@ -28,10 +28,11 @@ function EmailVerificationCode({ eventId }: EmailVerificationCodeProps) {
   const router = useRouter();
 
   const { getValues } = useFormContext<SigninFormInputs>();
-  const { control, watch, setFocus, setValue, reset, handleSubmit } =
+  const { control, watch, setValue, reset, handleSubmit } =
     useForm<VerificationCode>();
 
   const [isInvalidCode, setIsInvalidCode] = useState(false);
+  const [autoFocusIndex, setAutoFocusIndex] = useState(0);
 
   const currentEmail = getValues('email');
 
@@ -113,15 +114,6 @@ function EmailVerificationCode({ eventId }: EmailVerificationCodeProps) {
 
   const isCodeComplete = !verificationCode.every((code) => code);
 
-  const updateFocus = useCallback(
-    (index: number) => {
-      setTimeout(() => {
-        setFocus(`code${index}`);
-      }, 0);
-    },
-    [setFocus],
-  );
-
   const handleCodeChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     currentIndex: number,
@@ -144,9 +136,9 @@ function EmailVerificationCode({ eventId }: EmailVerificationCodeProps) {
     });
 
     if (currentIndex < 5 && digits) {
-      updateFocus(currentIndex + digits.length);
+      setAutoFocusIndex(currentIndex + digits.length);
     } else if (currentIndex > 0 && !digits) {
-      updateFocus(currentIndex - 1);
+      setAutoFocusIndex(currentIndex - 1);
     }
   };
 
@@ -199,10 +191,21 @@ function EmailVerificationCode({ eventId }: EmailVerificationCodeProps) {
                     onChange={(e) => {
                       handleCodeChange(e, index);
                     }}
+                    inputMode="numeric"
+                    // eslint-disable-next-line jsx-a11y/no-autofocus
+                    autoFocus={index === autoFocusIndex}
                     type="number"
                     max="9"
                     min="0"
                     className={inputClassName}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Backspace' && !field.value) {
+                        e.preventDefault();
+                        if (index > 0) {
+                          setAutoFocusIndex(index - 1);
+                        }
+                      }
+                    }}
                   />
                 );
               }}
