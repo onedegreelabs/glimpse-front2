@@ -19,3 +19,5 @@ export const SOCIAL_MEDIA_KEYS = [
 export const DEFAULT_VERIFICATION_CODE_TIME = 180;
 
 export const DEFAULT_RESEND_TIME = 60;
+
+export const MAX_FILE_SIZE_MB = 5;
