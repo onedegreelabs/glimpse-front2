@@ -6,7 +6,7 @@ import { AuthToken } from '@/types/types';
 import SignupClient from '../_components/SignupClient';
 
 const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_ACCESS_TOKEN_SECRET;
-const REDIRECT_URL = '/8d6fdb11-f7cf-4771-a172-71d6da10d72c/all'; // 추후 수정
+const REDIRECT_URL = '/02974b24-bcb5-4f43-882b-5e653c6da75e/all'; // 추후 수정
 
 const getEmailFromToken = async (authToken: string): Promise<string | null> => {
   if (!JWT_SECRET) return null;
