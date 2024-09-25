@@ -17,16 +17,17 @@ import {
   useForm,
 } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { register, userEdit } from '@/lib/apis/authApi';
+import { register } from '@/lib/apis/authApi';
 import { useRouter } from 'next/navigation';
 import { SOCIAL_MEDIA_KEYS } from '@/constant/constant';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from '@/components/Button';
 import socialFormatUrl from '@/utils/socialFormatUrl';
 import { captureException } from '@sentry/nextjs';
 import Cookies from 'js-cookie';
 import { BadgeSVG, InboxSVG } from '@/icons/index';
 import { toast } from 'react-toastify';
+import { deleteProfileImage, userEdit } from '@/lib/apis/userApi';
 import SignupHeader from './SignupHeader';
 import BasicInformation from './BasicInformation';
 import ProfileImage from './ProfileImage';
@@ -92,6 +93,12 @@ function SignupClient({
 
   const router = useRouter();
 
+  const isImageDeleted = useRef(false);
+
+  const flagImageAsDeleted = () => {
+    isImageDeleted.current = true;
+  };
+
   const [isOpenBasicInfo, setIsOpenBasicInfo] = useState(true);
   const [isOpenAdditionalInfo, setInOpenAdditionalInfo] = useState(true);
 
@@ -147,8 +154,15 @@ function SignupClient({
     },
   });
 
-  const { mutate: handleUserEdit, isPending: userEditPending } = useMutation({
-    mutationFn: (data: FormData) => userEdit(data),
+  const handleUserEdit = async (data: FormData) => {
+    await userEdit(data);
+    if (isImageDeleted && initalUserInfo?.profileImageUrl) {
+      await deleteProfileImage();
+    }
+  };
+
+  const { mutate: editUser, isPending: userEditPending } = useMutation({
+    mutationFn: (data: FormData) => handleUserEdit(data),
     onSuccess: () => {
       Cookies.remove('eventId');
       router.push(`/${eventId}/edit`);
@@ -201,7 +215,7 @@ function SignupClient({
 
       formData.append('data', JSON.stringify(reqData));
 
-      handleUserEdit(formData);
+      editUser(formData);
     } else {
       const reqData = {
         ...filteredData,
@@ -258,6 +272,7 @@ function SignupClient({
               <ProfileImage
                 initalImage={initalUserInfo?.profileImageUrl ?? ''}
                 onChange={field.onChange}
+                flagImageAsDeleted={flagImageAsDeleted}
               />
             )}
           />
