@@ -60,7 +60,7 @@ function ParticipantDetailModal({
         <dl className="flex flex-col items-center gap-1 px-6">
           <dt className="break-all text-lg font-bold">{name}</dt>
           <dd className="mb-1.5 flex flex-wrap justify-center gap-1 text-xs text-black/60">
-            <span>{jobTitle}</span> <span>@ {belong}</span>
+            <span>{jobTitle}</span> {belong && <span>@ {belong}</span>}
           </dd>
           <dd className="mb-3 rounded-3xl border border-solid border-gray-B50 px-3 py-[0.625rem] text-xs text-black">
             {jobCategory.engName}

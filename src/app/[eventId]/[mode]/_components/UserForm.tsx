@@ -59,7 +59,7 @@ async function UserForm({ accessToken, eventId, isRegister }: RegisterProps) {
           <dt className="truncate text-base font-bold text-black">{name}</dt>
           <dd className="mb-[0.375rem] flex flex-wrap gap-1 text-xs text-black/60">
             <span>{jobTitle}</span>
-            <span className="truncate">@ {belong}</span>
+            {belong && <span className="truncate">@ {belong}</span>}
           </dd>
           <dd className="mb-[0.375rem] text-xs font-medium text-blue-B20">
             <span className="inline-block max-w-44 truncate rounded-3xl bg-white px-3 py-2">
