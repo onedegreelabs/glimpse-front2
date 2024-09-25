@@ -1,35 +1,26 @@
 'use client';
 
-import Hashtags from '@/app/(auth)/signup/_components/Hashtags';
+import Hashtags from '@/app/(auth)/_components/Hashtags';
 import Button from '@/components/Button';
-import Message from '@/components/Message';
 import Title from '@/components/Title';
 import { eventEdit, eventRegister } from '@/lib/apis/eventsApi';
 import {
-  CuratedParticipantDto,
-  EventParticipantProfileCardDto,
   EventRegisterDto,
   EventRegisterInputs,
   FetchError,
-  ParticipantsResponseDto,
   Tag,
 } from '@/types/types';
 import { captureException } from '@sentry/nextjs';
-import {
-  InfiniteData,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 interface UserFormClientProps {
   intro: string;
   tags: Tag[];
   eventId: string;
   isRegister: boolean;
-  userId: number;
 }
 
 function UserFormClient({
@@ -37,73 +28,14 @@ function UserFormClient({
   tags,
   eventId,
   isRegister,
-  userId,
 }: UserFormClientProps) {
   const router = useRouter();
-  const { handleSubmit, control, getValues } = useForm<EventRegisterInputs>();
-  const [severError, setSeverError] = useState<string>('');
-
-  const queryClient = useQueryClient();
-
-  const updateParticipantsData = <T extends EventParticipantProfileCardDto>(
-    data: T[] | InfiniteData<{ participants: T[] }>,
-  ): T[] | InfiniteData<{ participants: T[] }> | null => {
-    if (!data) return null;
-
-    let isUpdated = false;
-
-    const updateParticipant = (participant: T): T => {
-      if (participant.user.id === userId) {
-        isUpdated = true;
-        return {
-          ...participant,
-          intro: getValues('intro'),
-          tags: getValues('tagIds'),
-        };
-      }
-      return participant;
-    };
-
-    if (Array.isArray(data)) {
-      const updatedParticipants = data.map(updateParticipant);
-      return isUpdated ? updatedParticipants : null;
-    }
-    const updatedPages = data.pages.map((page) => ({
-      ...page,
-      participants: page.participants.map(updateParticipant),
-    }));
-    return isUpdated ? { ...data, pages: updatedPages } : null;
-  };
-
-  const syncEditParticipants = () => {
-    const participantsQueries = queryClient.getQueriesData<
-      InfiniteData<ParticipantsResponseDto>
-    >({
-      queryKey: ['participants'],
-    });
-
-    participantsQueries.forEach(([queryKey, value]) => {
-      if (value) {
-        const updatedData = updateParticipantsData(value);
-        if (updatedData) {
-          queryClient.setQueryData(queryKey, updatedData);
-        }
-      }
-    });
-  };
-
-  const syncEditCurations = () => {
-    const data = queryClient.getQueryData<CuratedParticipantDto[]>([
-      'curations',
-    ]);
-
-    if (!data) return;
-
-    const updatedData = updateParticipantsData(data);
-    if (updatedData) {
-      queryClient.setQueryData(['curations'], updatedData);
-    }
-  };
+  const {
+    handleSubmit,
+    control,
+    setError,
+    formState: { errors },
+  } = useForm<EventRegisterInputs>();
 
   const userFormHandler = async (data: EventRegisterDto) => {
     if (isRegister) {
@@ -116,8 +48,6 @@ function UserFormClient({
   const { mutate: handleRegister, isPending } = useMutation({
     mutationFn: (data: EventRegisterDto) => userFormHandler(data),
     onSuccess: () => {
-      syncEditParticipants();
-      syncEditCurations();
       router.push(`/${eventId}/all`);
       router.refresh();
     },
@@ -125,15 +55,11 @@ function UserFormClient({
       const fetchError = error as FetchError;
 
       if (fetchError.status !== 401) {
-        setSeverError('An unknown error occurred. Please contact support.');
+        toast.error('An unknown error occurred. Please contact support.');
         captureException(error);
       }
     },
   });
-
-  const clearErrors = () => {
-    setSeverError('');
-  };
 
   const onSubmit: SubmitHandler<EventRegisterInputs> = async (data) => {
     const reqData = {
@@ -154,31 +80,42 @@ function UserFormClient({
           defaultValue={intro}
           rules={{
             maxLength: {
-              value: 500,
-              message: 'Please enter your bio up to 500 characters.',
+              value: 2000,
+              message: 'Please enter your bio up to 2000 characters.',
             },
           }}
           render={({ field }) => (
-            <div className="relative h-64 w-full rounded-2xl border border-solid border-gray-B40 pb-8 pt-4 has-[:focus]:border-2 has-[:focus]:border-black">
+            <div
+              className={`${errors.intro ? 'border-red-B30' : 'border-gray-B40'} relative h-64 w-full rounded-2xl border border-solid pb-8 pt-4 has-[:focus]:border-2 has-[:focus]:border-black`}
+            >
               <textarea
                 {...field}
                 id="intro"
                 placeholder="Brief intro"
                 value={field.value}
                 onChange={(e) => {
-                  if (e.target.value.length <= 500) {
+                  if (e.target.value.length <= 2000) {
                     field.onChange(e);
+                  } else {
+                    setError('intro', {
+                      type: 'maxLength',
+                      message: 'Please enter your bio up to 2000 characters.',
+                    });
                   }
                 }}
                 className="size-full resize-none px-4 text-sm font-semibold outline-none placeholder:font-medium"
               />
               <div className="px-4 text-right text-xs font-light text-gray-B45">
-                {field.value.length}/500
+                {field.value.length}/2000
               </div>
             </div>
           )}
         />
+        {errors.intro && (
+          <p className="mt-2 text-xs text-red-B30">{errors.intro.message}</p>
+        )}
       </Title>
+
       <Title title="Tags" required={false}>
         <Controller
           name="tagIds"
@@ -200,9 +137,6 @@ function UserFormClient({
       <Button type="submit" disabled={isPending} isPending={isPending}>
         {isRegister ? 'Register' : 'Save'}
       </Button>
-      <div className="fixed bottom-14 left-1/2 -translate-x-1/2 transform">
-        <Message message={severError} onClose={() => clearErrors()} isErrors />
-      </div>
     </form>
   );
 }

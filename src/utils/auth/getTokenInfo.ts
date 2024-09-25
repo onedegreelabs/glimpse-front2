@@ -19,7 +19,7 @@ export default async function getTokenInfo(): Promise<TokenInfo | null> {
 
     const { payload } = await jwtVerify<TokenInfo>(accessToken, secret);
 
-    return payload;
+    return { ...payload, accessToken };
   } catch (error) {
     return null;
   }

@@ -19,6 +19,7 @@ const config: Config = {
         red: {
           B10: '#E7001B',
           B20: '#FF1A1A',
+          B30: '#FF1B36',
         },
         blue: {
           secondary: '#002387',
@@ -75,6 +76,9 @@ const config: Config = {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-70%)' },
         },
+      },
+      fontFamily: {
+        custom: ['CustomFont', 'sans-serif'],
       },
     },
   },

@@ -13,6 +13,7 @@ export interface EventInfo {
   locationType: 'OFFLINE' | 'ONLINE';
   location: string;
   coverImageUrl: null | URL;
+  isRegistered: boolean;
 }
 
 export interface GetParticipantsInfoParams {
@@ -88,6 +89,7 @@ export interface TokenInfo {
   role: string;
   iat: number;
   exp: number;
+  accessToken: string;
 }
 
 export interface JobCategorie {
@@ -188,4 +190,9 @@ export interface EventRegisterDto {
   eventId: string;
   intro: string;
   tagIds: number[];
+}
+
+export interface InitalUserInfo extends UserInfo {
+  initalImageFile?: File;
+  socialMediaObject: Record<SocialMediaType, string>;
 }

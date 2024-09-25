@@ -12,9 +12,16 @@ import { cache } from 'react';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
 
-export const getEventInfo = async (eventId: string): Promise<EventInfo> => {
+export const getEventInfo = async (
+  eventId: string,
+  accessToken?: string,
+): Promise<EventInfo> => {
   try {
-    const response = await fetch(`${END_POINT}/events/${eventId}`);
+    const response = await fetch(`${END_POINT}/events/${eventId}`, {
+      headers: {
+        Cookie: accessToken ? `accessToken=${accessToken}` : '',
+      },
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -41,13 +48,8 @@ export const getEventInfo = async (eventId: string): Promise<EventInfo> => {
     }).format(startAtKST);
 
     return {
-      id: responseData.data.id,
-      title: responseData.data.title,
+      ...responseData.data,
       startAt: formattedDate,
-      externalLink: responseData.data.externalLink,
-      locationType: responseData.data.locationType,
-      location: responseData.data.location,
-      coverImageUrl: responseData.data.coverImageUrl,
     };
   } catch (error) {
     const fetchError = error as FetchError;

@@ -4,6 +4,7 @@ import {
   AdditionalInfoList,
   BasicInfoList,
   FetchError,
+  InitalUserInfo,
   JobCategorie,
   RegisterInputs,
   SigninFormInputs,
@@ -19,13 +20,14 @@ import { useMutation } from '@tanstack/react-query';
 import { register } from '@/lib/apis/authApi';
 import { useRouter } from 'next/navigation';
 import { SOCIAL_MEDIA_KEYS } from '@/constant/constant';
-import Message from '@/components/Message';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from '@/components/Button';
 import socialFormatUrl from '@/utils/socialFormatUrl';
 import { captureException } from '@sentry/nextjs';
 import Cookies from 'js-cookie';
 import { BadgeSVG, InboxSVG } from '@/icons/index';
+import { toast } from 'react-toastify';
+import { deleteProfileImage, userEdit } from '@/lib/apis/userApi';
 import SignupHeader from './SignupHeader';
 import BasicInformation from './BasicInformation';
 import ProfileImage from './ProfileImage';
@@ -33,17 +35,40 @@ import AccordionButton from './AccordionButton';
 import AdditionalInformation from './AdditionalInformation';
 
 interface SignupClientProps {
-  email: string;
   eventId: string;
   jobCategories: JobCategorie[];
+  email?: string;
+  initalUserInfo?: InitalUserInfo;
 }
 
-function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
-  const formMethods = useForm<RegisterInputs>();
+function SignupClient({
+  email,
+  jobCategories,
+  eventId,
+  initalUserInfo,
+}: SignupClientProps) {
+  const isEditing = !email;
+
+  const formMethods = useForm<RegisterInputs>({
+    mode: 'onChange',
+    defaultValues: {
+      image: null,
+      name: initalUserInfo?.name ?? '',
+      intro: initalUserInfo?.intro ?? '',
+      jobCategoryId: initalUserInfo?.jobCategory.id,
+      jobTitle: initalUserInfo?.jobTitle ?? '',
+      belong: initalUserInfo?.belong ?? '',
+      tagIds: initalUserInfo?.tags ?? [],
+      INSTAGRAM: initalUserInfo?.socialMediaObject.INSTAGRAM ?? '',
+      WEBSITE: initalUserInfo?.socialMediaObject.WEBSITE ?? '',
+      LINKEDIN: initalUserInfo?.socialMediaObject.LINKEDIN ?? '',
+      GITHUB: initalUserInfo?.socialMediaObject.GITHUB ?? '',
+      OTHERS: initalUserInfo?.socialMediaObject.OTHERS ?? '',
+    },
+  });
   const {
     handleSubmit,
     control,
-    clearErrors,
     formState: { errors },
     watch,
     setError,
@@ -67,6 +92,12 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
   }, []);
 
   const router = useRouter();
+
+  const isImageDeleted = useRef(false);
+
+  const flagImageAsDeleted = () => {
+    isImageDeleted.current = true;
+  };
 
   const [isOpenBasicInfo, setIsOpenBasicInfo] = useState(true);
   const [isOpenAdditionalInfo, setInOpenAdditionalInfo] = useState(true);
@@ -115,16 +146,30 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
       const fetchError = error as FetchError;
 
       if (fetchError && fetchError.errorCode === 'G01002') {
-        setError('jobCategoryId', {
-          type: 'manual',
-          message: 'This user already exists.',
-        });
+        toast.error('This user already exists.');
       }
 
-      setError('jobCategoryId', {
-        type: 'manual',
-        message: 'An unknown error occurred. Please contact support.',
-      });
+      toast.error('An unknown error occurred. Please contact support.');
+      captureException(error);
+    },
+  });
+
+  const handleUserEdit = async (data: FormData) => {
+    await userEdit(data);
+    if (isImageDeleted && initalUserInfo?.profileImageUrl) {
+      await deleteProfileImage();
+    }
+  };
+
+  const { mutate: editUser, isPending: userEditPending } = useMutation({
+    mutationFn: (data: FormData) => handleUserEdit(data),
+    onSuccess: () => {
+      Cookies.remove('eventId');
+      router.push(`/${eventId}/edit`);
+      router.refresh();
+    },
+    onError: (error) => {
+      toast.error('An unknown error occurred. Please contact support.');
       captureException(error);
     },
   });
@@ -160,18 +205,31 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
           ),
       ),
     );
-    const reqData = {
-      ...filteredData,
-      email,
-      tagIds: data.tagIds.map(({ id }) => id),
-      socialMedia,
-      method: 'EMAIL',
-      terms: [{ termId: 2, agreed: true }],
-    };
 
-    formData.append('data', JSON.stringify(reqData));
+    if (initalUserInfo) {
+      const reqData = {
+        ...filteredData,
+        tagIds: data.tagIds.map(({ id }) => id),
+        socialMedia,
+      };
 
-    handleSignup(formData);
+      formData.append('data', JSON.stringify(reqData));
+
+      editUser(formData);
+    } else {
+      const reqData = {
+        ...filteredData,
+        email,
+        tagIds: data.tagIds.map(({ id }) => id),
+        socialMedia,
+        method: 'EMAIL',
+        terms: [{ termId: 2, agreed: true }],
+      };
+
+      formData.append('data', JSON.stringify(reqData));
+
+      handleSignup(formData);
+    }
   };
 
   const onSubmitError: SubmitErrorHandler<SigninFormInputs> = (error) => {
@@ -188,25 +246,35 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
 
   return (
     <main className="flex min-h-screen w-full flex-col bg-white text-gray-B80">
-      <SignupHeader formValues={formValues} />
+      <SignupHeader formValues={formValues} isEditing={isEditing} />
       <form
-        className="flex w-full flex-grow flex-col justify-between px-[26px] pb-[50px] pt-[30px]"
+        className="flex w-full flex-grow flex-col justify-between px-[1.625rem] pb-[3.125rem] pt-[1.875rem]"
         onSubmit={handleSubmit(onSubmit, onSubmitError)}
       >
         <div>
-          <h1 className="mb-1 text-xl font-bold text-blue-B50">
-            Welcome to Glimpse!
-          </h1>
-          <p className="text-xs font-light">
-            Complete your profile now,
-            <br />
-            enjoy hassle-free event registration later!
-          </p>
+          {!isEditing && (
+            <>
+              <h1 className="mb-1 text-xl font-bold text-blue-B50">
+                Welcome to Glimpse!
+              </h1>
+              <p className="text-xs font-light">
+                Complete your profile now,
+                <br />
+                enjoy hassle-free event registration later!
+              </p>
+            </>
+          )}
 
           <Controller
             name="image"
             control={control}
-            render={({ field }) => <ProfileImage onChange={field.onChange} />}
+            render={({ field }) => (
+              <ProfileImage
+                initalImage={initalUserInfo?.profileImageUrl ?? ''}
+                onChange={field.onChange}
+                flagImageAsDeleted={flagImageAsDeleted}
+              />
+            )}
           />
 
           <AccordionButton
@@ -217,10 +285,12 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
             toggleHandler={toggleBasicInfo}
           />
           <BasicInformation
+            initalUserInfo={initalUserInfo}
             isOpenBasicInfo={isOpenBasicInfo}
             control={control}
             jobCategories={jobCategories}
             setError={setError}
+            errors={errors}
           />
 
           <AccordionButton
@@ -231,24 +301,21 @@ function SignupClient({ email, jobCategories, eventId }: SignupClientProps) {
             toggleHandler={toggleAdditionalInfo}
           />
           <AdditionalInformation
+            initalUserInfo={initalUserInfo}
             control={control}
             isOpenAdditionalInfo={isOpenAdditionalInfo}
+            errors={errors}
           />
         </div>
 
         <Button
           type="submit"
-          disabled={!isRequiredFieldsValid || signupPending}
-          isPending={signupPending}
+          disabled={!isRequiredFieldsValid || signupPending || userEditPending}
+          isPending={signupPending || userEditPending}
         >
           Start Networking
         </Button>
       </form>
-      {Object.values(errors).length > 0 && (
-        <div className="fixed bottom-14 left-1/2 -translate-x-1/2 transform">
-          <Message errors={errors} onClose={() => clearErrors()} isErrors />
-        </div>
-      )}
     </main>
   );
 }

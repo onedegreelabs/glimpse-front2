@@ -39,13 +39,13 @@ function MatchSlide() {
 
   return (
     !isComplete && (
-      <article className="fixed bottom-7 left-1/2 z-event h-[66px] w-[234px] -translate-x-1/2 transform rounded-full bg-custom-gradient">
+      <article className="fixed bottom-7 left-1/2 z-event h-[4.125rem] w-[14.625rem] -translate-x-1/2 transform rounded-full bg-custom-gradient">
         <motion.div
           ref={constraintsRef}
-          className="relative mx-0.5 my-0.5 flex h-[62px] w-[230px] items-center justify-center rounded-full bg-blue-B50"
+          className="relative mx-0.5 my-0.5 flex h-[3.875rem] w-[14.375rem] items-center justify-center rounded-full bg-blue-B50"
         >
           <motion.div
-            className="absolute left-[5px] flex size-14 cursor-pointer items-center justify-center rounded-full bg-yellow-primary"
+            className="absolute left-[0.313rem] flex size-14 cursor-pointer items-center justify-center rounded-full bg-yellow-primary"
             drag="x"
             dragConstraints={constraintsRef}
             dragElastic={0}
@@ -54,18 +54,18 @@ function MatchSlide() {
             animate={{ x: currentX }}
             transition={{ type: 'none' }}
           >
-            <ArrowSVG className="h-[14px] w-[17px]" />
+            <ArrowSVG className="h-[0.875rem] w-[1.063rem]" />
           </motion.div>
           <div className="ml-7 bg-gradient-to-r from-blue-B30 to-yellow-primary bg-clip-text text-transparent">
             <p className="select-none text-lg font-bold">Go match</p>
           </div>
           <div className="absolute right-6 flex gap-1">
-            <ArrowSVG2 className="h-4 w-[9px] stroke-white" />
-            <ArrowSVG2 className="h-4 w-[9px] stroke-white" />
+            <ArrowSVG2 className="h-4 w-[0.563rem] stroke-white" />
+            <ArrowSVG2 className="h-4 w-[0.563rem] stroke-white" />
           </div>
         </motion.div>
         {currenPathname === 'match' && (
-          <p className="absolute -top-20 w-[239px] text-center text-xl font-bold text-yellow-600">
+          <p className="absolute -top-20 w-[14.938rem] text-center text-xl font-bold text-yellow-600">
             Curious about the perfect match for you?
           </p>
         )}

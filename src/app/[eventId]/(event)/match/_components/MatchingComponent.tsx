@@ -42,16 +42,16 @@ function MatchingComponent({
   return isPending || !isCurated ? (
     <Blur isPending={isPending} />
   ) : (
-    <div className="relative ml-auto mr-[50px] size-[1px]">
+    <div className="relative ml-auto mr-[3.125rem] size-[0.063rem]">
       <button
         type="submit"
-        className="fixed bottom-0 z-10 mb-4 mr-4 flex size-[66px] items-center justify-center rounded-full bg-gradient-to-bl from-yellow-primary to-blue-B30"
+        className="fixed bottom-0 z-10 mb-4 mr-4 flex size-[4.125rem] items-center justify-center rounded-full bg-gradient-to-bl from-yellow-primary to-blue-B30"
         aria-label="re-matching"
         onClick={reMachingHandler}
       >
-        <div className="flex size-[62px] items-center justify-center rounded-full bg-blue-secondary">
+        <div className="flex size-[3.875rem] items-center justify-center rounded-full bg-blue-secondary">
           <div className="flex size-14 items-center justify-center rounded-full bg-yellow-primary">
-            <RefreshSVG className="size-[18px] fill-blue-secondary stroke-blue-secondary" />
+            <RefreshSVG className="size-[1.125rem] fill-blue-secondary stroke-blue-secondary" />
           </div>
         </div>
       </button>

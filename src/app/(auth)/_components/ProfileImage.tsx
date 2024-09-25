@@ -5,11 +5,15 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 function ProfileImage({
+  initalImage,
   onChange,
+  flagImageAsDeleted,
 }: {
+  initalImage: string;
   onChange: (image: File | null) => void;
+  flagImageAsDeleted: () => void;
 }) {
-  const [profileImage, setProfileImage] = useState('');
+  const [profileImage, setProfileImage] = useState(initalImage);
 
   const uploadImageHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -23,12 +27,16 @@ function ProfileImage({
       };
       reader.readAsDataURL(file);
     }
+
+    const inputElement = event.target as HTMLInputElement;
+    inputElement.value = '';
   };
 
   const deleteImageHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setProfileImage('');
     onChange(null);
+    flagImageAsDeleted();
   };
 
   const handleEditClick = () => {
@@ -43,7 +51,7 @@ function ProfileImage({
       <label
         htmlFor="image-upload"
         aria-label="input-profile-image"
-        className="relative flex size-[100px] cursor-pointer items-center justify-center rounded-full border border-solid border-gray-B50 bg-white"
+        className="relative flex size-[6.25rem] cursor-pointer items-center justify-center rounded-full border border-solid border-gray-B50 bg-white"
       >
         {profileImage ? (
           <>
@@ -60,11 +68,11 @@ function ProfileImage({
               alt="profile"
               fill
               sizes="80px"
-              className="rounded-full"
+              className="rounded-full object-cover object-center"
             />
           </>
         ) : (
-          <PersonSVG className="h-12 w-[46.31px]" />
+          <PersonSVG className="h-12 w-[2.894rem]" />
         )}
         <button
           type="button"

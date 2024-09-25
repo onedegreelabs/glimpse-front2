@@ -73,3 +73,5 @@ export { default as CommentUserSVG } from './commentUser.svg';
 export { default as TagSVG } from './tag.svg';
 
 export { default as PencilSVG } from './pencil.svg';
+
+export { default as QuestionSVG } from './question.svg';

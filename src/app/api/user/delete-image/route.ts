@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
 
-export const PATCH = async (request: NextRequest) => {
+export const DELETE = async (request: NextRequest) => {
   if (!END_POINT) {
     return NextResponse.json({
       status: 500,
@@ -10,17 +10,13 @@ export const PATCH = async (request: NextRequest) => {
     });
   }
 
-  const eventId = request.nextUrl.searchParams.get('eventId');
   const accessToken = request.cookies.get('accessToken')?.value;
-  const { intro, tagIds } = await request.json();
 
-  const response = await fetch(`${END_POINT}/events/${eventId}/participants`, {
-    method: 'PATCH',
+  const response = await fetch(`${END_POINT}/users/profile-image`, {
+    method: 'DELETE',
     headers: {
-      'Content-Type': 'application/json',
       Cookie: `accessToken=${accessToken}`,
     },
-    body: JSON.stringify({ intro, tagIds }),
   });
 
   if (!response.ok) {

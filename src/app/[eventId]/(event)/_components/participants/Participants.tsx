@@ -15,7 +15,6 @@ interface ParticipantsProps {
   initialParticipants: EventParticipantProfileCardDto[];
   totalItemCount: number;
   search?: string;
-  userId: number;
 }
 
 function Participants({
@@ -23,7 +22,6 @@ function Participants({
   totalItemCount,
   eventId,
   search,
-  userId,
 }: ParticipantsProps) {
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, error } =
     useInfiniteQuery({
@@ -71,14 +69,13 @@ function Participants({
   );
 
   return (
-    <ul className="flex flex-col gap-3">
+    <>
       {participants.map((info) => (
         <ParticipantCard
           eventId={eventId}
           key={info.id}
           info={info}
           participantRole={info.role}
-          userId={userId}
         />
       ))}
       {isFetchingNextPage || error ? (
@@ -95,10 +92,10 @@ function Participants({
           }}
           threshold={0}
           triggerOnce
-          className="h-[1px]"
+          className="h-[0.063rem]"
         />
       )}
-    </ul>
+    </>
   );
 }
 

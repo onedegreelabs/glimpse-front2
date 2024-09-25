@@ -8,12 +8,18 @@ import { useState } from 'react';
 interface JobCategoryProps {
   jobCategories: JobCategorie[];
   onChange: (jobCategory: number) => void;
+  initalValue?: JobCategorie;
 }
 
-function JobCategory({ jobCategories, onChange }: JobCategoryProps) {
+function JobCategory({
+  jobCategories,
+  onChange,
+  initalValue,
+}: JobCategoryProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedJobCategory, setSelectedJobCategory] =
-    useState<JobCategorie | null>(null);
+  const [selectedJobCategory, setSelectedJobCategory] = useState<
+    JobCategorie | undefined
+  >(initalValue);
 
   const handleCloseModal = () => {
     setIsOpen(false);
@@ -30,7 +36,7 @@ function JobCategory({ jobCategories, onChange }: JobCategoryProps) {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className={`${selectedJobCategory ? 'text-black' : 'text-gray-B80/55'} relative h-[54px] w-full rounded-2xl border border-solid border-gray-B40 text-sm font-medium`}
+        className={`${selectedJobCategory ? 'text-black' : 'text-gray-B80/55'} relative h-[3.375rem] w-full rounded-2xl border border-solid border-gray-B40 text-sm font-medium`}
       >
         {selectedJobCategory
           ? selectedJobCategory.engName
@@ -39,12 +45,12 @@ function JobCategory({ jobCategories, onChange }: JobCategoryProps) {
       </button>
       {isOpen && (
         <BottomModal closeModal={handleCloseModal}>
-          <div className="flex flex-col gap-[10px]">
-            <h1 className="mb-1 px-[26px] text-lg font-bold text-blue-B50">
+          <div className="flex flex-col gap-[0.625rem]">
+            <h1 className="mb-1 px-[1.625rem] text-lg font-bold text-blue-B50">
               Job category
             </h1>
-            <p className="mb-3 px-[26px]">Select only one</p>
-            <ul className="mb-5 flex max-h-[55vh] flex-col gap-[10px] overflow-y-auto px-[26px] text-sm font-medium text-black">
+            <p className="mb-3 px-[1.625rem]">Select only one</p>
+            <ul className="mb-5 flex max-h-[55vh] flex-col gap-[0.625rem] overflow-y-auto px-[1.625rem] text-sm font-medium text-black">
               {jobCategories.map((jobCategory) => (
                 <li
                   key={jobCategory.id}
@@ -52,7 +58,7 @@ function JobCategory({ jobCategories, onChange }: JobCategoryProps) {
                 >
                   <button
                     type="button"
-                    className="flex h-[54px] w-full items-center justify-center"
+                    className="flex h-[3.375rem] w-full items-center justify-center"
                     onClick={() => handleJobCategoryChange(jobCategory)}
                   >
                     {jobCategory.engName}

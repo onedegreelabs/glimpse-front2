@@ -1,6 +1,4 @@
 import { ArrowSVG2, CheckSVG } from '@/icons/index';
-import { debounce } from 'lodash';
-import { useEffect, useRef } from 'react';
 
 type AccordionButtonState = 'PROGRESS' | 'COMPLETED' | 'EMPTY';
 
@@ -38,52 +36,31 @@ function AccordionButton<T>({
   toggleHandler,
   watchInfo,
 }: AccordionButtonProps<T>) {
-  const autoClose = useRef(false);
   const infoState = getInfoState(watchInfo);
-
-  const debouncedToggleHandler = useRef(
-    debounce(() => {
-      autoClose.current = true;
-      toggleHandler();
-    }, 2000),
-  ).current;
-
-  useEffect(() => {
-    if (!autoClose.current && infoState === 'COMPLETED' && isOpen) {
-      debouncedToggleHandler();
-    } else if (infoState !== 'COMPLETED') {
-      debouncedToggleHandler.cancel();
-      autoClose.current = false;
-    }
-
-    return () => {
-      debouncedToggleHandler.cancel();
-    };
-  }, [debouncedToggleHandler, infoState, isOpen, toggleHandler]);
 
   return (
     <button
       type="button"
       aria-label={`open-${label}`}
       onClick={toggleHandler}
-      className={`${infoState === 'COMPLETED' ? 'bg-yellow-200/50 pl-[11px]' : 'bg-basic-B10 pl-4'} ${isOpen ? 'mb-7' : 'mb-3'} flex h-16 w-full items-center justify-between rounded-xl pr-6 text-sm text-black`}
+      className={`${infoState === 'COMPLETED' ? 'bg-yellow-200/50 pl-[0.688rem]' : 'bg-basic-B10 pl-4'} ${isOpen ? 'mb-7' : 'mb-3'} flex h-16 w-full items-center justify-between rounded-xl pr-6 text-sm text-black`}
     >
       <div
-        className={`flex items-center ${infoState === 'COMPLETED' ? 'gap-[10px]' : 'gap-3.5'}`}
+        className={`flex items-center ${infoState === 'COMPLETED' ? 'gap-[0.625rem]' : 'gap-3.5'}`}
       >
         {infoState === 'COMPLETED' ? (
           <div className="flex size-10 items-center justify-center rounded-full bg-yellow-primary">
             <CheckSVG className="size-6" />
           </div>
         ) : (
-          <div className="flex size-[30px] items-center justify-center rounded-full bg-basic-B20">
+          <div className="flex size-[1.875rem] items-center justify-center rounded-full bg-basic-B20">
             {infoState === 'EMPTY' ? (
               image
             ) : (
-              <div className="flex items-center justify-center space-x-[3px]">
-                <div className="size-[3px] animate-bounce rounded-full bg-gray-B85 [animation-delay:-0.3s]" />
-                <div className="size-[3px] animate-bounce rounded-full bg-gray-B85 [animation-delay:-0.15s]" />
-                <div className="size-[3px] animate-bounce rounded-full bg-gray-B85" />
+              <div className="flex items-center justify-center space-x-[0.188rem]">
+                <div className="size-[0.188rem] animate-bounce rounded-full bg-gray-B85 [animation-delay:-0.3s]" />
+                <div className="size-[0.188rem] animate-bounce rounded-full bg-gray-B85 [animation-delay:-0.15s]" />
+                <div className="size-[0.188rem] animate-bounce rounded-full bg-gray-B85" />
               </div>
             )}
           </div>

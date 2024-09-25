@@ -1,20 +1,25 @@
-import { RegisterInputs, SocialMediaType } from '@/types/types';
+import { InitalUserInfo, RegisterInputs, SocialMediaType } from '@/types/types';
 import React from 'react';
-import { Control, Controller } from 'react-hook-form';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { GithubSVG, InstagramSVG, LinkedinSVG, WebSVG } from '@/icons/index';
 import { URL_REGEX } from '@/constant/constant';
 import Title from '@/components/Title';
+import Tooltip from '@/components/Tooltip';
 import URLMark from './URLMark';
 import Hashtags from './Hashtags';
 
 interface AdditionalInformationProps {
   isOpenAdditionalInfo: boolean;
   control: Control<RegisterInputs, any>;
+  errors: FieldErrors<RegisterInputs>;
+  initalUserInfo?: InitalUserInfo;
 }
 
 function AdditionalInformation({
   control,
   isOpenAdditionalInfo,
+  errors,
+  initalUserInfo,
 }: AdditionalInformationProps) {
   const SOCIAL_LIST = [
     {
@@ -53,25 +58,41 @@ function AdditionalInformation({
     <ul
       className={`mb-14 flex flex-col gap-6 ${isOpenAdditionalInfo ? '' : 'hidden'}`}
     >
-      <Title title="Tags" required={false}>
+      <Title
+        title="Tags"
+        required={false}
+        tooltip={
+          initalUserInfo && (
+            <Tooltip>
+              <div className="text-nowrap rounded-2xl bg-white px-[1.625rem] pb-[1.563rem] pt-7 text-sm font-medium drop-shadow-[0_4px_14px_rgba(0,0,0,0.25)]">
+                <p className="text-center">
+                  Changes made here will NOT <br /> be reflected to participant
+                  cards <br />
+                  that are already existing.
+                </p>
+              </div>
+            </Tooltip>
+          )
+        }
+      >
         <Controller
           name="tagIds"
           control={control}
-          defaultValue={[]}
           render={({ field }) => (
             <Hashtags tagList={field.value} updateTagList={field.onChange} />
           )}
         />
       </Title>
       <Title title="Socials/Links" required={false}>
-        <p className="-mt-1 text-sm font-light">Please add the desired link.</p>
-        <div className="flex flex-col gap-[10px]">
+        <p className="-mt-1 mb-4 text-sm font-light">
+          Please add the desired link.
+        </p>
+        <div className="flex flex-col">
           {SOCIAL_LIST.map(({ svg, id, placeholder }) => (
             <Controller
               key={id}
               name={id as SocialMediaType}
               control={control}
-              defaultValue=""
               rules={{
                 validate: (value) => {
                   if (
@@ -87,18 +108,25 @@ function AdditionalInformation({
                 },
               }}
               render={({ field }) => (
-                <label
-                  htmlFor={id}
-                  className="flex w-full min-w-fit items-center gap-[14px] overflow-auto"
-                >
-                  {svg}
-                  <input
-                    {...field}
-                    id={id}
-                    className="h-[54px] w-full flex-grow rounded-2xl border border-solid border-gray-B40 px-4 text-sm font-semibold text-black placeholder:font-medium"
-                    placeholder={placeholder}
-                  />
-                </label>
+                <>
+                  <label
+                    htmlFor={id}
+                    className="flex w-full min-w-fit items-center gap-[0.875rem] overflow-auto"
+                  >
+                    {svg}
+                    <input
+                      {...field}
+                      id={id}
+                      className={`${errors[id as SocialMediaType] ? 'border-red-B30' : 'mb-[0.625rem] border-gray-B40'} h-[3.375rem] w-full flex-grow rounded-2xl border border-solid px-4 text-sm font-semibold text-black placeholder:font-medium`}
+                      placeholder={placeholder}
+                    />
+                  </label>
+                  {errors[id as SocialMediaType]?.message && (
+                    <p className="mb-[0.625rem] mt-2 text-xs text-red-B30">
+                      {errors[id as SocialMediaType]!.message}
+                    </p>
+                  )}
+                </>
               )}
             />
           ))}
