@@ -27,10 +27,8 @@ function RegistrationBlurOverlay({
   };
 
   return (
-    <article
-      className={`${isLogin ? 'absolute' : 'fixed'} inset-0 z-blur mx-auto flex size-full max-w-[24.125rem] flex-col items-center bg-blue-B50/60 text-gray-B80 backdrop-blur-[8px]`}
-    >
-      <div className="flex size-full w-[16rem] flex-col items-center justify-center gap-[1.375rem]">
+    <article className="fixed inset-0 z-blur mx-auto flex size-full max-w-[24.125rem] flex-col items-center justify-between bg-blue-B50/60 text-gray-B80 backdrop-blur-[8px]">
+      <div className="flex w-[16rem] flex-grow flex-col items-center justify-center gap-[1.375rem]">
         <CommentUserSVG />
         <p className="mb-[0.75rem] text-center font-semibold text-white">
           {isLogin ? (

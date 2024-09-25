@@ -89,7 +89,11 @@ function ParticipantCard({
               </dt>
               <dd className="flex flex-wrap text-xs text-white/60">
                 <span>{jobs}&nbsp;</span>
-                <span>@ {belong}</span>
+                {info ? (
+                  user?.belong && <span>@ {belong}</span>
+                ) : (
+                  <span>@ {belong}</span>
+                )}
               </dd>
             </div>
           </dl>

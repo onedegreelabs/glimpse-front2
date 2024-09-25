@@ -4,20 +4,14 @@ import Link from 'next/link';
 
 interface EventDetailsProps {
   eventId: string;
-  isParticipantRegistered?: boolean;
 }
 
-async function EventDetails({
-  eventId,
-  isParticipantRegistered,
-}: EventDetailsProps) {
+async function EventDetails({ eventId }: EventDetailsProps) {
   const { title, startAt, externalLink, location, locationType } =
     await getEventInfo(eventId);
 
   return (
-    <header
-      className={`flex w-full max-w-sm items-center justify-between bg-white px-4 py-5 ${isParticipantRegistered ? 'z-event' : ''}`}
-    >
+    <header className="z-event flex w-full max-w-sm items-center justify-between bg-white px-4 py-5">
       <div className="flex w-4/5 flex-col gap-3">
         <h1 className="truncate text-sm font-medium text-blue-secondary">
           {title}
