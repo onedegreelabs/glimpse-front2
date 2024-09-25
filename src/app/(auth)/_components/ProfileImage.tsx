@@ -1,8 +1,10 @@
 'use client';
 
+import { MAX_FILE_SIZE_MB } from '@/constant/constant';
 import { CrossSVG, PersonSVG, PlusSVG } from '@/icons/index';
 import Image from 'next/image';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 function ProfileImage({
   initalImage,
@@ -17,7 +19,14 @@ function ProfileImage({
 
   const uploadImageHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+
     if (file) {
+      const fileSizeInMB = file.size / (1024 * 1024);
+      if (fileSizeInMB > MAX_FILE_SIZE_MB) {
+        toast.error('Please upload a photo smaller than 5MB.');
+        return;
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64Image = reader.result as string;
@@ -28,6 +37,7 @@ function ProfileImage({
       reader.readAsDataURL(file);
     }
 
+    // input 초기화
     const inputElement = event.target as HTMLInputElement;
     inputElement.value = '';
   };

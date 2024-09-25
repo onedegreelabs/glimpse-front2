@@ -123,27 +123,27 @@ function EmailVerificationCode({ eventId }: EmailVerificationCodeProps) {
     }
 
     const { value } = e.target;
+    const digit = value.replace(/\D/g, '').charAt(0);
 
-    const digits = value.replace(/\D/g, '');
+    setValue(`code${currentIndex}`, digit);
 
-    setValue(`code${currentIndex}`, digits.charAt(0));
-
-    digits.split('').forEach((digit, i) => {
-      const targetIndex = currentIndex + i;
-      if (targetIndex < 6) {
-        setValue(`code${targetIndex}`, digit);
-      }
-    });
-
-    if (currentIndex < 5 && digits) {
-      setAutoFocusIndex(currentIndex + digits.length);
-    } else if (currentIndex > 0 && !digits) {
+    if (currentIndex < 5 && digit) {
+      setAutoFocusIndex(currentIndex + 1);
+    } else if (currentIndex > 0 && !digit) {
       setAutoFocusIndex(currentIndex - 1);
     }
   };
 
-  const displayResendLimitMessage = () => {
-    toast.info('You can resend the code only once per minute.');
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
+    const digits = e.clipboardData.getData('text').replace(/\D/g, '');
+
+    for (let i = 0; i < 6; i += 1) {
+      setValue(`code${i}`, digits[i]);
+    }
+
+    setAutoFocusIndex(digits.length);
   };
 
   return (
@@ -188,9 +188,6 @@ function EmailVerificationCode({ eventId }: EmailVerificationCodeProps) {
                 return (
                   <input
                     {...field}
-                    onChange={(e) => {
-                      handleCodeChange(e, index);
-                    }}
                     inputMode="numeric"
                     // eslint-disable-next-line jsx-a11y/no-autofocus
                     autoFocus={index === autoFocusIndex}
@@ -204,7 +201,16 @@ function EmailVerificationCode({ eventId }: EmailVerificationCodeProps) {
                         if (index > 0) {
                           setAutoFocusIndex(index - 1);
                         }
+                      } else if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleSubmit(onSubmit)();
+                      } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                        e.preventDefault();
                       }
+                    }}
+                    onPaste={handlePaste}
+                    onChange={(e) => {
+                      handleCodeChange(e, index);
                     }}
                   />
                 );
@@ -227,7 +233,6 @@ function EmailVerificationCode({ eventId }: EmailVerificationCodeProps) {
         isVerifyingCode={loginPending}
         onVerifyCode={handleSubmit(onSubmit)}
         isSendVerificationSuccess={isSuccess}
-        displayResendLimitMessage={displayResendLimitMessage}
       />
     </>
   );
