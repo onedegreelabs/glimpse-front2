@@ -56,22 +56,38 @@ function RegistrationBlurOverlay({
         </Link>
       </div>
       {!isLogin && (
-        <div className="mb-7 px-8 text-[10px] text-white/60">
+        <div className="px-8 pb-7 text-[10px] text-white/60">
           By signing up, you agree to our{' '}
-          <Link href="/" className="text-yellow-primary">
+          <Link
+            href="https://easytoremember.notion.site/Terms-of-Service-One-Degree-Labs-2024-09-24-30836627ba784bc29199bf5cd5df2cd6"
+            className="text-yellow-primary"
+            target="_blank"
+          >
             Terms of Service
           </Link>{' '}
           and{' '}
-          <Link href="/" className="text-yellow-primary">
+          <Link
+            href="https://easytoremember.notion.site/Privacy-Policy-One-Degree-Labs-2024-09-24-b1108fdc9704441d8b933dbff72c13b2"
+            className="text-yellow-primary"
+            target="_blank"
+          >
             Privacy Policy
           </Link>
           . <div className="mb-0.5" />
           가입하시면 귀하는 당사의{' '}
-          <Link href="/" className="text-yellow-primary">
+          <Link
+            href="https://easytoremember.notion.site/One-Degree-Labs-2024-09-24-bc61c09cf3b7437aab57d208d29b4731"
+            className="text-yellow-primary"
+            target="_blank"
+          >
             이용약관
           </Link>{' '}
           및{' '}
-          <Link href="/" className="text-yellow-primary">
+          <Link
+            href="https://easytoremember.notion.site/One-Degree-Labs-2024-09-24-f39053f66a49400fa791751a771f8518"
+            className="text-yellow-primary"
+            target="_blank"
+          >
             개인정보 처리방침
           </Link>
           에 동의하게 됩니다.
