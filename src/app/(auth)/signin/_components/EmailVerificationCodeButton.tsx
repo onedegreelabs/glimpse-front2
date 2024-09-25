@@ -15,12 +15,10 @@ interface EmailVerificationButtonProps {
   isSendVerificationSuccess: boolean;
   onVerifyCode: () => void;
   onSendVerificationCode: () => void;
-  displayResendLimitMessage: () => void;
 }
 
 function EmailVerificationButton({
   isResendButtonDisabled,
-  displayResendLimitMessage,
   onSendVerificationCode,
   onVerifyCode,
   isVerificationButtonDisabled,
@@ -70,7 +68,11 @@ function EmailVerificationButton({
         type="submit"
         disabled={isResendButtonDisabled}
         onClick={
-          resendTimer === 0 ? onSendVerificationCode : displayResendLimitMessage
+          resendTimer === 0
+            ? onSendVerificationCode
+            : () => {
+                toast.info('You can resend the code only once per minute.');
+              }
         }
         className={`group flex items-center gap-[0.188rem] text-sm disabled:text-gray-B60 ${resendTimer === 0 ? 'text-blue-B50' : 'text-gray-B60'}`}
       >
