@@ -2,6 +2,7 @@ import { EventParticipantProfileCardDto } from '@/types/types';
 import Image from 'next/image';
 import { CrossSVG, DefaultProfileSVG } from '@/icons/index';
 import Link from 'next/link';
+import DOMPurify from 'dompurify';
 import Modal from '../Modal';
 import GetSocialIcon from '../GetSocialIcon';
 import WishlistButton from './WishlistButton';
@@ -33,6 +34,10 @@ function ParticipantDetailModal({
     jobTitle,
     socialMedia,
   } = user;
+  const sanitizedHtml = DOMPurify.sanitize(
+    (intro ?? '').replace(/\n/g, '<br />'),
+  );
+
   return (
     <Modal closeHandler={closeDetailView}>
       <article className="relative pb-8 pt-[4.5rem]">
@@ -74,8 +79,12 @@ function ParticipantDetailModal({
               </li>
             ))}
           </ul>
-          <div className="max-h-[12.5rem] overflow-auto px-6">
-            <p className="mb-5 break-all text-xs text-black">{intro}</p>
+          <div className="max-h-[12.5rem] w-full overflow-auto px-6">
+            <p
+              className="mb-5 break-all text-xs text-black"
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
+            />
             <ul className="flex flex-wrap gap-[0.625rem]">
               {tags.map(({ id, name: tagName }) => (
                 <li
