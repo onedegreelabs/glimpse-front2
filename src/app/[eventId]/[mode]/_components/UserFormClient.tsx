@@ -13,6 +13,7 @@ import {
 import { captureException } from '@sentry/nextjs';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
@@ -36,6 +37,23 @@ function UserFormClient({
     setError,
     formState: { errors },
   } = useForm<EventRegisterInputs>();
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      const confirmationMessage =
+        'Do you want to leave this site?\nChanges and progress you made will not be saved.';
+
+      event.preventDefault();
+      // eslint-disable-next-line no-param-reassign
+      event.returnValue = confirmationMessage;
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
 
   const userFormHandler = async (data: EventRegisterDto) => {
     if (isRegister) {
