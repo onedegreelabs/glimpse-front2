@@ -27,8 +27,10 @@ function RegistrationBlurOverlay({
   };
 
   return (
-    <article className="fixed inset-0 z-blur mx-auto flex size-full max-w-[24.125rem] flex-col items-center bg-blue-B50/60 text-gray-B80 backdrop-blur-[8px]">
-      <div className="mt-16 flex size-full w-[16rem] flex-col items-center justify-center gap-[1.375rem]">
+    <article
+      className={`${isLogin ? 'absolute' : 'fixed'} inset-0 z-blur mx-auto flex size-full max-w-[24.125rem] flex-col items-center bg-blue-B50/60 text-gray-B80 backdrop-blur-[8px]`}
+    >
+      <div className="flex size-full w-[16rem] flex-col items-center justify-center gap-[1.375rem]">
         <CommentUserSVG />
         <p className="mb-[0.75rem] text-center font-semibold text-white">
           {isLogin ? (
@@ -53,6 +55,28 @@ function RegistrationBlurOverlay({
           {isLogin ? 'Register for event' : 'Sign up/Sign in'}
         </Link>
       </div>
+      {!isLogin && (
+        <div className="mb-7 px-8 text-[10px] text-white/60">
+          By signing up, you agree to our{' '}
+          <Link href="/" className="text-yellow-primary">
+            Terms of Service
+          </Link>{' '}
+          and{' '}
+          <Link href="/" className="text-yellow-primary">
+            Privacy Policy
+          </Link>
+          . <div className="mb-0.5" />
+          가입하시면 귀하는 당사의{' '}
+          <Link href="/" className="text-yellow-primary">
+            이용약관
+          </Link>{' '}
+          및{' '}
+          <Link href="/" className="text-yellow-primary">
+            개인정보 처리방침
+          </Link>
+          에 동의하게 됩니다.
+        </div>
+      )}
     </article>
   );
 }

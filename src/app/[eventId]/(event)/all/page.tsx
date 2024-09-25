@@ -6,7 +6,7 @@ import ParticipantCard from '@/components/ParticipantCard/ParticipantCard';
 import { cookies } from 'next/headers';
 import SearchParticipants from './_components/SearchParticipants';
 import Participants from '../_components/participants/Participants';
-import EmailAccessForm from '../_components/RegistrationBlurOverlay';
+import RegistrationBlurOverlay from '../_components/RegistrationBlurOverlay';
 import MyParticipants from '../_components/participants/MyParticipants';
 
 export default async function page({
@@ -32,7 +32,7 @@ export default async function page({
   return (
     <>
       {(!accessToken || !participantsInfo) && (
-        <EmailAccessForm eventId={eventId} isLogin={!!accessToken} />
+        <RegistrationBlurOverlay eventId={eventId} isLogin={!!accessToken} />
       )}
       <div className="px-6">
         <SearchParticipants
