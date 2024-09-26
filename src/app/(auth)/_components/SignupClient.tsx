@@ -158,7 +158,7 @@ function SignupClient({
 
   const handleUserEdit = async (data: FormData) => {
     await userEdit(data);
-    if (isImageDeleted && initalUserInfo?.profileImageUrl) {
+    if (isImageDeleted.current && initalUserInfo?.profileImageUrl) {
       await deleteProfileImage();
     }
   };
