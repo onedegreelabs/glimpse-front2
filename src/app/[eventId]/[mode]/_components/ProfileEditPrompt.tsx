@@ -4,7 +4,12 @@ import Cookies from 'js-cookie';
 import { ArrowSVG4 } from '@/icons/index';
 import Link from 'next/link';
 
-function ProfileEditPrompt({ eventId }: { eventId: string }) {
+interface ProfileEditPromptProps {
+  eventId: string;
+  isRegister: boolean;
+}
+
+function ProfileEditPrompt({ eventId, isRegister }: ProfileEditPromptProps) {
   return (
     <div className="flex flex-col items-center gap-5 text-nowrap rounded-2xl bg-white px-5 pb-5 pt-7 text-sm font-medium drop-shadow-[0_4px_14px_rgba(0,0,0,0.25)]">
       <p className="text-center">
@@ -13,7 +18,10 @@ function ProfileEditPrompt({ eventId }: { eventId: string }) {
       </p>
       <Link
         href="/profile-edit"
-        onClick={() => Cookies.set('eventId', eventId)}
+        onClick={() => {
+          Cookies.set('eventId', eventId);
+          Cookies.set('redirect', isRegister ? 'register' : 'edit');
+        }}
         className="flex w-fit items-center rounded-3xl bg-blue-B30 p-2 pl-3 text-white"
       >
         Edit profile

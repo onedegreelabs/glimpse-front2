@@ -34,9 +34,9 @@ async function UserForm({ accessToken, eventId, isRegister }: RegisterProps) {
   return (
     <section className="flex flex-col gap-6 px-5 pb-11 pt-5">
       <div className="relative grid w-full grid-cols-[auto_1fr] space-x-4 rounded-3xl bg-gray-B20 pb-[1.625rem] pl-5 pr-7 pt-7">
-        <div className="absolute right-3 top-3 z-20">
+        <div className="absolute right-3 top-3 z-10">
           <Tooltip tooltipClassName="top-full right-0 ">
-            <ProfileEditPrompt eventId={eventId} />
+            <ProfileEditPrompt eventId={eventId} isRegister={isRegister} />
           </Tooltip>
         </div>
         <div

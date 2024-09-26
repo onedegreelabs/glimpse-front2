@@ -12,6 +12,7 @@ export default async function page() {
   const accessToken = cookieStore.get('accessToken')?.value;
   const eventId =
     cookieStore.get('eventId')?.value ?? '02974b24-bcb5-4f43-882b-5e653c6da75e';
+  const redirectUrl = cookieStore.get('redirect')?.value ?? 'all';
 
   if (!accessToken) {
     return redirect(REDIRECT_URL);
@@ -39,6 +40,7 @@ export default async function page() {
       jobCategories={jobCategories}
       initalUserInfo={initalUserInfo}
       eventId={eventId}
+      redirectUrl={redirectUrl}
     />
   );
 }
