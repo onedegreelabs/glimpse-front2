@@ -56,7 +56,7 @@ function SignupHeader({ formValues, isEditing }: SignupHeaderProps) {
         </button>
         {isEditing && (
           <h1 className="flex-grow pr-6 pt-1 text-center text-sm font-bold text-black">
-            Edit user profile
+            Edit profile
           </h1>
         )}
       </div>

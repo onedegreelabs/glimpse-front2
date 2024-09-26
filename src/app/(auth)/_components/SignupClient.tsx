@@ -39,6 +39,7 @@ interface SignupClientProps {
   jobCategories: JobCategorie[];
   email?: string;
   initalUserInfo?: InitalUserInfo;
+  redirectUrl?: string;
 }
 
 function SignupClient({
@@ -46,6 +47,7 @@ function SignupClient({
   jobCategories,
   eventId,
   initalUserInfo,
+  redirectUrl,
 }: SignupClientProps) {
   const isEditing = !email;
 
@@ -165,7 +167,8 @@ function SignupClient({
     mutationFn: (data: FormData) => handleUserEdit(data),
     onSuccess: () => {
       Cookies.remove('eventId');
-      router.push(`/${eventId}/edit`);
+      Cookies.remove('redirect');
+      router.push(`/${eventId}/${redirectUrl}`);
       router.refresh();
     },
     onError: (error) => {
@@ -313,7 +316,7 @@ function SignupClient({
           disabled={!isRequiredFieldsValid || signupPending || userEditPending}
           isPending={signupPending || userEditPending}
         >
-          Start Networking
+          {isEditing ? 'Save' : 'Start Networking'}
         </Button>
       </form>
     </main>
