@@ -4,6 +4,8 @@ function socialFormatUrl(platform: SocialMediaType, userInput: string) {
   let pattern;
   let baseUrl;
 
+  let formattedInput = userInput;
+
   switch (platform) {
     case 'LINKEDIN':
       pattern = /(linkedin\.com\/in\/)([\w-]+)/;
@@ -18,16 +20,20 @@ function socialFormatUrl(platform: SocialMediaType, userInput: string) {
       baseUrl = 'https://github.com/';
       break;
     default:
-      return userInput;
+      if (!/^https?:\/\//i.test(formattedInput)) {
+        formattedInput = `https://${formattedInput}`;
+      }
+      return formattedInput;
   }
 
-  const match = userInput.match(pattern);
+  const match = formattedInput.match(pattern);
 
   if (match) {
     const handle = match[2];
     return `${baseUrl}${handle}`;
   }
-  return `${baseUrl}${userInput.trim()}`;
+
+  return `${baseUrl}${formattedInput.trim()}`;
 }
 
 export default socialFormatUrl;
