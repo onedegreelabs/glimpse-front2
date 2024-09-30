@@ -105,7 +105,9 @@ function ParticipantCard({
               <div className="flex size-3 flex-shrink-0 items-center justify-center rounded-full bg-yellow-primary">
                 <TagSVG />
               </div>
-              {tags.map(({ name: tagName }) => tagName).join(', ')}
+              <p className="line-clamp-2">
+                {tags.map(({ name: tagName }) => tagName).join(', ')}
+              </p>
             </div>
           )}
           <div className="absolute right-2 top-2">
