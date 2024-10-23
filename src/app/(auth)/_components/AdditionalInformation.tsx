@@ -10,7 +10,7 @@ import Hashtags from './Hashtags';
 
 interface AdditionalInformationProps {
   isOpenAdditionalInfo: boolean;
-  control: Control<RegisterInputs, any>;
+  control: Control<RegisterInputs>;
   errors: FieldErrors<RegisterInputs>;
   initalUserInfo?: InitalUserInfo;
 }

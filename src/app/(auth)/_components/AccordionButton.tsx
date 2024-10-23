@@ -2,7 +2,7 @@ import { ArrowSVG2, CheckSVG } from '@/icons/index';
 
 type AccordionButtonState = 'PROGRESS' | 'COMPLETED' | 'EMPTY';
 
-const getInfoState = <T extends unknown>(fields: T[]): AccordionButtonState => {
+const getInfoState = <T,>(fields: T[]): AccordionButtonState => {
   const isStringOrArray = (field: unknown): field is string | unknown[] =>
     typeof field === 'string' || Array.isArray(field);
 

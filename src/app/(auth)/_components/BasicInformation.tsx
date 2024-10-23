@@ -12,7 +12,7 @@ import JobCategory from './JobCategory';
 interface BasicInformationProps {
   initalUserInfo?: InitalUserInfo;
   isOpenBasicInfo: boolean;
-  control: Control<RegisterInputs, any>;
+  control: Control<RegisterInputs>;
   jobCategories: JobCategorie[];
   setError: UseFormSetError<RegisterInputs>;
   errors: FieldErrors<RegisterInputs>;

@@ -19,7 +19,9 @@ function SigninFunnel({ eventId }: { eventId: string }) {
   };
 
   const STEP_COMPONENTS = [
+    // eslint-disable-next-line react/jsx-key
     <EmailAccessForm handleNextStep={handleNextStep} />,
+    // eslint-disable-next-line react/jsx-key
     <EmailVerificationCode eventId={eventId} />,
   ] as const;
 
