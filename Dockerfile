@@ -6,7 +6,7 @@ COPY .next ./.next
 
 COPY .env .
 
-COPY package.json package-lock.json ./
+COPY package.json pnpm-lock.json ./
 
 COPY public ./public
 
