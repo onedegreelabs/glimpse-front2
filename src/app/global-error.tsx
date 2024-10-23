@@ -14,7 +14,6 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    // eslint-disable-next-line jsx-a11y/html-has-lang
     <html>
       {/* `NextError` is the default Next.js error page component. Its type
         definition requires a `statusCode` prop. However, since the App Router

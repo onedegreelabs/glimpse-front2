@@ -38,7 +38,7 @@ function SearchParticipants({
         aria-label="Search participants"
         onKeyDown={searchHandler}
       />
-      {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+
       <label
         htmlFor="searchParticipants"
         className="absolute left-4 top-4 fill-gray-B70 peer-focus:fill-black"

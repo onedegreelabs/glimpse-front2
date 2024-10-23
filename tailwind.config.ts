@@ -83,7 +83,6 @@ const config: Config = {
     },
   },
   plugins: [
-    // eslint-disable-next-line global-require
     require('tailwindcss/plugin')(
       ({
         addVariant,

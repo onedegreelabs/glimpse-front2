@@ -82,7 +82,6 @@ function ParticipantDetailModal({
           <div className="max-h-[12.5rem] w-full overflow-auto px-6">
             <p
               className="mb-5 break-all text-xs text-black"
-              // eslint-disable-next-line react/no-danger
               dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
             />
             <ul className="flex flex-wrap gap-[0.625rem]">

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
 export interface FetchError extends Error {
   status: number;
   errorCode: string;

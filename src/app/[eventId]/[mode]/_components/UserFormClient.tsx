@@ -44,7 +44,7 @@ function UserFormClient({
         'Do you want to leave this site?\nChanges and progress you made will not be saved.';
 
       event.preventDefault();
-      // eslint-disable-next-line no-param-reassign
+
       event.returnValue = confirmationMessage;
     };
 

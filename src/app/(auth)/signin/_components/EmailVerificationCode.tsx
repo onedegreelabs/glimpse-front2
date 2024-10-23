@@ -159,7 +159,6 @@ function EmailVerificationCode({ eventId }: EmailVerificationCodeProps) {
           Enter the 6-digit code sent to <br /> {currentEmail}
         </p>
         <div className="relative mb-6 flex w-full justify-center gap-[0.313rem]">
-          {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
           {Array.from({ length: 6 }, (_, index) => (
             <Controller
               key={uuidv4()}
@@ -189,7 +188,6 @@ function EmailVerificationCode({ eventId }: EmailVerificationCodeProps) {
                   <input
                     {...field}
                     inputMode="numeric"
-                    // eslint-disable-next-line jsx-a11y/no-autofocus
                     autoFocus={index === autoFocusIndex}
                     type="number"
                     max="9"
