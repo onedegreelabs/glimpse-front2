@@ -1,3 +1,4 @@
+import BaseButton from '@/components/BaseButton';
 import { ArrowSVG2 } from '@/icons/index';
 import { RegisterInputs } from '@/types/types';
 import { useRouter } from 'next/navigation';
@@ -46,14 +47,13 @@ function SignupHeader({ formValues, isEditing }: SignupHeaderProps) {
   return (
     <header className="sticky top-0 z-header mt-[0.375rem] bg-white px-1 pt-[0.625rem]">
       <div className="flex">
-        <button
+        <BaseButton
           onClick={() => router.back()}
-          type="button"
           aria-label="back-router"
           className="mb-4 px-1 py-1"
         >
           <ArrowSVG2 className="size-4 rotate-180 transform stroke-black stroke-2" />
-        </button>
+        </BaseButton>
         {isEditing && (
           <h1 className="flex-grow pr-6 pt-1 text-center text-sm font-bold text-black">
             Edit profile

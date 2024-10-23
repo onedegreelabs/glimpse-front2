@@ -7,6 +7,7 @@ import { ArrowSVG4 } from '@/icons/index';
 import { useRouter } from 'next/navigation';
 import EmailAccessForm from './EmailAccessForm';
 import EmailVerificationCode from './EmailVerificationCode';
+import BaseButton from '@/components/BaseButton';
 
 function SigninFunnel({ eventId }: { eventId: string }) {
   const router = useRouter();
@@ -36,13 +37,9 @@ function SigninFunnel({ eventId }: { eventId: string }) {
   return (
     <>
       <header className="px-4 pt-4">
-        <button
-          onClick={handlerBackRouter}
-          type="button"
-          aria-label="back-router"
-        >
+        <BaseButton onClick={handlerBackRouter} aria-label="back-router">
           <ArrowSVG4 className="size-6 fill-black" />
-        </button>
+        </BaseButton>
       </header>
       <section className="py-dynamic relative flex h-full flex-grow flex-col justify-between px-[1.625rem]">
         <FormProvider {...formMethod}>

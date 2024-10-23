@@ -13,6 +13,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import BaseButton from '../BaseButton';
 
 // const HeartLoading = dynamic(() => import('@/components/HeartLoading'));
 
@@ -112,7 +113,7 @@ function WishlistButton({
   });
 
   return (
-    <button
+    <BaseButton
       type="submit"
       disabled={!id || isPending}
       onClick={(event) => {
@@ -131,7 +132,7 @@ function WishlistButton({
         className={`${isDetail ? `size-5 ${isWishlisted ? 'fill-red-B20 stroke-none' : 'fill-white'}` : `size-[1.125rem] ${isWishlisted ? 'fill-yellow-primary stroke-none' : 'fill-white/25'}`}`}
       />
       {/* {isPending ? <HeartLoading initialState={isWishlisted} /> : } */}
-    </button>
+    </BaseButton>
   );
 }
 

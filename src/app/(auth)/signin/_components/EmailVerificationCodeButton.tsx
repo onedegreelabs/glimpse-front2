@@ -7,6 +7,7 @@ import {
   DEFAULT_VERIFICATION_CODE_TIME,
 } from '@/constant/constant';
 import { toast } from 'react-toastify';
+import BaseButton from '@/components/BaseButton';
 
 interface EmailVerificationButtonProps {
   isResendButtonDisabled: boolean;
@@ -64,7 +65,7 @@ function EmailVerificationButton({
 
   return (
     <div className="flex flex-col items-center gap-[1.125rem]">
-      <button
+      <BaseButton
         type="submit"
         disabled={isResendButtonDisabled}
         onClick={
@@ -81,7 +82,7 @@ function EmailVerificationButton({
         />{' '}
         Resend code
         {resendTimer !== 0 && <span>{resendTimer}s</span>}
-      </button>
+      </BaseButton>
       <Button
         onClick={onVerifyCode}
         type="submit"

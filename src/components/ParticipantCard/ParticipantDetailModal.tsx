@@ -7,6 +7,7 @@ import Modal from '../Modal';
 import GetSocialIcon from '../GetSocialIcon';
 import WishlistButton from './WishlistButton';
 import EditButton from './EditButton';
+import BaseButton from '../BaseButton';
 
 interface ParticipantDetailModalProps extends EventParticipantProfileCardDto {
   isUserCard: boolean;
@@ -107,14 +108,13 @@ function ParticipantDetailModal({
             />
           )}
         </div>
-        <button
-          type="button"
+        <BaseButton
           onClick={closeDetailView}
           className="absolute -bottom-[4.375rem] left-1/2 flex size-14 -translate-x-1/2 transform items-center justify-center rounded-full bg-black/80"
           aria-label="close-modal"
         >
           <CrossSVG className="size-6 fill-white" />
-        </button>
+        </BaseButton>
       </article>
     </Modal>
   );

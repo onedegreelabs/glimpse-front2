@@ -1,4 +1,5 @@
 import { Spinner1 } from '@/icons/index';
+import BaseButton from './BaseButton';
 
 interface ButtonProps {
   children: React.ReactNode;
@@ -16,7 +17,7 @@ function Button({
   onClick,
 }: ButtonProps) {
   return (
-    <button
+    <BaseButton
       type={type}
       disabled={disabled}
       onClick={onClick}
@@ -31,7 +32,7 @@ function Button({
           {children}
         </div>
       )}
-    </button>
+    </BaseButton>
   );
 }
 

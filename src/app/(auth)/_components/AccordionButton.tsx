@@ -1,3 +1,4 @@
+import BaseButton from '@/components/BaseButton';
 import { ArrowSVG2, CheckSVG } from '@/icons/index';
 
 type AccordionButtonState = 'PROGRESS' | 'COMPLETED' | 'EMPTY';
@@ -39,8 +40,7 @@ function AccordionButton<T>({
   const infoState = getInfoState(watchInfo);
 
   return (
-    <button
-      type="button"
+    <BaseButton
       aria-label={`open-${label}`}
       onClick={toggleHandler}
       className={`${infoState === 'COMPLETED' ? 'bg-yellow-200/50 pl-[0.688rem]' : 'bg-basic-B10 pl-4'} ${isOpen ? 'mb-7' : 'mb-3'} flex h-16 w-full items-center justify-between rounded-xl pr-6 text-sm text-black`}
@@ -70,7 +70,7 @@ function AccordionButton<T>({
       <ArrowSVG2
         className={`size-4 transform fill-black ${isOpen ? '-translate-y-1 -rotate-90' : 'translate-y-1 rotate-90'}`}
       />
-    </button>
+    </BaseButton>
   );
 }
 

@@ -1,3 +1,4 @@
+import BaseButton from '@/components/BaseButton';
 import { CrossSVG, RefreshSVG } from '@/icons/index';
 import { createTag } from '@/lib/apis/tagApi';
 import { Tag } from '@/types/types';
@@ -110,7 +111,7 @@ function Hashtags({ tagList, updateTagList, tagStyle }: HashtagsProps) {
         <p className="mb-3 text-xs text-red-B10">{errors.tagName.message}</p>
       )}
 
-      <button
+      <BaseButton
         onClick={handleSubmit(onSubmit)}
         disabled={isPending || !currentTag || !!errors.tagName}
         className="absolute right-3 top-[1.063rem] flex items-center gap-1 text-sm font-bold text-blue-B50 disabled:text-gray-B65"
@@ -122,7 +123,7 @@ function Hashtags({ tagList, updateTagList, tagStyle }: HashtagsProps) {
           '+ '
         )}
         Add
-      </button>
+      </BaseButton>
 
       {tagList.length > 0 && (
         <ul className="mb-4 flex flex-wrap gap-[0.375rem] px-2 text-sm">
@@ -132,16 +133,15 @@ function Hashtags({ tagList, updateTagList, tagStyle }: HashtagsProps) {
               className={`${tagStyle?.tagsBgColor || 'bg-blue-B50'} ${tagStyle?.tagsTextColor || 'text-white'} flex items-center gap-[0.375rem] rounded-3xl bg-blue-B50 px-3 py-[0.625rem]`}
             >
               {name}
-              <button
+              <BaseButton
                 onClick={() => handleRemoveTag(id)}
-                type="button"
                 aria-label="delete-tag"
                 className="ml-2"
               >
                 <CrossSVG
                   className={`${tagStyle?.closeColor || 'fill-white'} size-4`}
                 />
-              </button>
+              </BaseButton>
             </li>
           ))}
         </ul>

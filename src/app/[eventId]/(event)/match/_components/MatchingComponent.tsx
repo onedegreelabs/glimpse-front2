@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { RefreshSVG } from '@/icons/index';
 import Blur from './Blur';
+import BaseButton from '@/components/BaseButton';
 
 function MatchingComponent({
   eventId,
@@ -43,7 +44,7 @@ function MatchingComponent({
     <Blur isPending={isPending} />
   ) : (
     <div className="relative ml-auto mr-[3.125rem] size-[0.063rem]">
-      <button
+      <BaseButton
         type="submit"
         className="fixed bottom-0 z-10 mb-4 mr-4 flex size-[4.125rem] items-center justify-center rounded-full bg-gradient-to-bl from-yellow-primary to-blue-B30"
         aria-label="re-matching"
@@ -54,7 +55,7 @@ function MatchingComponent({
             <RefreshSVG className="size-[1.125rem] fill-blue-secondary stroke-blue-secondary" />
           </div>
         </div>
-      </button>
+      </BaseButton>
     </div>
   );
 }

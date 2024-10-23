@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { SadFaceSVG } from '@/icons/index';
+import BaseButton from '@/components/BaseButton';
 
 export default function Error({
   error,
@@ -24,21 +25,19 @@ export default function Error({
         An error occurred while loading the page.
       </p>
       <div className="text-main-color mt-6 flex flex-col gap-4 text-lg font-bold">
-        <button
-          type="button"
+        <BaseButton
           onClick={() => router.back()}
           className="w-56 rounded-[0.625rem] bg-yellow-primary py-[1.375rem] text-center text-blue-secondary"
         >
           Go Back
-        </button>
+        </BaseButton>
 
-        <button
-          type="button"
+        <BaseButton
           onClick={() => reset()}
           className="w-56 rounded-[0.625rem] bg-gray-B30/20 py-[1.375rem] text-center text-white/40"
         >
           Retry
-        </button>
+        </BaseButton>
       </div>
     </div>
   );

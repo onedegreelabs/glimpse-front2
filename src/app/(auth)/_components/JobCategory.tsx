@@ -1,5 +1,6 @@
 'use client';
 
+import BaseButton from '@/components/BaseButton';
 import BottomModal from '@/components/BottomModal';
 import { ArrowSVG3 } from '@/icons/index';
 import { JobCategorie } from '@/types/types';
@@ -33,8 +34,7 @@ function JobCategory({
 
   return (
     <>
-      <button
-        type="button"
+      <BaseButton
         onClick={() => setIsOpen(true)}
         className={`${selectedJobCategory ? 'text-black' : 'text-gray-B80/55'} relative h-[3.375rem] w-full rounded-2xl border border-solid border-gray-B40 text-sm font-medium`}
       >
@@ -42,7 +42,7 @@ function JobCategory({
           ? selectedJobCategory.engName
           : 'Select job category'}
         <ArrowSVG3 className="absolute -right-7 top-5 size-16 fill-gray-B40" />
-      </button>
+      </BaseButton>
       {isOpen && (
         <BottomModal closeModal={handleCloseModal}>
           <div className="flex flex-col gap-[0.625rem]">
@@ -56,13 +56,12 @@ function JobCategory({
                   key={jobCategory.id}
                   className={`${selectedJobCategory?.id === jobCategory.id ? 'bg-yellow-primary font-semibold' : ''} rounded-2xl border border-solid border-gray-B40`}
                 >
-                  <button
-                    type="button"
+                  <BaseButton
                     className="flex h-[3.375rem] w-full items-center justify-center"
                     onClick={() => handleJobCategoryChange(jobCategory)}
                   >
                     {jobCategory.engName}
-                  </button>
+                  </BaseButton>
                 </li>
               ))}
             </ul>

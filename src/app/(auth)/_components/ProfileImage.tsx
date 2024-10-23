@@ -1,5 +1,6 @@
 'use client';
 
+import BaseButton from '@/components/BaseButton';
 import { MAX_FILE_SIZE_MB } from '@/constant/constant';
 import { CrossSVG, PersonSVG, PlusSVG } from '@/icons/index';
 import Image from 'next/image';
@@ -65,14 +66,13 @@ function ProfileImage({
       >
         {profileImage ? (
           <>
-            <button
-              type="button"
+            <BaseButton
               onClick={deleteImageHandler}
               aria-label="delete-image"
               className="absolute -right-3 -top-3"
             >
               <CrossSVG className="size-6 fill-blue-B50" />
-            </button>
+            </BaseButton>
             <Image
               src={profileImage}
               alt="profile"
@@ -84,14 +84,13 @@ function ProfileImage({
         ) : (
           <PersonSVG className="h-12 w-[2.894rem]" />
         )}
-        <button
-          type="button"
+        <BaseButton
           className="absolute -right-2 bottom-3 flex size-8 items-center justify-center rounded-full bg-blue-B50 p-2 text-xs font-medium text-yellow-primary"
           onClick={handleEditClick}
           aria-label="edit-profile-image"
         >
           <PlusSVG className="size-5 fill-white" />
-        </button>
+        </BaseButton>
         <input
           id="image-upload"
           type="file"

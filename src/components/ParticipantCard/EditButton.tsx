@@ -1,5 +1,6 @@
 import { PencilSVG } from '@/icons/index';
 import { useRouter } from 'next/navigation';
+import BaseButton from '../BaseButton';
 
 interface EditButtonProps {
   eventId: string;
@@ -10,8 +11,7 @@ function EditButton({ isDetail, eventId }: EditButtonProps) {
   const router = useRouter();
 
   return (
-    <button
-      type="button"
+    <BaseButton
       onClick={(event) => {
         event.stopPropagation();
         router.push(`/${eventId}/edit`);
@@ -24,7 +24,7 @@ function EditButton({ isDetail, eventId }: EditButtonProps) {
       aria-label="edit-info"
     >
       <PencilSVG />
-    </button>
+    </BaseButton>
   );
 }
 

@@ -4,6 +4,7 @@ import { CrossSVG } from '@/icons/index';
 import { useClickAway } from '@uidotdev/usehooks';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
+import BaseButton from './BaseButton';
 
 interface BottomModalProps {
   children: React.ReactNode;
@@ -45,14 +46,13 @@ function BottomModal({ children, closeModal }: BottomModalProps) {
         ref={ref}
         className="absolute bottom-0 left-1/2 w-full max-w-sm -translate-x-1/2 transform rounded-t-3xl bg-white pt-[2.625rem]"
       >
-        <button
-          type="button"
+        <BaseButton
           className="absolute right-[1.125rem] top-[1.125rem]"
           aria-label="close-modal"
           onClick={closeHandler}
         >
           <CrossSVG className="size-6 fill-blue-B50" />
-        </button>
+        </BaseButton>
         {children}
       </section>
     </article>

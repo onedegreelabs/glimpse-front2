@@ -3,6 +3,7 @@
 import { CrossSVG, QuestionSVG } from '@/icons/index';
 import { useClickAway } from '@uidotdev/usehooks';
 import { useState } from 'react';
+import BaseButton from './BaseButton';
 
 interface TooltipProps {
   children: React.ReactNode;
@@ -27,24 +28,22 @@ function Tooltip({
 
   return (
     <div ref={ref} className="relative inline-block">
-      <button
-        type="button"
+      <BaseButton
         onClick={toggleOpen}
         aria-label="edit-profile-tooltip"
         className={`relative ${buttonClassName}`}
       >
         <QuestionSVG />
-      </button>
+      </BaseButton>
       {isOpen && (
         <div className={`absolute ${tooltipClassName}`}>
-          <button
+          <BaseButton
             onClick={() => setIsOpen(false)}
             className="absolute right-2 top-2 z-10"
-            type="button"
             aria-label="close-tooltip"
           >
             <CrossSVG className="size-4 fill-black" />
-          </button>
+          </BaseButton>
           {children}
         </div>
       )}
