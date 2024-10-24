@@ -1,5 +1,5 @@
 const BaseButton = (props: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
-  return <BaseButton {...props} />;
+  return <button type="button" {...props} />;
 };
 
 export default BaseButton;
