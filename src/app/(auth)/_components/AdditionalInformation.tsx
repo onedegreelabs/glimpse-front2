@@ -42,11 +42,6 @@ function AdditionalInformation({
       placeholder: 'GitHub handle or URL',
       id: 'GITHUB',
     },
-    // {
-    //   svg: <TelegramSVG className="size-6" />,
-    //   placeholder: 'Telegram',
-    //   id: 'TELEGRAM',
-    // },
     {
       svg: <URLMark />,
       placeholder: 'Other URL',

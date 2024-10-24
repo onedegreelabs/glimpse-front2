@@ -32,7 +32,6 @@ export default async function layout({
     curationsInfo = await getCurationsInfo({ eventId, accessToken });
   }
 
-  // pb-4
   return (
     <main className="relative flex min-h-screen w-full flex-col pb-4">
       <EventDetails eventId={eventId} />
