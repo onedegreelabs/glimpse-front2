@@ -4,15 +4,13 @@ import { redirect } from 'next/navigation';
 import { jwtVerify } from 'jose';
 import { AuthToken } from '@/types/types';
 import SignupClient from '../_components/SignupClient';
-
-const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_ACCESS_TOKEN_SECRET;
-const REDIRECT_URL = '/02974b24-bcb5-4f43-882b-5e653c6da75e/all'; // 추후 수정
+import { JWT_ACCESS_SECRET, REDIRECT_URL } from '@/constant/constant';
 
 const getEmailFromToken = async (authToken: string): Promise<string | null> => {
-  if (!JWT_SECRET) return null;
+  if (!JWT_ACCESS_SECRET) return null;
 
   try {
-    const secret = new TextEncoder().encode(JWT_SECRET);
+    const secret = new TextEncoder().encode(JWT_ACCESS_SECRET);
     const { payload } = await jwtVerify<AuthToken>(authToken, secret);
     return payload.email;
   } catch (error) {

@@ -10,7 +10,7 @@ import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
 
-const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
+import { END_POINT } from '@/constant/constant';
 
 export const getEventInfo = async (
   eventId: string,

@@ -2,7 +2,7 @@ import { FetchError } from '@/types/types';
 import appendCookiesToResponse from '@/utils/auth/appendCookiesToResponse';
 import { NextResponse } from 'next/server';
 
-const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
+import { END_POINT } from '@/constant/constant';
 
 export const accessTokenReissuance = async (
   refreshToken: string,

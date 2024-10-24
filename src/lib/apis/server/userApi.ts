@@ -5,7 +5,7 @@ import {
   UserInfo,
 } from '@/types/types';
 
-const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
+import { END_POINT } from '@/constant/constant';
 
 export const getJobCategories = async (): Promise<JobCategorie[]> => {
   const response = await fetch(`${END_POINT}/job-categories`);

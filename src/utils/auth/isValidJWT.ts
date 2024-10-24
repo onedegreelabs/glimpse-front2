@@ -1,5 +1,6 @@
 'use server';
 
+import { JWT_REFRESH_SECRET, JWT_ACCESS_SECRET } from '@/constant/constant';
 import { jwtVerify } from 'jose';
 
 export default async function isValidJWT(
@@ -7,12 +8,9 @@ export default async function isValidJWT(
   type: 'ACCESS' | 'REFRESH',
 ): Promise<boolean> {
   try {
-    const JWT_SECRET =
-      type === 'ACCESS'
-        ? process.env.NEXT_PUBLIC_JWT_ACCESS_TOKEN_SECRET
-        : process.env.NEXT_PUBLIC_JWT_REFRESH_TOKEN_SECRET;
-
-    const secret = new TextEncoder().encode(JWT_SECRET);
+    const secret = new TextEncoder().encode(
+      type === 'ACCESS' ? JWT_ACCESS_SECRET : JWT_REFRESH_SECRET,
+    );
     await jwtVerify(token, secret);
 
     return true;

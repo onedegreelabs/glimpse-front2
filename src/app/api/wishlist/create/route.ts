@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
+import { END_POINT } from '@/constant/constant';
 
 export const POST = async (request: NextRequest) => {
   if (!END_POINT) {

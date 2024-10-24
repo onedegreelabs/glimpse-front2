@@ -4,8 +4,7 @@ import { redirect } from 'next/navigation';
 
 import { SocialMediaType } from '@/types/types';
 import SignupClient from '../_components/SignupClient';
-
-const REDIRECT_URL = '/02974b24-bcb5-4f43-882b-5e653c6da75e/all'; // 추후 수정
+import { REDIRECT_URL } from '@/constant/constant';
 
 export default async function page() {
   const cookieStore = cookies();

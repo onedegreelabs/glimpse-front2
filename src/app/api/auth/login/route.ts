@@ -1,9 +1,7 @@
 import appendCookiesToResponse from '@/utils/auth/appendCookiesToResponse';
 import { NextRequest, NextResponse } from 'next/server';
 import { SignJWT } from 'jose';
-
-const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
-const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_ACCESS_TOKEN_SECRET;
+import { END_POINT, JWT_ACCESS_SECRET } from '@/constant/constant';
 
 export const GET = async (request: NextRequest) => {
   if (!END_POINT) {
@@ -30,7 +28,7 @@ export const GET = async (request: NextRequest) => {
     const { message, errorCode } = await response.json();
 
     if (errorCode === 'G01001') {
-      if (!JWT_SECRET) {
+      if (!JWT_ACCESS_SECRET) {
         return NextResponse.json({
           status: 500,
           message: 'JWT 비밀 키가 설정되지 않았습니다.',
@@ -38,7 +36,7 @@ export const GET = async (request: NextRequest) => {
       }
 
       try {
-        const secret = new TextEncoder().encode(JWT_SECRET);
+        const secret = new TextEncoder().encode(JWT_ACCESS_SECRET);
 
         const token = await new SignJWT({ email })
           .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
